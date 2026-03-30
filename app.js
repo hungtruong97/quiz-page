@@ -402,3 +402,30 @@ window.nextQuestion = nextQuestion;
 window.submitAnswer = submitAnswer;
 window.jumpTo = jumpTo;
 window.toggleWrongItem = toggleWrongItem;
+
+// =====================
+// THEME TOGGLE
+// =====================
+function toggleTheme() {
+  const isLight =
+    document.documentElement.getAttribute("data-theme") === "light";
+  const newTheme = isLight ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", newTheme);
+  document.getElementById("theme-toggle").textContent =
+    newTheme === "light" ? "🌙" : "☀️";
+  localStorage.setItem("theme", newTheme);
+}
+
+// Apply saved theme on load
+(function () {
+  const saved = localStorage.getItem("theme") || "dark";
+  if (saved === "light") {
+    document.documentElement.setAttribute("data-theme", "light");
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("theme-toggle");
+      if (btn) btn.textContent = "🌙";
+    });
+  }
+})();
+
+window.toggleTheme = toggleTheme;
