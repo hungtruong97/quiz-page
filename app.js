@@ -1,12 +1,12 @@
 // =====================
 // STATE
 // =====================
-let questions = [];
-let current = 0;
-let selected = new Set();
-let answered = []; // 'correct' | 'wrong' | null per question
-let userAnswers = []; // the actual keys the user picked per question
-let submitted = false;
+window.questions = [];
+window.current = 0;
+window.selected = new Set();
+window.answered = [];
+window.userAnswers = [];
+window.submitted = false;
 
 // =====================
 // INIT — load manifest
@@ -391,3 +391,14 @@ function toggleWrongItem(header) {
 // BOOT
 // =====================
 init();
+
+// =====================
+// EXPOSE TO WINDOW (console access)
+// =====================
+window.showResults = showResults;
+window.goHome = goHome;
+window.startExam = startExam;
+window.nextQuestion = nextQuestion;
+window.submitAnswer = submitAnswer;
+window.jumpTo = jumpTo;
+window.toggleWrongItem = toggleWrongItem;
