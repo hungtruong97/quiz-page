@@ -1,0 +1,654 @@
+[
+  {
+    "number": 1,
+    "question": "You are establishing a CI/CD pipeline for deploying Dataflow pipelines that process large datasets. Your team uses two separate Dataflow environments: one for development and one for production. A Git repository is used to manage and develop the Dataflow pipeline code. You need an automated deployment process that triggers when a specific tag is pushed to the Git repository. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Configure Cloud Build to create a container with the Dataflow pipeline code, deploy it to the development environment, and then deploy it to the production environment if tests pass.",
+      "B": "Set up a Pub/Sub notification to trigger a Dataflow job deployment for both development and production environments.",
+      "C": "Configure Cloud Build to automatically deploy the Dataflow pipeline to the development environment, and if tests are successful, deploy it manually to the production environment.",
+      "D": "Configure Cloud Build to upload the Dataflow pipeline code directly to the development environment, run tests, and upon successful testing, automatically deploy the pipeline to the production environment."
+    },
+    "correct_answer": "D",
+    "explanation": "The best solution is to configure Cloud Build to upload the Dataflow pipeline code directly to the development environment, run tests, and deploy it to production if successful. Using containers is unnecessary in this case because Dataflow pipelines don’t require containerization for deployment. Deploying the code directly without containerizing it simplifies the process and reduces overhead. Pub/Sub is more suitable for event-driven tasks rather than CI/CD automation, and manual deployment introduces avoidable risks and inefficiencies. By automating both the testing and deployment phases, you ensure a streamlined, reliable CI/CD pipeline for your Dataflow code.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 2,
+    "question": "Your organization has discovered that one of your Cloud KMS keys used for encrypting BigQuery datasets may have been exposed. To ensure the security of all past and future data, you need to re-encrypt the existing datasets and remove the compromised key. Additionally, you want to guarantee that any new data written to BigQuery is protected with a secure encryption key. What is the best approach?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Rotate the current Cloud KMS key to a new version and use the same BigQuery datasets.",
+      "B": "Apply a new default CMEK key to the existing BigQuery datasets without re-encrypting the old data.",
+      "C": "Set up a new Cloud KMS key, create new BigQuery datasets, and move all data from the old datasets to the new ones to apply the new encryption.",
+      "D": "Re-encrypt the data in the current datasets by setting a new Cloud KMS key in a batch operation."
+    },
+    "correct_answer": "C",
+    "explanation": "Set up a new Cloud KMS key, create new BigQuery datasets, and move all data from the old datasets to the new ones to apply the new encryption is the best choice because it ensures that both past and future data are protected by the new encryption key. Rotating the key doesn’t completely solve the problem as compromised data may still be at risk. Setting a new default key for existing datasets will not re-encrypt the old data. Re-encrypting data in place can be complex and may not fully address future writes, which might still use the old key.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 3,
+    "question": "Your team needs to build and manage SQL-based ELT (Extract, Load, Transform) pipelines for a data analytics project. They have experience working with SQL and require a platform that allows them to version control SQL code, collaborate efficiently, and automate the management of these pipelines. Additionally, they prefer using an intuitive environment tailored for SQL. Which solution should you choose?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Dataform to manage, schedule, and version SQL pipelines.",
+      "B": "Leverage Dataflow for streaming and batch processing of data into BigQuery.",
+      "C": "Set up Cloud Data Fusion to design pipelines for data transformation.",
+      "D": "Use Cloud Composer to orchestrate SQL pipelines and handle workflow automation."
+    },
+    "correct_answer": "",
+    "explanation": "Use Dataform to manage, schedule, and version SQL pipelines is the best choice because it is built specifically for managing SQL-based ELT processes and provides an intuitive environment for version control and collaboration. Dataflow is more suited for data processing workflows but isn't as optimized for SQL-specific tasks. Cloud Data Fusion is better for ETL processes and doesn't provide the same SQL management capabilities. Cloud Composer is powerful for orchestrating workflows but adds unnecessary complexity for teams focused primarily on SQL pipelines.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 4,
+    "question": "You are deploying an internal business intelligence dashboard that connects to a Cloud SQL instance over a public IP. The team members accessing the dashboard have dynamic public IPs, making it difficult to manage access through IP whitelisting. You need to ensure secure access to the Cloud SQL instance without constantly updating network settings, while still maintaining strong security practices. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Add the CIDR range 0.0.0.0/0 to the allowed IP list and rely on SSL for security.",
+      "B": "Update the allowed IP list whenever a team member’s public IP changes.",
+      "C": "Set up IAM rules to manage access, using SSL for secure connections.",
+      "D": "Use the Cloud SQL Auth proxy on the dashboard server to securely connect without IP whitelisting."
+    },
+    "correct_answer": "D",
+    "explanation": "Use the Cloud SQL Auth proxy on the dashboard server to securely connect without IP whitelisting is the best approach because it eliminates the need to manage fluctuating IP addresses while ensuring a secure connection. Adding 0.0.0.0/0 exposes the database to the entire internet, even if SSL is used, which is insecure. Manually updating the IP list is inefficient and error-prone. Relying solely on IAM and SSL without managing IPs still leaves the database open to potential threats.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 5,
+    "question": "Your company manages an on-premises MySQL database that supports both transactional and analytical workloads. You are planning to migrate this database to Google Cloud to modernize your infrastructure, reduce maintenance effort, and keep costs manageable. You want to maintain compatibility with your existing MySQL environment. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Migrate your MySQL database to BigQuery to take advantage of its analytics capabilities.",
+      "B": "Transfer your database to Cloud Spanner to benefit from its scalability and global availability.",
+      "C": "Upgrade to AlloyDB to get enhanced performance for your MySQL workloads.",
+      "D": "Move your MySQL database to Cloud SQL for MySQL to maintain compatibility and reduce management complexity."
+    },
+    "correct_answer": "D",
+    "explanation": "Move your MySQL database to Cloud SQL for MySQL to maintain compatibility and reduce management complexity is the best solution because it provides a managed MySQL environment that aligns with your current setup, ensuring minimal disruption during migration. BigQuery is suited for analytics but does not support transactional workloads. Cloud Spanner is a different database system that introduces complexity and higher costs. AlloyDB offers high performance, but switching to it from MySQL introduces complexity and may not be necessary given the existing MySQL environment. Cloud SQL for MySQL provides the optimal balance of cost, ease of management, and compatibility with your current system.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 6,
+    "question": "Your company tracks the performance of 7,000 retail stores, monitoring sales transactions every minute. You have a table called stores that contains store details like store ID, location, and size. Each store generates a transaction log every minute, which you need to store in BigQuery for weekly performance reviews and occasional deep-dive analysis. You aim to minimize storage costs while maintaining query efficiency. What data model should you implement?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a transaction_logs table partitioned by timestamp, add a storeID column to link it to the stores table, and use an UPDATE statement every minute to add new logs. Join the tables when querying the data.",
+      "B": "Create a transaction_logs table partitioned by timestamp, add a storeID column to link it to the stores table, and use an INSERT statement every minute to append new logs. Join the two tables when running the analytical query.",
+      "C": "Add a transaction_logs column to the stores table and set it to REPEATED mode. Use an UPDATE statement every minute to store the new logs.",
+      "D": "Add a transaction_logs column to the stores table, set it to REPEATED mode, and use an INSERT statement every minute to store the logs."
+    },
+    "correct_answer": "B",
+    "explanation": "Create a transaction_logs table partitioned by timestamp, add a storeID column to link it to the stores table, and use an INSERT statement every minute is the best solution because partitioning the table by timestamp optimizes performance and reduces costs for querying recent data. Using an INSERT statement ensures new data is efficiently appended without the overhead of constantly updating a single large table. The UPDATE-based options add unnecessary complexity and increase costs, while storing transaction logs directly in the stores table with REPEATED fields complicates the schema and querying.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 7,
+    "question": "Your company manages audit logs from various systems, and these logs need to be retained securely for seven years to meet compliance regulations. The logs are rarely accessed, but when needed, they must be available for audit purposes. You want to ensure immutability while minimizing storage costs. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Clone the existing BigQuery table containing the logs and use the clone for reporting and queries.",
+      "B": "Take a snapshot of the BigQuery table and restore it when you need to query the logs.",
+      "C": "Export the logs to Cloud Storage with an archive storage class, apply a locked retention policy to the bucket, and create a BigQuery external table for querying when necessary.",
+      "D": "Enable versioning on a Cloud Storage bucket with standard storage, and create a BigQuery external table to query the logs."
+    },
+    "correct_answer": "C",
+    "explanation": "Export the logs to Cloud Storage with an archive storage class, apply a locked retention policy to the bucket, and create a BigQuery external table for querying when necessary is the best approach because it minimizes storage costs by utilizing the archive class and ensures immutability with the retention lock. Cloning a BigQuery table does not reduce costs as effectively as moving the data to archive storage. A snapshot is not cost-efficient for long-term storage and doesn’t provide the same level of immutability. Enabling versioning adds unnecessary complexity and costs without achieving the same immutability benefits as a locked retention policy.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 8,
+    "question": "A retail company is running batch processing jobs on a Google Cloud Dataproc cluster to analyze sales data and optimize stock management. The company is focused on reducing operational costs but needs to ensure that no sales data is lost or corrupted, even if some of the worker nodes are terminated due to preemption. How should you configure the Dataproc cluster to maximize cost-efficiency without compromising on data integrity?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use only non-preemptible workers in the cluster to guarantee task completion and avoid any data loss.",
+      "B": "Add preemptible workers to the cluster and configure them for graceful decommissioning.",
+      "C": "Use preemptible workers and configure a manual backup process to save in-progress tasks at regular intervals, reducing the impact of preemption.",
+      "D": "Add a combination of non-preemptible and preemptible workers, but implement a custom logging mechanism to track progress and restart any lost tasks."
+    },
+    "correct_answer": "B",
+    "explanation": "The best solution is to add preemptible workers and configure them for graceful decommissioning, ensuring that tasks can either complete or be safely transitioned before the resources are reclaimed. This allows the company to save costs by using cheaper preemptible VMs, while reducing the risk of losing in-progress work. Using only non-preemptible workers would increase costs unnecessarily, while relying on manual backups or custom tracking mechanisms could lead to higher complexity and potential delays in job completion. The balance of preemptible workers with graceful shutdown provides the optimal solution for the scenario.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 9,
+    "question": "Your marketing team needs to clean and prepare customer engagement data before performing a detailed analysis. The team prefers using a graphical user interface to define data transformations due to their limited technical skills. After cleaning the data, they want to visualize the results and track key metrics through an interactive dashboard. What solution should you recommend?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Dataprep to process and clean the data, store it in BigQuery, and use Connected Sheets for analysis.",
+      "B": "Use Dataprep to clean and process the data, store the results in BigQuery, and create dashboards using Looker Studio.",
+      "C": "Use Dataflow to clean and process the data, store the results in BigQuery, and create dashboards using Connected Sheets.",
+      "D": "Use Dataflow to process and clean the data, store it in BigQuery, and create dashboards using Looker Studio."
+    },
+    "correct_answer": "B",
+    "explanation": "Use Dataprep to clean and process the data, store the results in BigQuery, and create dashboards using Looker Studio is the best solution because it provides an intuitive interface for data transformation, suiting the team's skill level. BigQuery offers scalable storage, and Looker Studio integrates easily with BigQuery to allow the creation of interactive dashboards, which aligns with the team's goal of tracking metrics visually. Connected Sheets is more appropriate for spreadsheet-based analysis, not for building dashboards. Dataflow requires more technical expertise and is better suited for complex data processing tasks, which exceeds the team's requirements.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 10,
+    "question": "Your company has built a centralized data repository in BigQuery for customer feedback analysis. Multiple product teams across different departments need access to this data for product improvement insights. You need to implement a solution that allows the teams to access the dataset independently in a self-service manner, with minimal overhead and administrative effort. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up an Analytics Hub private exchange to publish the customer feedback dataset and allow product teams to access it.",
+      "B": "Share views of the customer feedback dataset with each product team, managing access through authorized views.",
+      "C": "Grant product teams access to the dataset using service accounts and managing permissions through IAM.",
+      "D": "Use the BigQuery Data Transfer Service to duplicate the dataset into separate projects for each team."
+    },
+    "correct_answer": "",
+    "explanation": "Set up an Analytics Hub private exchange to publish the customer feedback dataset and allow product teams to access it is the most efficient solution because it simplifies access management, reduces maintenance, and allows teams to self-serve. Sharing views or using service accounts involves more administrative overhead and is harder to scale across multiple departments. Copying the dataset into different projects using the BigQuery Data Transfer Service duplicates data unnecessarily, increasing both costs and complexity. Analytics Hub provides a streamlined, scalable approach that avoids these issues.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 11,
+    "question": "Your company has recently migrated a massive archive of customer interaction data from an on-premises Hadoop cluster to Google Cloud Storage. The data analytics team must process this data using Apache Spark and enforce column-level security based on different business units. They also need to execute SQL queries on the data. You are looking for a solution that can handle this in a scalable, cost-effective manner while supporting a data mesh architecture for decentralized data ownership. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use a Dataproc cluster running Apache Hive and Apache Ranger for column-level security enforcement and process the data using Dataproc Spark.",
+      "B": "Set up a BigLake table, apply policy tags in Data Catalog to define column-level security, and use the Spark-BigQuery connector or BigQuery SQL for data processing.",
+      "C": "Load the data into BigQuery tables, apply column-level policy tags using Data Catalog, and query the data using BigQuery SQL or the Spark-BigQuery connector.",
+      "D": "Configure IAM policies at the Cloud Storage file level and define a BigQuery external table for SQL queries. Use Dataproc Spark to process the data."
+    },
+    "correct_answer": "B",
+    "explanation": "The correct approach is to set up a BigLake table, apply policy tags in Data Catalog to define column-level security, and use the Spark-BigQuery connector or BigQuery SQL for data processing. This solution enables you to enforce fine-grained security while providing seamless integration between Apache Spark and BigQuery in a scalable way.\n\nUsing Dataproc with Hive and Ranger increases operational complexity and may not scale as efficiently. Loading data into BigQuery is possible but would be an additional unnecessary step. IAM policies at the Cloud Storage file level do not provide the required column-level security.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 12,
+    "question": "Your company is preparing to launch a new product, and you need to analyze large volumes of customer feedback data stored in Cloud Storage. The data includes sensitive personal information, such as names and email addresses, which must be anonymized before analysis in order to comply with data privacy regulations. The feedback data is structured in a way that requires significant preprocessing to normalize and clean it for accurate analysis. You also need a scalable solution to process this large dataset and prepare it for further analysis with SQL. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Encrypt the data in Cloud Storage using CMEK, then use BigQuery federated queries to analyze the data directly.",
+      "B": "Use the Cloud Data Loss Prevention API to remove sensitive fields from the data and load the cleaned dataset into BigQuery for analysis.",
+      "C": "Use Dataflow and Cloud KMS to encrypt sensitive data fields and load the encrypted data into BigQuery for analysis.",
+      "D": "Use Dataflow along with the Cloud Data Loss Prevention API to anonymize sensitive fields, normalize the data, and load the processed results into BigQuery for analysis."
+    },
+    "correct_answer": "D",
+    "explanation": "Use Dataflow along with the Cloud Data Loss Prevention API to anonymize sensitive fields, normalize the data, and load the processed results into BigQuery for analysis is the best option because Dataflow is optimized for processing large-scale data pipelines, enabling efficient data normalization and transformation. It integrates with the Cloud Data Loss Prevention API to mask sensitive information, ensuring compliance with privacy regulations before storing the data in BigQuery. Encrypting the data in Cloud Storage using CMEK does not address the need for preprocessing and anonymization. Removing sensitive fields entirely may not meet compliance needs if masking is required, and using Cloud KMS for field-level encryption adds unnecessary complexity without solving the problem of data normalization.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 13,
+    "question": "You are building a real-time order processing system using Pub/Sub to handle incoming purchase notifications from an e-commerce platform. The system uses a push subscription and needs to be robust against temporary outages, ensuring that messages are retried gradually without overwhelming the application. You also need to ensure that after 5 failed retry attempts, messages are moved to a separate topic for further inspection and manual intervention. How should you configure the Pub/Sub subscription?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Extend the acknowledgment deadline to 10 minutes and manually retry any unprocessed messages.",
+      "B": "Configure exponential backoff for the retry policy and set up dead lettering to a separate topic after 5 failed delivery attempts.",
+      "C": "Set the retry policy to immediate redelivery and configure dead lettering to a separate topic after 5 delivery attempts.",
+      "D": "Use exponential backoff for retries and reprocess failed messages in the same source topic after 5 delivery attempts."
+    },
+    "correct_answer": "B",
+    "explanation": "Configure exponential backoff for the retry policy and set up dead lettering to a separate topic after 5 failed delivery attempts is the optimal solution because it allows retries to happen gradually, preventing the system from becoming overwhelmed during periods of high load or temporary failure. Using dead lettering ensures failed messages are redirected for manual review after 5 attempts, keeping the system clean. Immediate redelivery can overwhelm the application with rapid retries. Extending the acknowledgment deadline alone doesn't address the need for gradual retries, and reprocessing messages in the same topic introduces complexity and can lead to further issues in managing failures.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 14,
+    "question": "Your organization is managing sensitive healthcare data stored across multiple storage systems. Different departments are responsible for different data sets, making it difficult to track data lineage, manage access, and ensure data accuracy. You need an efficient, cost-effective solution to streamline data discovery, manage data lineage, and validate the quality of data across the organization. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use BigQuery for managing data, and build custom scripts for data lineage and validation.",
+      "B": "Deploy a new data management tool on Google Kubernetes Engine for handling data discovery and lineage.",
+      "C": "Use BigLake to consolidate the healthcare data into a single storage platform.",
+      "D": "Use Dataplex to manage data, track lineage, and validate data quality across multiple storage systems."
+    },
+    "correct_answer": "D",
+    "explanation": "Use Dataplex to manage data, track lineage, and validate data quality across multiple storage systems is the best solution because it provides a unified approach for managing decentralized data, automatically handling discovery, lineage, and quality validation. Using BigQuery with custom scripts introduces unnecessary complexity and overhead for the same tasks. Deploying a new tool on Kubernetes increases cost and effort, without offering additional benefits. Consolidating data into BigLake might not address the lineage or quality validation needs effectively across multiple storage environments.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 15,
+    "question": "Your company is running machine learning batch jobs on an on-premises Hadoop cluster, and you are planning to migrate these workloads to Google Cloud. You want to use managed services to reduce operational overhead and minimize the amount of code changes required. The migration must happen quickly due to an upcoming deadline. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Move your data to Cloud Storage and run your machine learning batch jobs on Dataproc.",
+      "B": "Migrate the data to BigQuery and rewrite the machine learning jobs using SQL-based queries.",
+      "C": "Rewrite the batch jobs using Apache Beam and run them in Dataflow.",
+      "D": "Set up Compute Engine instances and run your batch jobs directly on those instances."
+    },
+    "correct_answer": "",
+    "explanation": "Moving your data to Cloud Storage and running your machine learning batch jobs on Dataproc is the best solution because Dataproc is built to handle Hadoop workloads with minimal changes, making the migration process faster and more efficient. Rewriting the jobs for BigQuery would require significant code refactoring, delaying the migration. Switching to Apache Beam and Dataflow would also introduce a lot of development effort and complexity. Running the jobs on Compute Engine instances would not provide the benefits of a managed service and would increase maintenance overhead.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 16,
+    "question": "You are designing a real-time analytics system for a retail chain to monitor customer traffic and sales in various stores. The system ingests data from customer foot traffic sensors and point-of-sale (POS) systems using Pub/Sub, processes the data, and stores it for visualization on dashboards. Customer foot traffic data is sent every 5 seconds, and sales data is updated with every transaction. You need to aggregate the data in real time over the past 1 minute, updated every second, and store the results in a low-latency database for fast visualization. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Group the data using a fixed window in a Dataflow pipeline, and store the results in Bigtable.",
+      "B": "Group the data using a sliding window in a Dataflow pipeline, and write the aggregated data to Memorystore.",
+      "C": "Group the data using a session window in a Dataflow pipeline, and store the results in Cloud Spanner.",
+      "D": "Group the data using a fixed window in a Dataflow pipeline, and write the aggregated data to BigQuery."
+    },
+    "correct_answer": "B",
+    "explanation": "Grouping the data using a sliding window in a Dataflow pipeline, and writing the aggregated data to Memorystore is the correct choice because a sliding window allows continuous, overlapping updates of aggregated data, which is ideal for real-time monitoring. Memorystore is a low-latency storage solution, making it suitable for fast visualizations. Fixed windows wouldn’t provide the constant, updated view required for real-time insights. BigQuery is better suited for large-scale analytics, not low-latency real-time updates. Session windows are more appropriate for analyzing user sessions rather than continuous, time-based data aggregation.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 17,
+    "question": "Your company manages a large fleet of 500 wind turbines, each generating operational data every second, such as wind speed, power output, and temperature readings. You currently have 2 TB of data and expect it to grow by 2 GB daily. You need to access this data in two ways: first, to quickly retrieve the power output of a specific turbine at a given timestamp with low-latency (within single-digit milliseconds); second, to run complex analytical queries on all turbine data daily. How should you store this data?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Store your data in BigQuery. Combine the turbine ID and timestamp as the primary key.",
+      "B": "Store your data in BigQuery. Use the wind speed as the primary key.",
+      "C": "Store your data in Bigtable. Combine the turbine ID and timestamp as the row key. Export the data to BigQuery daily for analytics.",
+      "D": "Store your data in Bigtable. Combine the turbine ID and wind speed as the row key. Export the data to BigQuery for analytics."
+    },
+    "correct_answer": "C",
+    "explanation": "Store your data in Bigtable. Combine the turbine ID and timestamp as the row key. Export the data to BigQuery daily for analytics is the best option because Bigtable provides low-latency reads for retrieving specific data points, which is ideal for turbine monitoring. Using the turbine ID and timestamp as the row key ensures fast, efficient retrieval. BigQuery is well-suited for large-scale analytics, but it is not optimized for low-latency access to specific data points. Storing the data in BigQuery or using wind speed as the primary key would not provide the necessary performance or flexibility for both types of queries.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 18,
+    "question": "Your company operates a PostgreSQL database hosted in a virtual machine inside a Virtual Private Cloud (VPC). You want to continuously replicate and synchronize 30 tables from PostgreSQL to BigQuery for analytical processing, with minimal infrastructure management overhead. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a Datastream service from PostgreSQL to BigQuery, configure it with private connectivity to the same VPC, and use a connection profile to transfer the data.",
+      "B": "Set up a Pub/Sub topic and use the PostgreSQL CDC (Change Data Capture) connector to capture changes and stream the data to BigQuery.",
+      "C": "Deploy Apache Kafka on the VPC, configure Kafka Connect with the PostgreSQL connector, and use Dataflow to stream the data to BigQuery.",
+      "D": "Use Cloud SQL to host PostgreSQL and enable automatic replication to BigQuery using the Cloud SQL Analytics Export feature."
+    },
+    "correct_answer": "",
+    "explanation": "Creating a Datastream service from PostgreSQL to BigQuery, configuring it with private connectivity to the same VPC, and using a connection profile to transfer the data is the best solution because Datastream provides a fully managed and scalable way to replicate data with minimal infrastructure management, using private connectivity to ensure security. Setting up Kafka or Pub/Sub introduces additional complexity and operational overhead, while Cloud SQL’s automatic replication is more suited for databases already hosted on Cloud SQL, not external VMs. This makes Datastream the most efficient and straightforward choice for continuous replication and synchronization.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 19,
+    "question": "Your company follows a multi-cloud strategy, with data distributed between Google Cloud Storage and an external object store on AWS S3. To enable efficient querying of this data via BigQuery, you need a solution that provides real-time access without requiring data movement or giving users direct access to either storage service. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up BigQuery Omni for the S3 data and create BigLake tables across both Cloud Storage and S3 for querying.",
+      "B": "Transfer the S3 data to Cloud Storage using Dataflow, then create external tables over the Cloud Storage data for BigQuery.",
+      "C": "Use BigQuery to establish external tables over both Cloud Storage and S3 buckets, then query the data directly from both sources.",
+      "D": "Transfer the S3 data into Cloud Storage with the Storage Transfer Service, and query using BigLake tables."
+    },
+    "correct_answer": "",
+    "explanation": "Set up BigQuery Omni for the S3 data and create BigLake tables across both Cloud Storage and S3 for querying is the correct solution as it enables querying across multiple clouds without the need for data movement, optimizing performance and minimizing costs. Transferring the data to Cloud Storage using Dataflow or Storage Transfer Service introduces unnecessary complexity and delays. External tables do not offer the same level of integration or performance optimization that BigLake provides for cross-cloud queries.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 20,
+    "question": "Your New-York-City-based streaming company needs to store large volumes of video content that will be accessed globally by users in real time. To provide the best user experience, you need to ensure high availability and low-latency access to this content, regardless of a user's location. Your company is not restricted by data residency laws, but you must ensure that the video content is replicated across multiple geographic locations to handle demand spikes and ensure fault tolerance. Which GCS storage option should your company choose?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Configure a Nearline storage bucket to save on storage costs for infrequent access to the video content.",
+      "B": "Use a Multi-Regional storage bucket with the \"US\" option to ensure high availability and low-latency access.",
+      "C": "Set up a Single Region storage bucket in us-east4 to minimize latency for most users.",
+      "D": "Configure a Dual-Region storage bucket with one region in the US and another in Europe."
+    },
+    "correct_answer": "B",
+    "explanation": "The best option is to use a Multi-Regional storage bucket with the \"US\" option. Multi-Regional storage is designed for applications like media streaming that require low-latency, high-availability access to data from users located around the world. The video content will be replicated across multiple locations within the specified multi-region (in this case, the \"US\"), ensuring fault tolerance and the ability to handle high traffic efficiently.\n\nThe other options are not as suitable: Nearline storage is for infrequent access, Single Region would restrict availability to one geographic area (even though the company is in NYC, its users are spread out globally), and Dual-Region focuses on redundancy between two regions, which is not as globally distributed as Multi-Regional storage.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 21,
+    "question": "Your organization is running virtual machines (VMs) across multiple projects in Google Cloud. Recently, the security team identified that several VMs are being assigned external IP addresses, making them accessible from the internet without adequate safeguards. To strengthen security, the team has mandated that no VMs should be assigned external IPs by default, except for specific cases where administrators approve it. How can you enforce this restriction across your entire organization?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Identity and Access Management (IAM) roles to create granular policies that prevent users from assigning external IP addresses to VMs, while allowing exceptions for specific high-security projects.",
+      "B": "Create a firewall rule at the VPC level to block external traffic and prevent access to VMs with external IP addresses, ensuring only approved projects can allow incoming traffic.",
+      "C": "Set an organization policy that disallows external IPs on VM instances across all projects, with exceptions allowed for specific projects approved by administrators.",
+      "D": "Implement VPC Service Controls to restrict access to VMs with external IPs, configuring the service perimeter to deny network communication from untrusted sources, except for pre-approved projects."
+    },
+    "correct_answer": "C",
+    "explanation": "The best solution is to set an organization policy that disallows external IPs on VM instances across all projects, with exceptions allowed for specific projects. This solution provides centralized enforcement of the rule, ensuring that external IP addresses cannot be assigned by default, while still allowing flexibility for administrators to approve specific cases. IAM roles could control VM creation but wouldn’t directly prevent external IP assignment. Firewall rules only manage traffic and wouldn't stop IPs from being assigned. VPC Service Controls are designed for data protection rather than managing external IP assignment.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 22,
+    "question": "Your team is responsible for managing multiple data ingestion workflows. The first workflow streams data from IoT devices into Cloud Storage, processes it with Dataflow, and writes the results to BigQuery. The second workflow pulls data from third-party APIs and stores it in Cloud Storage. The third workflow takes data from an internal database and transfers it to Cloud Storage for backup. You need a way to automate the scheduling of these workflows and manually trigger them as needed, while also monitoring their status. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Deploy a Cloud Function for each job and trigger them manually through an HTTP request when necessary.",
+      "B": "Use Cloud Composer to manage, schedule, and monitor the workflows using a DAG. Trigger them manually when needed.",
+      "C": "Use cron jobs on App Engine to schedule the jobs and manually trigger them by interacting with the API.",
+      "D": "Set up a virtual machine running Apache Airflow and schedule the workflows from there."
+    },
+    "correct_answer": "B",
+    "explanation": "The best solution is to use Cloud Composer to manage, schedule, and monitor the workflows using a DAG. Composer is a managed version of Airflow, and it allows you to automate scheduling while also providing the flexibility to manually trigger jobs through its UI. Cloud Functions or App Engine would require significant manual coding and wouldn't offer the same level of monitoring and automation that Composer does. Setting up Apache Airflow on a VM is unnecessary since Composer offers the same functionality as a fully managed service, reducing overhead and maintenance work.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 23,
+    "question": "You manage a dataset in BigQuery that contains critical financial data for analysis. Your company needs to provide multiple external auditors with access to this dataset while ensuring the data remains up-to-date. It's important to minimize costs associated with managing access and sharing the data. What approach should you take?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Share the dataset using a recurring Cloud Scheduler job that writes the data to Cloud Storage, and provide auditors with access to the bucket.",
+      "B": "Use Analytics Hub to grant the auditors access to the dataset, allowing them to query it directly.",
+      "C": "Create a duplicate of the dataset in BigQuery and provide auditors access to the duplicate dataset.",
+      "D": "Set up a Dataflow pipeline that periodically exports the dataset to Cloud Storage for the auditors to access."
+    },
+    "correct_answer": "B",
+    "explanation": "The best solution is to use Analytics Hub to grant the auditors access to the dataset, which allows them to query the data directly without the need for duplicated datasets or manual data exports. Analytics Hub is designed for secure and cost-effective data sharing, providing efficient access to BigQuery datasets without additional overhead. Exporting data regularly to Cloud Storage or duplicating datasets adds unnecessary cost and complexity, and maintaining a Dataflow pipeline would introduce unnecessary operational overhead. Analytics Hub streamlines the process and keeps costs low while ensuring the data is current.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 24,
+    "question": "Your company’s data teams are executing multiple BigQuery jobs across various projects, and you want to enable each team to monitor the number of jobs running within their projects. This will help them track their resource usage and optimize query performance. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a Cloud Monitoring dashboard based on the BigQuery metric jobs/completed_count to track the number of jobs completed per project.",
+      "B": "Set up a Cloud Function to log job executions and manually count the number of jobs completed for each project.",
+      "C": "Use Cloud Logging to capture job execution details and create a custom metric for the number of jobs completed, then visualize it in a dashboard.",
+      "D": "Create a Dataflow pipeline to aggregate job logs and count the number of jobs for each project."
+    },
+    "correct_answer": "",
+    "explanation": "The best solution is to create a Cloud Monitoring dashboard using the jobs/completed_count metric. This is an existing BigQuery metric that tracks the number of jobs completed, providing a straightforward and accurate way to monitor job activity per project. Using a Cloud Function or Dataflow pipeline to count jobs manually introduces unnecessary complexity, while the built-in BigQuery metric provides the necessary insights efficiently and without custom implementation.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 25,
+    "question": "You need to migrate 1 PB of video archives from an on-premises server to Cloud Storage for long-term preservation. Your organization’s network capacity is limited to 50 Mb/sec, and you want to complete the migration within three months without impacting normal operations. How should you perform this migration?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use gsutil rsync to mirror the on-premises data with Cloud Storage and limit the bandwidth to 50 Mb/sec.",
+      "B": "Use Transfer Appliance to securely copy the data to Cloud Storage.",
+      "C": "Use the Cloud Storage Transfer Service to incrementally copy the data from the server.",
+      "D": "Compress the video files locally and use gsutil cp to transfer them at a limited bandwidth."
+    },
+    "correct_answer": "B",
+    "explanation": "The best solution is to use Transfer Appliance to securely copy the data to Cloud Storage. Transfer Appliance is specifically designed for large-scale data migrations when network capacity is a limiting factor, allowing you to transfer the data efficiently without relying on slow network speeds. Using gsutil with bandwidth limitations would take far too long for a 1 PB dataset. Compressing video files could reduce data size, but the network constraints would still make this method impractical. The Storage Transfer Service is better suited for cloud-to-cloud migrations and is not optimal for this on-premises scenario.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 26,
+    "question": "Your company operates two different systems on GCP: a finance system and an HR system. The systems need to be isolated for security and compliance reasons, ensuring that no data or network traffic can flow between them. Both systems will use Google Cloud services, and you want to make sure that resources for the finance system cannot communicate with resources for the HR system and vice versa. What feature should you implement to enforce this network separation?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up separate IAM roles and permissions for each system to prevent unauthorized access.",
+      "B": "Create separate VPC networks for the finance and HR systems, and ensure there is no peering or routing between them.",
+      "C": "Use firewall rules with Network Tags to block traffic between finance and HR systems.",
+      "D": "Set up a Shared VPC to allow both systems to communicate only through a common host project."
+    },
+    "correct_answer": "B",
+    "explanation": "The best solution is to create separate VPC networks for the finance and HR systems, ensuring no peering or routing between them. This setup provides complete network isolation, preventing any communication or traffic between the two systems. Setting up IAM roles controls access but does not enforce network isolation. Firewall rules using Network Tags are useful but would not guarantee full separation if routes or shared networks were allowed. A Shared VPC would not provide the required isolation, as it is designed to allow communication between different resources within the same host project.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 27,
+    "question": "Your company is experiencing issues where the Compute Engine instances in your custom VPC cannot communicate with each other. You know that the network team typically uses firewall rules to manage instance communication based on network tags. What should you do to resolve this issue following GCP best practices?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Confirm that the correct network tags are assigned to your instances and that the necessary ports are open in the firewall rules.",
+      "B": "Restart the instances to ensure they pick up the latest network configurations.",
+      "C": "Change the instance type to one with better network performance.",
+      "D": "Verify the service tier of your VPC and upgrade if necessary for enhanced network performance."
+    },
+    "correct_answer": "",
+    "explanation": "The best solution is to verify that the appropriate network tags are assigned to your instances and that the necessary firewall rules are in place. Firewall rules based on network tags manage communication between resources. If the wrong tags are applied or the rules are misconfigured, communication can fail. Restarting instances or changing their type won’t address firewall issues. Upgrading the network tier is not necessary unless you're experiencing network performance problems unrelated to firewall rules.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 28,
+    "question": "Your company oversees the operation of a set of wind turbines that send performance data irregularly to a centralized system. You need to process the data in near real-time using Google Cloud Dataflow. The analytics team has outlined several requirements:\n\n1. Detect periods where turbines are inactive, meaning no data has been received for more than 5 minutes.\n\n2. Calculate the average power output of each turbine every hour, regardless of when the data arrives.\n\n3. Generate an alert if a turbine’s power output exceeds a certain threshold for any continuous 20-minute window.\n\nWhat type of windowing strategy in Dataflow should be used for each task?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Sliding window for all three tasks.",
+      "B": "Session window for 1, fixed window for 2, and session window for 3.",
+      "C": "Session window for 1, fixed window for 2, sliding window for 3.",
+      "D": "Sliding window for 1, fixed window for 2, session window for 3."
+    },
+    "correct_answer": "C",
+    "explanation": "Use a fixed window for calculating the average power output every hour, ensuring that the data is aggregated at consistent, non-overlapping intervals. A sliding window should be applied for the alert condition, allowing continuous monitoring of the 20-minute threshold, even as new data arrives. Finally, a session window is perfect for detecting inactivity, as it can capture the periods where no data is received by grouping data by the gaps in activity.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 29,
+    "question": "Your organization has a security mandate that prevents exposing internal database servers to the public internet. However, these database servers hosted on Google Compute Engine VMs need to periodically access external APIs and download security patches from trusted sources on the internet. Assigning external IP addresses is prohibited for these VMs to ensure compliance with your company’s security policies. How can you enable the database servers to securely access the required external resources without assigning external IP addresses?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a VPN tunnel between the VMs and the external API provider, ensuring all internet traffic is routed through the VPN securely.",
+      "B": "Assign external IP addresses to the VMs only during the periods when they need to access external resources and remove them afterward.",
+      "C": "Configure Cloud NAT (Network Address Translation) within your VPC to allow outbound internet traffic from the VMs without assigning external IP addresses.",
+      "D": "Use VPC Peering to create a secure connection to another VPC that has external internet access and route traffic from the database servers through this peered VPC."
+    },
+    "correct_answer": "C",
+    "explanation": "The best solution is to configure Cloud NAT. This allows the database servers to initiate outbound internet connections without exposing them through external IPs, maintaining security while enabling the necessary access. A VPN tunnel would add unnecessary complexity for accessing public resources, while assigning external IP addresses temporarily violates the security policy. VPC Peering is meant for connecting different VPCs and would not solve the problem of allowing external internet access without exposing the VMs.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 30,
+    "question": "Your company stores product sales data in BigQuery, and the marketing team uses it to generate weekly performance reports. Some fields, like timestamps and pricing, are inconsistent with company formatting standards, and the team frequently reports errors in their outputs. You need a solution to standardize these fields in a recurring, automated fashion, without requiring any coding. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a Dataflow SQL pipeline to correct data formatting, then schedule it for recurring execution.",
+      "B": "Use Cloud Data Fusion and Wrangler to clean and transform the data, and automate the process with recurring jobs.",
+      "C": "Use BigQuery to write custom SQL queries that fix data inconsistencies and schedule them to run regularly.",
+      "D": "Deploy a Dataproc cluster with Apache Spark to format the data and schedule Spark jobs to run weekly."
+    },
+    "correct_answer": "B",
+    "explanation": "Use Cloud Data Fusion and Wrangler to clean and transform the data, and automate the process with recurring jobs is the correct answer because it provides a no-code interface for transforming and standardizing the data, making it ideal for users with minimal technical expertise. Dataflow SQL still requires coding and isn't as user-friendly for non-developers. BigQuery requires writing and maintaining SQL queries, which contradicts the no-code requirement. Dataproc involves setting up a complex infrastructure, which is unnecessary for simple data formatting tasks.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 31,
+    "question": "Your financial services company stores transaction records in Google Cloud Storage, and the Recovery Point Objective (RPO) for your disaster recovery plan is set at 1 hour. A sudden incident occurs, resulting in data corruption, and simultaneously, the primary region where your data is stored experiences a failure. To maintain business continuity and ensure minimal data loss, you must restore the data quickly while adhering to the RPO.\n\nWhat is the best course of action to ensure the integrity of your data and meet the RPO?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Failover to a secondary region where data is asynchronously replicated every 30 minutes.",
+      "B": "Restore the most recent snapshot from coldline storage, which stores backups every 12 hours.",
+      "C": "Use Google Cloud's Object Versioning feature to restore the previous, uncorrupted version of the data.",
+      "D": "Utilize a weekly archive stored in nearline storage to manually recover the lost data."
+    },
+    "correct_answer": "",
+    "explanation": "The best solution is to failover to a secondary region where data is asynchronously replicated every 30 minutes. This ensures that your data is up to date and meets the 1-hour RPO requirement. Coldline storage backups every 12 hours would result in significant data loss beyond the RPO. Object Versioning can help restore individual files, but it does not address the broader issue of regional failure. Relying on a weekly nearline archive would result in data loss far exceeding the RPO limit.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 32,
+    "question": "Your company has a cloud-based application composed of several microservices that need to be called in a specific order. The process begins with a Cloud Run service receiving customer data, followed by a Cloud Function that processes the data, and ends with storing the processed data in Firestore. Each of these services must execute in sequence, with each step depending on the successful completion of the previous one. Additionally, if any service fails, you need to automatically retry the failed step a certain number of times and handle errors gracefully if the retries fail. You also need an easy way to monitor and update the sequence without adding too much complexity to your code.\n\nWhat Google Cloud service should you use to manage these service calls?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Implement Cloud Functions to invoke each service in sequence with custom retry logic and error handling.",
+      "B": "Use Cloud Pub/Sub to send messages between services and ensure each service is triggered in the correct order.",
+      "C": "Use Cloud Workflows to manage the sequence of API calls, retries, and error handling.",
+      "D": "Deploy Cloud Tasks to manage individual service calls and configure retry logic for each one separately."
+    },
+    "correct_answer": "C",
+    "explanation": "The best solution is to use Cloud Workflows. It allows you to easily orchestrate API calls between multiple services, handling retries and errors in a centralized, visual way. Cloud Functions would require you to implement more complex code to handle the sequencing, retries, and error handling manually. Cloud Pub/Sub is suited for asynchronous event-driven systems, but it doesn't inherently manage the ordered execution of services. Cloud Tasks, while good for individual task handling, doesn’t offer the end-to-end orchestration needed for this kind of process.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 33,
+    "question": "Your company is updating a pipeline that processes real-time event data from a Pub/Sub topic. Due to the critical nature of the data, you need to ensure that if any issues occur in the processing or if there’s an error with the new subscriber, you can recover messages and replay them starting from a specific point in time. This will help avoid data loss or mishandling as you roll out updates and fix potential issues in the system.\n\nWhat should you implement to reduce the risk of data loss during this deployment?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a Pub/Sub dead-letter topic to capture failed messages and manually resend them after resolving the issues in the subscriber.",
+      "B": "Use Cloud Build to automate testing and deployments for the new subscriber code across multiple environments to minimize errors in production.",
+      "C": "Set up a log export to Cloud Storage to capture any messages processed incorrectly, and reprocess those messages from the logs manually.",
+      "D": "Before rolling out the updates, create a snapshot in Pub/Sub, and use the Seek feature to replay messages if an error occurs."
+    },
+    "correct_answer": "D",
+    "explanation": "The best approach is to create a snapshot in Pub/Sub and use the Seek feature to replay messages from a certain point in time. This ensures that even if errors occur after the update, you can recover messages from a specific point and replay them in order. Using a dead-letter topic would only handle messages that completely failed, but wouldn’t allow you to recover correctly processed messages. Automating tests with Cloud Build minimizes errors, but doesn’t provide the message recovery required for this critical data. Reprocessing messages from logs would be a cumbersome, manual process and not a reliable way to manage message recovery.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 34,
+    "question": "Your organization is preparing for a privacy audit to ensure compliance with data protection regulations. You need to quickly identify which datasets in your Google Cloud projects might contain personal information, such as names, phone numbers, or email addresses. These datasets are spread across multiple services, including BigQuery and Cloud Storage. Time is of the essence, and you need a solution that allows you to search and discover the relevant data as efficiently as possible.\n\nWhat is the best approach to identify datasets containing personal information?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Google Data Catalog to search and discover datasets tagged with metadata that indicates personal information.",
+      "B": "Use Google Cloud's Dataflow service to scan the contents of each dataset for personal information, then compile a list of matching datasets.",
+      "C": "Use Dataplex to manage and curate your datasets, enabling a systematic search for personal information by applying metadata rules.",
+      "D": "Implement a custom Python script that queries each dataset individually and flags those with fields potentially containing personal information."
+    },
+    "correct_answer": "",
+    "explanation": "The best solution is to use Google Data Catalog. It allows you to quickly search for datasets across GCP services based on metadata, such as tags that indicate the presence of personal information. This approach is efficient and centralized, reducing the time needed to identify sensitive datasets. While Dataplex provides powerful data governance features, it is better suited for managing and curating data lakes rather than rapid search and discovery of personal information across multiple services. A custom Python script would take considerable time to develop and execute, and using Dataflow to scan all datasets would be a resource-intensive solution that is not well-suited for time-sensitive audits.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 35,
+    "question": "A healthcare company processes large amounts of sensitive patient data on Google Cloud and runs machine learning models for predictive analysis on Compute Engine instances. Due to stringent regulatory compliance, you must ensure that the sensitive data is encrypted at rest with strict control over key creation, rotation, and destruction. You also need to make sure the encryption management process is automated to reduce operational overhead.\n\nWhat should you do to meet these security and compliance requirements?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Cloud Key Management Service to create and manage encryption keys, and use these keys to encrypt the data stored in your Compute Engine instances.",
+      "B": "Generate your encryption keys on-premises, and upload them to Cloud Key Management Service, then use these keys for encrypting your Compute Engine instance data.",
+      "C": "Configure encryption at rest using Google Cloud's default encryption mechanisms, without needing to manage keys directly, for all data in your Compute Engine instances.",
+      "D": "Set up a custom API that rotates encryption keys locally, and apply encryption manually to the data stored on Compute Engine instances."
+    },
+    "correct_answer": "",
+    "explanation": "The best solution is to use Cloud Key Management Service (KMS) to create and manage encryption keys. This approach automates key rotation, management, and destruction, making it ideal for handling sensitive patient data with stringent compliance requirements. Generating keys on-premises and uploading them adds complexity and doesn't provide the automation required. Relying on Google Cloud's default encryption would meet basic security needs but doesn't offer the same level of control over key management. Custom APIs for key rotation would require extra development and introduce unnecessary operational overhead.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 36,
+    "question": "A financial institution uses Google Cloud's Dataproc service to run large-scale batch processing jobs for credit risk analysis. These jobs are split across multiple worker nodes, and the organization has strict firewall policies in place to ensure that only necessary traffic is allowed between nodes. Recently, the jobs have failed due to communication issues between Dataproc worker nodes. Your team is responsible for diagnosing and resolving this problem while maintaining compliance with the organization’s security policies.\n\nWhat should you check to identify and resolve the communication issue between Dataproc worker nodes?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Confirm if the issue is caused by the custom network configuration assigned to the Dataproc cluster workers, which may be overriding default settings.",
+      "B": "Determine if the Dataproc cluster is using network tags that do not match those set by the networking team, which might explain the blocking of traffic.",
+      "C": "Investigate whether the Dataproc worker nodes are mistakenly using public IP addresses, which may cause the cluster's internal communication to fail.",
+      "D": "Verify if the firewall rules are allowing traffic on the necessary TCP ports for the network tag assigned to the Dataproc workers."
+    },
+    "correct_answer": "D",
+    "explanation": "The best approach is to verify if the firewall rules allow traffic on the necessary TCP ports for the network tag assigned to the Dataproc workers. Dataproc nodes require certain ports to be open to communicate effectively, and misconfigured firewall rules can block this traffic. Checking the network configuration or public IP addresses might not directly resolve internal communication issues.\n\nIncorrect network tags could also cause problems, but the tags only matter if they are conflicting with the firewall rules. So checking the ports and tags, as part of checking the firewall rules, is the best approach.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 37,
+    "question": "A media production company stores high-definition video files in Google Cloud after completing post-production work. These videos are typically accessed by editors and stakeholders every two to three months for reviews or updates, but not frequently enough to justify high storage costs. The company is looking to balance storage costs with the need to retrieve these files relatively quickly when required.\n\nWhat storage class should the company choose for its video files to optimize for cost and retrieval speed?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Standard",
+      "B": "Coldline",
+      "C": "Archive",
+      "D": "Nearline"
+    },
+    "correct_answer": "D",
+    "explanation": "The best option is Nearline storage because it is designed for data that is accessed every 30-90 days and still requires faster retrieval than Coldline or Archive storage. Nearline offers lower storage costs than standard storage while keeping retrieval times quick enough to meet the company’s needs. Coldline would be more appropriate for data accessed every 90 days or less, and Archive storage, while the cheapest, is meant for data that is accessed once a year or less, making it impractical for this use case. Standard storage, while offering fast access, would not provide the cost savings the company is seeking for infrequently accessed data.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 38,
+    "question": "Your logistics company processes live GPS data from delivery trucks, which is published as messages to a Pub/Sub topic. A Dataflow streaming job, built with the Apache Beam SDK, processes these messages to calculate real-time delivery estimates. Occasionally, GPS data fails validation due to missing or incorrect coordinates, and you need to route these invalid messages to a separate Pub/Sub topic for monitoring and alerting. How should you implement this?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Enable the retention of messages in your Pub/Sub subscription that fail processing, and track these retained messages using Cloud Monitoring for any significant increases.",
+      "B": "Use an exception handler in Dataflow to route invalid messages to a separate Pub/Sub topic. Track these messages with Cloud Monitoring.",
+      "C": "Configure Pub/Sub to use dead-letter delivery for invalid messages and redirect them to a new Pub/Sub topic. Use Cloud Monitoring to observe the volume of undeliverable messages.",
+      "D": "Create a snapshot of your Pub/Sub topic for each batch of processed messages and use Cloud Monitoring to track message failures and trends within the snapshot."
+    },
+    "correct_answer": "B",
+    "explanation": "The best solution is to set up an exception handler in the Dataflow pipeline to capture invalid messages and route them to a separate Pub/Sub topic. This allows for precise tracking and isolation of failed messages while maintaining a clean data pipeline. Retention of messages or snapshots would not provide the same level of monitoring for specific invalid messages, and dead-letter queues are typically used for undeliverable messages, not for handling validation failures.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 39,
+    "question": "Your media streaming company stores user activity data, such as video playback history and engagement events, in a regional BigQuery dataset. You need to ensure that you can quickly recover from any accidental or malicious data corruption affecting this dataset within the last week. You are looking for a solution that minimizes downtime, provides a low Recovery Point Objective (RPO), and is cost-effective. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Schedule exports of the data to a different BigQuery dataset at regular intervals.",
+      "B": "Set up daily exports of the dataset to Cloud Storage as backup files.",
+      "C": "Migrate the dataset to a multi-region BigQuery dataset for redundancy.",
+      "D": "Use BigQuery’s time travel feature to restore the dataset to a previous version."
+    },
+    "correct_answer": "D",
+    "explanation": "The best approach is to use BigQuery's time travel feature, which allows you to access historical versions of your data for up to 7 days, providing a low RPO without extra cost or management overhead. Regularly exporting data to another dataset or Cloud Storage adds unnecessary complexity and costs. Multi-region storage offers redundancy but doesn’t directly address corruption within a regional dataset.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 40,
+    "question": "Your logistics company stores data about deliveries, customer locations, and drivers in BigQuery. Deliveries and driver assignments can be updated daily, but you need to retain a complete historical record of all changes to deliveries, drivers, and customers for reporting purposes. The reporting system needs to easily display both current and historical data, and the solution must be cost-effective and simple to manage. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a normalized model with separate tables for deliveries, drivers, and customers, and use periodic snapshots to maintain historical records.",
+      "B": "Create a single, denormalized table that includes nested and repeated fields for deliveries, drivers, and customers. Use periodic snapshots to track historical changes.",
+      "C": "Create a denormalized table that appends new records with nested and repeated fields for deliveries, drivers, and customers. Use an ingestion timestamp to maintain historical data.",
+      "D": "Create a normalized model with separate tables for each entity and store all update files in Cloud Storage for historical tracking."
+    },
+    "correct_answer": "C",
+    "explanation": "Using a denormalized table with nested and repeated fields allows you to maintain all related data in a single structure while keeping track of historical records through an ingestion timestamp. This method is cost-effective and simplifies querying for both current and historical data without needing complex joins or additional storage mechanisms. Normalizing the data into separate tables with snapshots would require more storage and querying complexity. Storing update files in Cloud Storage introduces unnecessary overhead for accessing and analyzing historical data.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 41,
+    "question": "Your healthcare organization uses a BigQuery dataset named \"patient_data\" to store patient records. Each table in the dataset is tagged with a Data Catalog tag template named \"access_control\" that includes a field called \"is_sensitive\" with a boolean value. You need all doctors and nurses to search for tables based on this field but ensure that only the compliance team can access tables where \"is_sensitive\" is true. You have assigned the bigquery.metadataViewer and bigquery.connectionUser roles to all employees. You aim to minimize the configuration complexity. What should you do next?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create the \"access_control\" tag template with public visibility. Assign the bigquery.dataViewer role to the compliance team on the tables that contain sensitive information.",
+      "B": "Create the \"access_control\" tag template with private visibility. Assign the bigquery.dataViewer role to the compliance team on the tables that contain sensitive information.",
+      "C": "Create the \"access_control\" tag template with private visibility. Assign the datacatalog.tagTemplateViewer role to all employees and the bigquery.dataViewer role to the compliance team for sensitive tables.",
+      "D": "Create the \"access_control\" tag template with public visibility. Assign the datacatalog.tagTemplateViewer role to all employees and the bigquery.dataViewer role to the compliance team on sensitive tables."
+    },
+    "correct_answer": "",
+    "explanation": "In this case, the best solution is to assign public visibility to the tag template so that all employees can search for tables based on whether or not they contain sensitive information. Public visibility allows the template's metadata to be visible to all users without giving them access to the actual data. Additionally, assigning the bigquery.dataViewer role only to the compliance team ensures that they are the only ones who can access the actual data in sensitive tables. Assigning private visibility to the template unnecessarily complicates things and limits discoverability for non-sensitive data.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 42,
+    "question": "You are managing a Cloud Dataflow pipeline that processes weather sensor data from multiple IoT devices. The pipeline ingests this data from Pub/Sub, applies transformations, and then stores the results in BigQuery for downstream analysis. After running the pipeline for a week, you notice that some sensors are intermittently sending invalid readings due to hardware malfunctions. You need to ensure that only valid sensor data is written to BigQuery while filtering out the invalid readings, such as those where temperatures exceed an unrealistic threshold. How should you modify the Dataflow pipeline to achieve this?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Add a custom SideInput that filters out invalid sensor readings based on a boolean expression.",
+      "B": "Add a ParDo transform in the pipeline to discard the invalid data.",
+      "C": "Add a GroupByKey transform in the pipeline to group the valid sensor data together and discard invalid readings.",
+      "D": "Add a Partition transform in the pipeline to send valid sensor data to BigQuery and invalid data to a different sink."
+    },
+    "correct_answer": "B",
+    "explanation": "The best approach is to use a ParDo transform, which allows you to inspect each element in the pipeline and conditionally filter out invalid data based on your criteria. This method is efficient for handling data validity checks and removing problematic data before writing to BigQuery. Using a SideInput would introduce unnecessary complexity for this type of filtering. Grouping by key is unrelated to filtering based on content, and partitioning into separate outputs adds overhead when a simpler filtering mechanism can suffice.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 43,
+    "question": "You are managing a Dataflow job that processes financial transaction logs from a message queue, which does not guarantee exactly-once delivery. The job performs real-time transformations and streams the results into BigQuery. To ensure exactly-once delivery semantics in BigQuery, and given your expected data throughput of about 2 GB per second, what should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use the BigQuery Streaming API and configure the target table as multiregional.",
+      "B": "Use the BigQuery Storage Write API and configure the target table as regional.",
+      "C": "Use the BigQuery Streaming API and set the target table as regional.",
+      "D": "Use the BigQuery Storage Write API and configure the target table as multiregional."
+    },
+    "correct_answer": "B",
+    "explanation": "Use the BigQuery Storage Write API and configure the target table as regional because the Storage Write API ensures exactly-once delivery semantics, which is critical for accurate financial transaction processing. Configuring the table as regional reduces latency and improves performance. The BigQuery Streaming API does not guarantee exactly-once delivery, making it unsuitable for this use case. Multiregional tables add unnecessary complexity and may introduce higher latency, especially when the throughput is high.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 44,
+    "question": "Your online video platform aggregates live streaming metrics in Dataflow and writes them to Cloud Bigtable. This data is critical to generating real-time insights on user activity and service performance, which is displayed on a live dashboard accessed by managers across different departments. Recently, you’ve noticed significant delays in updating the data in Bigtable. To handle more concurrent users and ensure faster data updates, you need to optimize your pipeline.\n\nWhat steps should you take to address this issue?\n\nChoose ALL answers that apply.",
+    "options": {
+      "A": "Increase the number of nodes in your Bigtable cluster.",
+      "B": "Upgrade the instance type of the Compute Engine VMs running Dataflow.",
+      "C": "Reconfigure Dataflow to process the data locally for lower latency.",
+      "D": "Modify your pipeline to flatten the data before writing it to Bigtable.",
+      "E": "Increase the number of Dataflow workers by adjusting the maxNumWorkers setting."
+    },
+    "correct_answer": "A, E",
+    "explanation": "To optimize performance, the best solution is to increase the number of Dataflow workers and add more nodes to your Bigtable cluster. Increasing Dataflow workers ensures that more data can be processed in parallel, while expanding the Bigtable cluster allows the database to handle higher write throughput.\n\nIn Bigtable, you cannot change the instance type. You can only add or remove nodes. In other words, you can only perform horizontal scaling, not vertical scaling.\n\nFlattening the data or reconfiguring for local execution wouldn’t solve the core problem of parallelism and database scaling.",
+    "question_type": "multiple_answers"
+  },
+  {
+    "number": 45,
+    "question": "Your company needs to migrate 500 TB of historical data from your on-prem system to Google Cloud Storage within three months. You have a reliable outbound network bandwidth of 400 Mb/sec.\n\nWhat should you do to move the data to Google Cloud Storage?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Transfer Appliance to physically ship the data to Google Cloud and upload it to Cloud Storage.",
+      "B": "Use Storage Transfer Service to transfer the data from the external provider to Google Cloud Storage.",
+      "C": "Use gsutil to compress the data and upload it to Cloud Storage using parallel uploads.",
+      "D": "Schedule multiple gsutil cp commands across several servers to optimize the network bandwidth for faster uploads."
+    },
+    "correct_answer": "",
+    "explanation": "The best solution is to use Transfer Appliance. Given the 400 Mbps network bandwidth, it would take approximately 121 days to transfer 500 TB of data to GCP using Storage Transfer Service or gsutil. This is longer than 3 months.\n\nTherefore, it would be better to order the Transfer Appliance, ship it back, and have Google Cloud upload it to a designated storage bucket.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 46,
+    "question": "Your team is building a data processing solution using Google Cloud Dataflow, which reads customer activity data from a Pub/Sub topic. This data is then windowed using hopping windows to calculate customer engagement over time. However, you've noticed that some late-arriving messages aren't being included in your aggregations, leading to incomplete results. You want to ensure that even late-arriving data is correctly accounted for in your calculations to produce more accurate aggregations.\n\nWhat should you do to address this?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use watermarks in Dataflow to account for late-arriving data and allow straggler messages to be processed correctly.",
+      "B": "Add a checkpoint in the Dataflow pipeline to ensure messages are processed immediately after they're received.",
+      "C": "Increase the window size to ensure more messages are included before the window closes.",
+      "D": "Modify your Pub/Sub subscription to increase the acknowledgement deadline so messages have more time to be processed."
+    },
+    "correct_answer": "",
+    "explanation": "The best solution is to use watermarks in your Dataflow pipeline. Watermarks help track the progress of event times within a stream, ensuring that late-arriving messages can still be included in windowed aggregations, up to a specified limit. Increasing the window size might capture more data, but it wouldn't solve the issue of late arrivals missing the cutoff. Adjusting the acknowledgement deadline in Pub/Sub would not affect how Dataflow windows data; it only impacts how quickly messages are acknowledged. Adding a checkpoint would ensure timely processing but wouldn't help with late-arriving data, which requires managing event time with watermarks.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 47,
+    "question": "Your logistics company tracks delivery data in real-time, including vehicle routes, delivery times, and package status updates. The data from your vehicle sensors and package scans are regularly stored in BigQuery. Every morning, your team needs to review the previous day's delivery metrics, including the number of successful deliveries, average delivery times, and any delays. You want to set up an automated system that generates this daily report every morning. What should you use to automate this process?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a BigQuery ML model to forecast daily delivery performance and generate reports.",
+      "B": "Set up a scheduled query in BigQuery to run every morning and create the report.",
+      "C": "Use a Cloud Function to trigger a daily BigQuery job that processes the delivery metrics.",
+      "D": "Create a Dataflow pipeline to process the daily delivery data and load the results into a BigQuery table."
+    },
+    "correct_answer": "B",
+    "explanation": "The best approach is to use a scheduled query in BigQuery. This will automate the report generation by running the query at the specified time every morning, consolidating the previous day's delivery data with minimal overhead. While using a Cloud Function or Dataflow pipeline could work, they add unnecessary complexity when BigQuery's built-in scheduling feature is designed for this exact task. A BigQuery ML model is not relevant here because you are not predicting or forecasting; you are simply aggregating data. Scheduling the query in BigQuery is the most straightforward and cost-effective solution.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 48,
+    "question": "Your company uses Cloud Composer to manage and schedule daily ETL (Extract, Transform, Load) workflows. The workflows are created by the data engineering team, but the responsibility for day-to-day monitoring and troubleshooting has been assigned to the operations team. The operations team needs to monitor workflow execution, access job logs, and retry failed tasks without having permission to modify the workflows or the environment settings.\n\nWhich Identity and Access Management (IAM) role should be assigned to the operations team to meet these requirements?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Assign a Composer Admin role to manage the environment and all DAGs.",
+      "B": "Grant the Composer Viewer role to allow viewing the Composer environment and DAG executions.",
+      "C": "Use a custom role that provides permissions to monitor DAGs, view logs, and retry failed tasks without modifying workflows or the environment.",
+      "D": "Use the Composer Developer role to allow full control of workflows and environment management."
+    },
+    "correct_answer": "C",
+    "explanation": "The best solution is to use a custom role that gives the operations team the ability to monitor workflows and retry failed tasks without allowing modifications to the environment or DAGs. Composer Admin offers excessive control, including modification rights, which the operations team does not need. Composer Viewer limits the team’s ability to interact with failed tasks since it’s a view-only role, which is not sufficient for their duties. Composer Developer gives access to modify and manage DAGs, which goes beyond what the operations team should be allowed to do.",
+    "question_type": "one_answer_only"
+  },
+  {
+    "number": 49,
+    "question": "A logistics company manages real-time shipping data for thousands of delivery trucks, which are equipped with sensors tracking their location and status every minute. The company is building a system to replicate this data into BigQuery, starting with an initial dataset of 1.5 petabytes and growing by 4 terabytes daily. The goal is to enable the data science team to analyze shipping patterns and build machine learning models. Considering the large volume of structured data and the need for fast query performance and efficient data storage, which two approaches would you use to optimize the system for both performance and accessibility for the data science team?\n\nChoose ALL answers that apply.",
+    "options": {
+      "A": "Ensure that all incoming data is fully normalized to minimize storage costs and maintain integrity across datasets.",
+      "B": "Use an UPDATE strategy in BigQuery to constantly adjust and update records, ensuring the dataset remains current and accurate.",
+      "C": "Use external tables in BigQuery to query daily JSON snapshots of the sensor data stored in Cloud Storage.",
+      "D": "Design a data pipeline that appends new sensor records, rather than updating existing records, to reduce the complexity of the queries and improve data retrieval.",
+      "E": "Set up partitioned tables in BigQuery based on time intervals such as daily or hourly, to improve query speed and efficiency."
+    },
+    "correct_answer": "D, E",
+    "explanation": "The best approaches are to implement partitioned tables based on time intervals and to create a pipeline that appends new records. Partitioning by time allows efficient querying on specific time windows without scanning unnecessary data, enhancing query performance. Appending new data ensures that the dataset grows incrementally without needing constant updates or overwrites, reducing complexity and allowing the team to easily work with historical data. This is called an \"append-only\" approach.\n\nNormalizing data can add unnecessary complexity without significant performance improvements in this case.\n\nUsing an UPDATE approach could overwrite important data from earlier time periods.\n\nExternal tables in BigQuery would add latency and overhead when querying large datasets, reducing accessibility for real-time analysis.",
+    "question_type": "multiple_answers"
+  },
+  {
+    "number": 50,
+    "question": "Your e-commerce company processes sensitive customer payment data, including credit card numbers and expiration dates, which needs to be securely stored in a database. The payment data must remain in a format that resembles the original numbers so that analysts can easily reference it for troubleshooting and reporting. The solution must comply with industry security standards and ensure that the data is protected from unauthorized access.\n\nWhich technique should you use with Google Cloud’s Data Loss Prevention (DLP) API to protect the sensitive data while maintaining its format?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use masking to hide the credit card numbers.",
+      "B": "Use tokenization to replace the credit card numbers with non-sensitive tokens.",
+      "C": "Use Format-Preserving Encryption (FPE) with the FFX method on the credit card numbers.",
+      "D": "Use anonymization to generalize the credit card data and remove identifiers."
+    },
+    "correct_answer": "C",
+    "explanation": "The best solution is to use Format-Preserving Encryption (FPE) with the FFX method. FPE allows the data to remain in the same format (such as preserving the length and structure of credit card numbers), while encrypting it to protect against unauthorized access. Masking only partially protects the data and might leave too much exposed. Tokenization would replace the data entirely, making it harder for analysts to work with. Anonymization strips extra information unnecessarily and would make it less useful for analytics and reporting.",
+    "question_type": "one_answer_only"
+  }
+]

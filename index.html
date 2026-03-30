@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GCP Data Engineer — Exam Practice</title>
+    <title>GCP Exam Practice</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap"
@@ -18,7 +18,6 @@
         --border2: #2f3752;
         --accent: #4f8ef7;
         --accent-glow: rgba(79, 142, 247, 0.18);
-        --accent2: #7c3aed;
         --green: #22c55e;
         --green-bg: rgba(34, 197, 94, 0.1);
         --red: #ef4444;
@@ -68,7 +67,7 @@
         z-index: 0;
       }
 
-      /* ===== HOMEPAGE ===== */
+      /* ===== HOME PAGE ===== */
       #home-page {
         position: relative;
         z-index: 1;
@@ -76,8 +75,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        padding: 40px 24px;
+        padding: 60px 24px 80px;
       }
 
       .home-badge {
@@ -93,7 +91,7 @@
         color: var(--accent);
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        margin-bottom: 32px;
+        margin-bottom: 28px;
       }
 
       .home-badge::before {
@@ -119,11 +117,11 @@
 
       .home-title {
         font-family: "DM Serif Display", serif;
-        font-size: clamp(36px, 6vw, 72px);
+        font-size: clamp(32px, 5vw, 60px);
         text-align: center;
         line-height: 1.1;
         letter-spacing: -0.02em;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -131,76 +129,136 @@
       }
 
       .home-sub {
-        font-size: 17px;
+        font-size: 16px;
         color: var(--text2);
         text-align: center;
-        max-width: 480px;
-        margin-bottom: 48px;
+        max-width: 440px;
+        margin-bottom: 56px;
         font-weight: 300;
       }
 
-      .home-stats {
+      /* ===== CATEGORY GRID ===== */
+      .categories {
+        width: 100%;
+        max-width: 900px;
         display: flex;
-        gap: 24px;
-        margin-bottom: 48px;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: column;
+        gap: 20px;
       }
 
-      .stat-card {
+      .category-block {
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        padding: 20px 28px;
-        text-align: center;
-        min-width: 120px;
+        overflow: hidden;
+        transition: border-color 0.2s;
       }
 
-      .stat-num {
-        font-family: "DM Serif Display", serif;
-        font-size: 36px;
-        color: var(--accent);
+      .category-block:hover {
+        border-color: var(--border2);
+      }
+
+      .category-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .category-icon {
+        font-size: 24px;
         line-height: 1;
-        margin-bottom: 4px;
+        flex-shrink: 0;
       }
 
-      .stat-label {
-        font-size: 12px;
+      .category-name {
+        font-family: "DM Serif Display", serif;
+        font-size: 20px;
+        color: var(--text);
+        flex: 1;
+      }
+
+      .category-count {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
         color: var(--text3);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        font-family: "DM Mono", monospace;
       }
 
-      .start-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        background: var(--accent);
-        color: #fff;
-        border: none;
-        border-radius: var(--radius);
-        padding: 16px 36px;
-        font-size: 16px;
-        font-family: "DM Sans", sans-serif;
-        font-weight: 600;
+      .exam-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1px;
+        background: var(--border);
+      }
+
+      .exam-card {
+        background: var(--surface);
+        padding: 18px 40px 18px 22px;
         cursor: pointer;
-        transition: all 0.2s;
-        letter-spacing: 0.02em;
-        box-shadow: 0 0 32px rgba(79, 142, 247, 0.25);
+        transition: background 0.15s;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        position: relative;
+        overflow: hidden;
       }
 
-      .start-btn:hover {
-        background: #6fa3f9;
-        transform: translateY(-2px);
-        box-shadow: 0 0 48px rgba(79, 142, 247, 0.4);
+      .exam-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--accent-glow);
+        opacity: 0;
+        transition: opacity 0.15s;
       }
 
-      .start-btn svg {
-        transition: transform 0.2s;
+      .exam-card:hover {
+        background: var(--surface2);
       }
-      .start-btn:hover svg {
-        transform: translateX(4px);
+      .exam-card:hover::before {
+        opacity: 1;
+      }
+
+      .exam-card-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        position: relative;
+      }
+
+      .exam-card-meta {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        color: var(--text3);
+        position: relative;
+      }
+
+      .exam-card-arrow {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent);
+        opacity: 0;
+        transition: all 0.15s;
+        font-size: 16px;
+      }
+
+      .exam-card:hover .exam-card-arrow {
+        opacity: 1;
+        right: 12px;
+      }
+
+      .loading-placeholder {
+        text-align: center;
+        color: var(--text3);
+        font-family: "DM Mono", monospace;
+        font-size: 13px;
+        padding: 48px;
+        width: 100%;
       }
 
       /* ===== EXAM PAGE ===== */
@@ -209,7 +267,18 @@
         position: relative;
         z-index: 1;
         min-height: 100vh;
-        padding: 0;
+      }
+
+      .progress-bar-wrap {
+        height: 3px;
+        background: var(--border);
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), #a78bfa);
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 0 2px 2px 0;
       }
 
       .exam-header {
@@ -219,7 +288,7 @@
         background: rgba(12, 15, 26, 0.92);
         backdrop-filter: blur(16px);
         border-bottom: 1px solid var(--border);
-        padding: 16px 32px;
+        padding: 14px 32px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -227,23 +296,32 @@
       }
 
       .exam-logo {
-        font-family: "DM Serif Display", serif;
-        font-size: 18px;
-        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text2);
         white-space: nowrap;
+        cursor: pointer;
+        transition: color 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: none;
+        background: none;
+        padding: 0;
       }
 
-      .exam-logo span {
-        color: var(--accent);
+      .exam-logo:hover {
+        color: var(--text);
       }
 
       .breadcrumbs {
         display: flex;
         align-items: center;
-        gap: 0;
         flex: 1;
         justify-content: center;
         overflow: hidden;
+        padding: 0 16px;
       }
 
       .breadcrumb-track {
@@ -295,7 +373,6 @@
         font-weight: 500;
       }
 
-      /* ===== QUESTION AREA ===== */
       .exam-body {
         max-width: 820px;
         margin: 0 auto;
@@ -320,7 +397,6 @@
       .q-type-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
         padding: 3px 10px;
         border-radius: 100px;
         font-size: 11px;
@@ -346,19 +422,8 @@
         line-height: 1.7;
         color: var(--text);
         margin-bottom: 32px;
-        font-weight: 400;
       }
 
-      /* strip the "Choose only ONE..." instruction line */
-      .instruction-hint {
-        display: block;
-        font-size: 13px;
-        color: var(--text3);
-        font-style: italic;
-        margin-top: 12px;
-      }
-
-      /* ===== OPTIONS ===== */
       .options-list {
         display: flex;
         flex-direction: column;
@@ -396,39 +461,31 @@
       .option-item:hover::before {
         opacity: 1;
       }
-
       .option-item.selected {
         border-color: var(--accent);
         background: var(--surface2);
       }
-
       .option-item.selected::before {
         opacity: 1;
       }
-
       .option-item.correct {
         border-color: var(--green) !important;
         background: var(--green-bg) !important;
       }
-
       .option-item.correct::before {
         opacity: 0 !important;
       }
-
       .option-item.wrong {
         border-color: var(--red) !important;
         background: var(--red-bg) !important;
       }
-
       .option-item.wrong::before {
         opacity: 0 !important;
       }
-
       .option-item.missed {
         border-color: var(--yellow) !important;
         background: rgba(245, 158, 11, 0.08) !important;
       }
-
       .option-item.disabled {
         cursor: default;
         pointer-events: none;
@@ -445,19 +502,11 @@
         align-items: center;
         justify-content: center;
         transition: all 0.18s;
-        background: transparent;
       }
 
       .option-item.checkbox .option-control {
         border-radius: 5px;
       }
-
-      .option-item.selected .option-control,
-      .option-item.correct .option-control,
-      .option-item.wrong .option-control {
-        border-color: currentColor;
-      }
-
       .option-item.correct .option-control {
         color: var(--green);
         border-color: var(--green);
@@ -489,19 +538,16 @@
       .option-item.selected:not(.correct):not(.wrong) .option-dot {
         opacity: 1;
       }
-
       .option-check {
         display: none;
         font-size: 13px;
         font-weight: 700;
       }
-
       .option-item.correct .option-check,
       .option-item.wrong .option-check,
       .option-item.missed .option-check {
         display: block;
       }
-
       .option-item.correct .option-check {
         color: var(--green);
       }
@@ -511,7 +557,6 @@
       .option-item.missed .option-check {
         color: var(--yellow);
       }
-
       .option-item.correct .option-dot,
       .option-item.wrong .option-dot,
       .option-item.missed .option-dot {
@@ -540,7 +585,6 @@
       .option-item.missed .option-key {
         color: var(--yellow);
       }
-
       .option-text {
         font-size: 15px;
         color: var(--text);
@@ -548,7 +592,6 @@
         flex: 1;
       }
 
-      /* ===== ACTIONS ===== */
       .actions {
         display: flex;
         align-items: center;
@@ -574,28 +617,21 @@
         color: #fff;
         box-shadow: 0 0 20px rgba(79, 142, 247, 0.2);
       }
-
       .btn-submit:hover:not(:disabled) {
         background: #6fa3f9;
-        box-shadow: 0 0 32px rgba(79, 142, 247, 0.35);
       }
-
       .btn-submit:disabled {
         opacity: 0.4;
         cursor: not-allowed;
       }
-
       .btn-next {
         background: var(--surface2);
         border: 1.5px solid var(--border2);
         color: var(--text);
       }
-
       .btn-next:hover {
         background: var(--border2);
-        border-color: var(--text3);
       }
-
       .btn-home {
         background: transparent;
         border: 1.5px solid var(--border2);
@@ -603,13 +639,11 @@
         font-size: 13px;
         padding: 10px 18px;
       }
-
       .btn-home:hover {
         border-color: var(--accent);
         color: var(--accent);
       }
 
-      /* ===== RESULT BANNER ===== */
       .result-banner {
         display: none;
         border-radius: var(--radius);
@@ -634,12 +668,10 @@
         background: var(--green-bg);
         border-color: rgba(34, 197, 94, 0.35);
       }
-
       .result-banner.incorrect {
         background: var(--red-bg);
         border-color: rgba(239, 68, 68, 0.35);
       }
-
       .result-label {
         display: flex;
         align-items: center;
@@ -648,22 +680,18 @@
         font-size: 15px;
         margin-bottom: 4px;
       }
-
       .result-banner.correct .result-label {
         color: var(--green);
       }
       .result-banner.incorrect .result-label {
         color: var(--red);
       }
-
       .result-correct-ans {
         font-size: 13px;
         color: var(--text2);
         font-family: "DM Mono", monospace;
-        margin-bottom: 0;
       }
 
-      /* ===== EXPLANATION ===== */
       .explanation-box {
         display: none;
         background: var(--surface);
@@ -682,7 +710,6 @@
         color: var(--text3);
         margin-bottom: 12px;
       }
-
       .explanation-text {
         font-size: 14px;
         color: var(--text2);
@@ -690,58 +717,6 @@
         white-space: pre-line;
       }
 
-      /* ===== PROGRESS BAR ===== */
-      .progress-bar-wrap {
-        height: 3px;
-        background: var(--border);
-        position: relative;
-      }
-
-      .progress-bar-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--accent), #a78bfa);
-        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: 0 2px 2px 0;
-      }
-
-      /* ===== SUMMARY PAGE ===== */
-      #summary-page {
-        display: none;
-        position: relative;
-        z-index: 1;
-        min-height: 100vh;
-        padding: 60px 24px;
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .summary-title {
-        font-family: "DM Serif Display", serif;
-        font-size: 48px;
-        text-align: center;
-        margin-bottom: 8px;
-        letter-spacing: -0.02em;
-      }
-
-      .summary-score {
-        font-family: "DM Serif Display", serif;
-        font-size: 80px;
-        color: var(--accent);
-        text-align: center;
-        line-height: 1;
-        margin: 16px 0;
-      }
-
-      .summary-sub {
-        color: var(--text2);
-        text-align: center;
-        font-size: 16px;
-        margin-bottom: 48px;
-      }
-
-      /* Scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
       }
@@ -753,13 +728,9 @@
         border-radius: 3px;
       }
 
-      /* Mobile */
       @media (max-width: 600px) {
         .exam-header {
           padding: 12px 16px;
-        }
-        .exam-logo {
-          display: none;
         }
         .exam-body {
           padding: 24px 16px 60px;
@@ -773,41 +744,23 @@
         .crumb.current {
           width: 22px;
         }
+        .exam-list {
+          grid-template-columns: 1fr 1fr;
+        }
       }
     </style>
   </head>
   <body>
     <!-- ===== HOME PAGE ===== -->
     <div id="home-page">
-      <div class="home-badge">Professional Data Engineer</div>
-      <h1 class="home-title">GCP Exam<br />Practice</h1>
+      <div class="home-badge">Google Cloud Certifications</div>
+      <h1 class="home-title">Exam Practice</h1>
       <p class="home-sub">
-        Test your knowledge across Cloud SQL, Bigtable, Spanner, Dataflow,
-        BigQuery, and more.
+        Select a certification track and choose an exam to begin.
       </p>
-      <div class="home-stats">
-        <div class="stat-card">
-          <div class="stat-num" id="stat-total">50</div>
-          <div class="stat-label">Questions</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="stat-single">—</div>
-          <div class="stat-label">Single Answer</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="stat-multi">—</div>
-          <div class="stat-label">Multi Answer</div>
-        </div>
+      <div class="categories" id="categories">
+        <div class="loading-placeholder">Loading exams…</div>
       </div>
-      <button
-        class="start-btn"
-        id="start-btn"
-        onclick="startExam()"
-        disabled
-        style="opacity: 0.5; cursor: not-allowed"
-      >
-        Loading…
-      </button>
     </div>
 
     <!-- ===== EXAM PAGE ===== -->
@@ -820,13 +773,27 @@
         ></div>
       </div>
       <div class="exam-header">
-        <div class="exam-logo">GCP <span>Practice</span></div>
+        <button class="exam-logo" onclick="goHome()">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Home
+        </button>
         <div class="breadcrumbs">
           <div class="breadcrumb-track" id="breadcrumb-track"></div>
         </div>
         <div class="exam-counter">
           Q <span id="counter-current">1</span> /
-          <span id="counter-total">50</span>
+          <span id="counter-total">—</span>
         </div>
       </div>
       <div class="exam-body">
@@ -859,20 +826,8 @@
             style="display: none"
           >
             Next
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
           </button>
-          <button class="btn btn-home" onclick="goHome()">Home</button>
+          <button class="btn btn-home" onclick="goHome()">← Home</button>
         </div>
       </div>
     </div>
@@ -881,33 +836,98 @@
       let questions = [];
       let current = 0;
       let selected = new Set();
-      let answered = []; // 'correct' | 'wrong' | null
+      let answered = [];
       let submitted = false;
 
-      // ---- Load JSON ----
-      async function loadQuestions() {
-        const res = await fetch("exam1.json");
-        questions = await res.json();
-        // Update stats
-        const singles = questions.filter(
-          (q) => q.question_type === "one_answer_only",
-        ).length;
-        const multis = questions.filter(
-          (q) => q.question_type === "multiple_answers",
-        ).length;
-        document.getElementById("stat-total").textContent = questions.length;
-        document.getElementById("stat-single").textContent = singles;
-        document.getElementById("stat-multi").textContent = multis;
-        document.getElementById("counter-total").textContent = questions.length;
+      // ===== LOAD MANIFEST =====
+      async function init() {
+        try {
+          const res = await fetch("exams.json");
+          const manifest = await res.json();
+          renderHomepage(manifest);
+        } catch (e) {
+          document.getElementById("categories").innerHTML =
+            '<div class="loading-placeholder">Failed to load exams.json</div>';
+        }
+      }
+
+      function renderHomepage(manifest) {
+        const container = document.getElementById("categories");
+        container.innerHTML = "";
+
+        manifest.forEach((category) => {
+          const block = document.createElement("div");
+          block.className = "category-block";
+          block.innerHTML = `
+      <div class="category-header">
+        <span class="category-icon">${category.icon}</span>
+        <span class="category-name">${category.category}</span>
+        <span class="category-count">${category.exams.length} exam${category.exams.length !== 1 ? "s" : ""}</span>
+      </div>
+      <div class="exam-list"></div>
+    `;
+          container.appendChild(block);
+
+          const list = block.querySelector(".exam-list");
+          category.exams.forEach((exam) => {
+            const card = document.createElement("div");
+            card.className = "exam-card";
+            card.innerHTML = `
+        <div class="exam-card-title">${exam.title}</div>
+        <div class="exam-card-meta">Loading…</div>
+        <div class="exam-card-arrow">→</div>
+      `;
+            card.onclick = () => loadAndStartExam(exam, card);
+            list.appendChild(card);
+
+            // Fetch question count in background
+            fetch(exam.file)
+              .then((r) => r.json())
+              .then((data) => {
+                exam._cached = data;
+                card.querySelector(".exam-card-meta").textContent =
+                  `${data.length} questions`;
+              })
+              .catch(() => {
+                card.querySelector(".exam-card-meta").textContent =
+                  "unavailable";
+                card.style.opacity = "0.4";
+                card.style.pointerEvents = "none";
+              });
+          });
+        });
+      }
+
+      async function loadAndStartExam(exam, card) {
+        try {
+          const data =
+            exam._cached || (await fetch(exam.file).then((r) => r.json()));
+          exam._cached = data;
+          startExam(data);
+        } catch (e) {
+          alert("Could not load: " + exam.file);
+        }
+      }
+
+      // ===== EXAM ENGINE =====
+      function startExam(data) {
+        questions = data;
+        current = 0;
+        selected.clear();
         answered = new Array(questions.length).fill(null);
+        submitted = false;
+
+        document.getElementById("counter-total").textContent = questions.length;
+        document.getElementById("home-page").style.display = "none";
+        document.getElementById("exam-page").style.display = "block";
+
         buildBreadcrumbs();
-        // Enable start button now that data is ready
-        const btn = document.getElementById("start-btn");
-        btn.disabled = false;
-        btn.style.opacity = "";
-        btn.style.cursor = "";
-        btn.innerHTML =
-          'Start Exam <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+        renderQuestion();
+      }
+
+      function goHome() {
+        document.getElementById("exam-page").style.display = "none";
+        document.getElementById("home-page").style.display = "flex";
       }
 
       function buildBreadcrumbs() {
@@ -925,8 +945,7 @@
       }
 
       function updateBreadcrumbs() {
-        const crumbs = document.querySelectorAll(".crumb");
-        crumbs.forEach((c, i) => {
+        document.querySelectorAll(".crumb").forEach((c, i) => {
           c.className = "crumb";
           if (i === current) c.classList.add("current");
           else if (answered[i] === "correct") c.classList.add("done");
@@ -939,31 +958,11 @@
         renderQuestion();
       }
 
-      function startExam() {
-        current = 0;
-        selected.clear();
-        document.getElementById("home-page").style.display = "none";
-        document.getElementById("exam-page").style.display = "block";
-        renderQuestion();
-      }
-
-      function goHome() {
-        document.getElementById("exam-page").style.display = "none";
-        document.getElementById("home-page").style.display = "flex";
-      }
-
       function renderQuestion() {
         const q = questions[current];
         submitted = false;
         selected.clear();
 
-        // If already answered, re-show with result
-        const prevAnswer = answered[current];
-        if (prevAnswer !== null) {
-          // Will render in answered state
-        }
-
-        // Meta
         document.getElementById("q-number").textContent =
           `Question ${String(current + 1).padStart(2, "0")}`;
         document.getElementById("counter-current").textContent = current + 1;
@@ -973,17 +972,14 @@
         badge.className = "q-type-badge " + (isMulti ? "multi" : "single");
         badge.textContent = isMulti ? "Select all that apply" : "Single answer";
 
-        // Question text — strip the trailing instruction sentence
         let qText = q.question
           .replace(/\n+Choose only ONE best answer\.?$/i, "")
           .replace(/\n+Choose all that apply\.?$/i, "")
           .trim();
         document.getElementById("question-text").textContent = qText;
 
-        // Options
         const list = document.getElementById("options-list");
         list.innerHTML = "";
-        const correctAnswers = q.correct_answer.split(",").map((a) => a.trim());
 
         Object.entries(q.options).forEach(([key, text]) => {
           const item = document.createElement("div");
@@ -993,12 +989,10 @@
 
           const control = document.createElement("div");
           control.className = "option-control";
-
           const dot = document.createElement("div");
           dot.className = "option-dot";
           const check = document.createElement("div");
           check.className = "option-check";
-
           control.appendChild(dot);
           control.appendChild(check);
 
@@ -1014,43 +1008,28 @@
           item.appendChild(keyEl);
           item.appendChild(textEl);
           list.appendChild(item);
-
-          // If revisiting answered question
-          if (prevAnswer !== null) {
-            item.classList.add("disabled");
-            const wasSelected =
-              prevAnswer === "correct" ? correctAnswers.includes(key) : false; // we'll handle below
-          }
         });
 
-        // Result / explanation
         document.getElementById("result-banner").style.display = "none";
         document.getElementById("explanation-box").style.display = "none";
         document.getElementById("submit-btn").style.display = "inline-flex";
         document.getElementById("submit-btn").disabled = true;
         document.getElementById("next-btn").style.display = "none";
 
-        // Progress
-        const pct = (current / questions.length) * 100;
-        document.getElementById("progress-fill").style.width = pct + "%";
-
+        document.getElementById("progress-fill").style.width =
+          (current / questions.length) * 100 + "%";
         updateBreadcrumbs();
-
-        // Scroll to top
-        document.querySelector(".exam-body").scrollTop = 0;
         window.scrollTo(0, 0);
       }
 
       function toggleOption(key, isMulti, itemEl) {
         if (submitted) return;
         if (!isMulti) {
-          // Radio: deselect all
           selected.clear();
           document
             .querySelectorAll(".option-item")
             .forEach((el) => el.classList.remove("selected"));
         }
-
         if (selected.has(key) && isMulti) {
           selected.delete(key);
           itemEl.classList.remove("selected");
@@ -1058,7 +1037,6 @@
           selected.add(key);
           itemEl.classList.add("selected");
         }
-
         document.getElementById("submit-btn").disabled = selected.size === 0;
       }
 
@@ -1075,63 +1053,46 @@
 
         answered[current] = isCorrect ? "correct" : "wrong";
 
-        // Mark options
         document.querySelectorAll(".option-item").forEach((item) => {
           const key = item.dataset.key;
           item.classList.add("disabled");
           const check = item.querySelector(".option-check");
 
           if (correctAnswers.includes(key) && selected.has(key)) {
-            // Selected and correct
             item.classList.remove("selected");
             item.classList.add("correct");
             check.textContent = "✓";
           } else if (selected.has(key) && !correctAnswers.includes(key)) {
-            // Selected but wrong
             item.classList.remove("selected");
             item.classList.add("wrong");
             check.textContent = "✗";
           } else if (correctAnswers.includes(key) && !selected.has(key)) {
-            // Missed correct answer
             item.classList.add("missed");
             check.textContent = "↑";
           }
         });
 
-        // Result banner
         const banner = document.getElementById("result-banner");
-        const label = document.getElementById("result-label");
-        const correctAns = document.getElementById("result-correct-ans");
-
         banner.className =
           "result-banner " + (isCorrect ? "correct" : "incorrect");
         banner.style.display = "block";
-        label.innerHTML = isCorrect
+        document.getElementById("result-label").innerHTML = isCorrect
           ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Correct!'
           : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Incorrect';
+        document.getElementById("result-correct-ans").textContent = !isCorrect
+          ? "Correct answer: " + correctAnswers.join(", ")
+          : "";
 
-        if (!isCorrect) {
-          correctAns.textContent =
-            "Correct answer: " + correctAnswers.join(", ");
-        } else {
-          correctAns.textContent = "";
-        }
-
-        // Explanation
-        const expBox = document.getElementById("explanation-box");
         document.getElementById("explanation-text").textContent = q.explanation;
-        expBox.style.display = "block";
-
-        // Buttons
+        document.getElementById("explanation-box").style.display = "block";
         document.getElementById("submit-btn").style.display = "none";
+
         const nextBtn = document.getElementById("next-btn");
         nextBtn.style.display = "inline-flex";
-        nextBtn.textContent =
-          current === questions.length - 1 ? "↩ Back to Home" : "Next";
-        if (current < questions.length - 1) {
-          nextBtn.innerHTML =
-            'Next <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-        }
+        nextBtn.innerHTML =
+          current < questions.length - 1
+            ? 'Next <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+            : "↩ Back to Home";
 
         updateBreadcrumbs();
       }
@@ -1145,8 +1106,7 @@
         renderQuestion();
       }
 
-      // Init
-      loadQuestions();
+      init();
     </script>
   </body>
 </html>

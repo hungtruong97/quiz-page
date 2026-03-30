@@ -1,0 +1,87 @@
+[
+  {
+    "category": "Professional Data Engineer",
+    "icon": "🗄️",
+    "exams": [
+      {
+        "title": "Exam 1",
+        "file": "exams/Professional Data Engineer/exam1.json"
+      },
+      {
+        "title": "Exam 2",
+        "file": "exams/Professional Data Engineer/exam2.json"
+      },
+      {
+        "title": "Exam 3",
+        "file": "exams/Professional Data Engineer/exam3.json"
+      },
+      {
+        "title": "Exam 4",
+        "file": "exams/Professional Data Engineer/exam4.json"
+      },
+      {
+        "title": "Exam 5",
+        "file": "exams/Professional Data Engineer/exam5.json"
+      }
+    ]
+  },
+  {
+    "category": "Cloud Database Engineer",
+    "icon": "💾",
+    "exams": [
+      { "title": "Exam 1", "file": "exams/Cloud Database Engineer/exam1.json" },
+      { "title": "Exam 2", "file": "exams/Cloud Database Engineer/exam2.json" },
+      { "title": "Exam 3", "file": "exams/Cloud Database Engineer/exam3.json" },
+      { "title": "Exam 4", "file": "exams/Cloud Database Engineer/exam4.json" },
+      { "title": "Exam 5", "file": "exams/Cloud Database Engineer/exam5.json" }
+    ]
+  },
+  {
+    "category": "Cloud Architect",
+    "icon": "🏗️",
+    "exams": [
+      { "title": "Exam 1", "file": "exams/Cloud Architect/exam1.json" },
+      { "title": "Exam 2", "file": "exams/Cloud Architect/exam2.json" },
+      { "title": "Exam 3", "file": "exams/Cloud Architect/exam3.json" },
+      { "title": "Exam 4", "file": "exams/Cloud Architect/exam4.json" },
+      { "title": "Exam 5", "file": "exams/Cloud Architect/exam5.json" },
+      { "title": "Exam 6", "file": "exams/Cloud Architect/exam6.json" },
+      { "title": "Exam 7", "file": "exams/Cloud Architect/exam7.json" },
+      { "title": "Exam 8", "file": "exams/Cloud Architect/exam8.json" }
+    ]
+  },
+  {
+    "category": "Machine Learning Professional",
+    "icon": "🤖",
+    "exams": [
+      {
+        "title": "Exam 1",
+        "file": "exams/Machine Learning Professional/exam1.json"
+      },
+      {
+        "title": "Exam 2",
+        "file": "exams/Machine Learning Professional/exam2.json"
+      },
+      {
+        "title": "Exam 3",
+        "file": "exams/Machine Learning Professional/exam3.json"
+      },
+      {
+        "title": "Exam 4",
+        "file": "exams/Machine Learning Professional/exam4.json"
+      },
+      {
+        "title": "Exam 5",
+        "file": "exams/Machine Learning Professional/exam5.json"
+      },
+      {
+        "title": "Exam 6",
+        "file": "exams/Machine Learning Professional/exam6.json"
+      },
+      {
+        "title": "Exam 7",
+        "file": "exams/Machine Learning Professional/exam7.json"
+      }
+    ]
+  }
+]

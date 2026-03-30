@@ -1,0 +1,788 @@
+[
+  {
+    "number": 1,
+    "question": "A few days after migrating the employee authentication service to Google Cloud Platform, a critical virtual machine (VM) running this service becomes inaccessible via SSH. Despite this, the service continues to function properly for end-users. What steps should you take to diagnose and resolve the SSH connectivity issue? (Select three.)\n\nChoose ALL answers that apply.",
+    "options": {
+      "A": "Review and adjust the inbound firewall rules for the network associated with the VM to ensure SSH traffic is allowed.",
+      "B": "Recreate the virtual machine from scratch, deploying a fresh instance.",
+      "C": "Capture a snapshot of the VM's disk and attach it to a new instance for in-depth analysis.",
+      "D": "Restart the VM, then attempt to reconnect via SSH after the reboot.",
+      "E": "Access the Serial Console output of the instance for diagnostics and enable the interactive console for further investigation."
+    },
+    "question_type": "multiple_answers",
+    "correct_answer": "A, C, E",
+    "explanation": "The correct approach begins by verifying that the inbound firewall rules allow SSH traffic to the VM. Misconfigured firewall rules are a common cause of connectivity issues, so this is a critical first step in troubleshooting. If the rules are correct, you should capture a snapshot of the VM's disk and attach it to a new instance. This allows you to investigate the disk's contents without disrupting the running service, offering a safe environment to diagnose potential software or configuration issues. Additionally, accessing the Serial Console output is essential for gaining insights into what might be preventing SSH access. The Serial Console logs can reveal errors or misconfigurations at the system level that aren't visible from other tools. Enabling the interactive console can provide a direct way to interact with the VM's boot process and configuration, which can be vital for troubleshooting deeply rooted problems. Recreating the VM or simply restarting it may resolve the issue temporarily, but these actions do not address the root cause and risk service disruption. Instead, careful analysis and diagnosis, as outlined in the selected steps, are crucial for a thorough and lasting solution."
+  },
+  {
+    "number": 2,
+    "question": "A music streaming service needs to establish a repeatable process for deploying isolated environments for their application. Developers and testers should be able to access each other's environments, but they should be restricted from accessing staging or production resources. Additionally, the staging environment should have limited access to certain production services. What is the best way to isolate these environments?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a network for development and testing, with a different network for staging and production.",
+      "B": "Use a single project with multiple subnetworks to separate development from staging and production.",
+      "C": "Create separate projects for development, staging, and production environments.",
+      "D": "Consolidate development and test environments into one project, and create another project for staging and production."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Creating separate projects for development, staging, and production environments is the best approach. This setup ensures that each environment is fully isolated at the project level, providing clear boundaries and access control between environments. This method also allows for more granular management of permissions, networks, and resources, adhering to best practices for security and resource isolation. Setting up different networks or subnetworks within the same project can provide some level of isolation, but it does not offer the same level of control and separation as using different projects. Consolidating environments into fewer projects can lead to potential security risks and operational challenges, as resources may not be as clearly segregated."
+  },
+  {
+    "number": 3,
+    "question": "Your company runs a Compute Engine managed instance group that scales the number of instances up and down based on application load. Each instance is responsible for cleaning up entries in a distributed cache service when it shuts down. However, you've noticed that many cache entries are not being removed, and you suspect that the shutdown script is not completing reliably. To address this, you've developed a Cloud Run Function (formerly \"Cloud Function\") to perform the cleanup. What should you do next to ensure the cleanup occurs reliably every time an instance is removed?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Configure a Cloud Logging sink to trigger the Cloud Run Function when an instance removal event is logged in Cloud Logging.",
+      "B": "Modify the shutdown script to wait for a fixed period before calling the Cloud Run Function.",
+      "C": "Avoid using the Cloud Run Function and instead modify the shutdown script to retry if it does not complete within a specified time.",
+      "D": "Modify the shutdown script to wait before publishing a message to a Pub/Sub topic that triggers the Cloud Run Function."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The correct approach is to configure a Cloud Logging sink that triggers the Cloud Run Function based on an instance removal log entry in Cloud Logging. This solution ensures that the cleanup process is reliably triggered every time an instance is removed, regardless of whether the shutdown script runs successfully. By relying on log-based triggers, you decouple the cleanup task from the shutdown process on the instance itself, which can be unreliable, especially under load or if the instance is terminated abruptly. Waiting for a fixed time before triggering the Cloud Run Function introduces uncertainty, as it depends on timing and does not guarantee the script will complete. Modifying the shutdown script to retry or wait adds complexity and does not fully address the issue of potential failures or abrupt terminations. Using Pub/Sub in conjunction with the shutdown script still ties the cleanup process to the instance lifecycle, which can be problematic. The log-based trigger method provides a more robust and reliable mechanism for ensuring that the Cloud Run Function executes whenever an instance is removed from the managed instance group."
+  },
+  {
+    "number": 4,
+    "question": "Your company has partnered with a Content Delivery Network (CDN) provider to improve performance for your web application. You need to configure your VPC network to only allow traffic from the CDN provider's IP address ranges to reach your application through an External HTTP(S) load balancer. What should you do to ensure that only traffic from the CDN provider's IP ranges is permitted?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use gcloud compute firewall-rules update to create a firewall rule with the CDN provider's source IP list and allow traffic on port 443",
+      "B": "Use gcloud compute security-policies rules update to create a security policy rule with a preconfigured expression that evaluates the CDN provider's source IP list",
+      "C": "Use gcloud compute security-policies rules update to create a security policy rule with wildcard source IP ranges matching the CDN provider",
+      "D": "Use gcloud compute firewall-rules update to create a firewall rule with target tags for the CDN provider's source IP list and allow traffic on port 443"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Cloud Armor security policies are specifically designed for controlling access to External HTTP(S) load balancers and provide Layer 7 filtering capabilities that operate at the application level. By using a preconfigured expression that evaluates the CDN provider's source IP list, you leverage Google Cloud's maintained lists of known CDN provider IP ranges, ensuring that only traffic from those specific addresses can reach your load balancer. Security policies attach directly to load balancers and provide the precise control needed for HTTP(S) traffic filtering, making them the appropriate tool for this requirement rather than network-level firewall rules. VPC firewall rules operate at the network layer (Layer 3/4) and are designed for controlling traffic to VM instances rather than load balancer endpoints, making them less suitable for this use case where you need to filter HTTP(S) traffic specifically. Using wildcard IP ranges in a security policy does not provide the precision needed and would require manual maintenance as CDN provider IP ranges change over time, whereas preconfigured expressions are automatically updated by Google. Applying firewall rules with target tags does not properly restrict traffic at the load balancer level and would not prevent unwanted traffic from reaching the load balancing infrastructure before being filtered."
+  },
+  {
+    "number": 5,
+    "question": "You are migrating a critical business application to Google Cloud. The application must communicate securely and privately with systems in your on-premises data center. The expected data traffic between the cloud environment and on-premises systems is low, averaging around 150 kbps. The business requires the solution to maximize uptime while keeping costs reasonable. What connectivity solution should you implement?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Deploy a Classic Cloud VPN gateway with two tunnels connecting to two separate on-premises VPN gateways.",
+      "B": "Deploy an HA Cloud VPN gateway with two tunnels connecting to a single on-premises VPN gateway.",
+      "C": "Deploy two HA Cloud VPN gateways with one tunnel each, connected to a single on-premises VPN gateway.",
+      "D": "Deploy a single Classic Cloud VPN gateway with one tunnel connected to an on-premises VPN gateway."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The best solution for this scenario is to deploy an HA (High Availability) Cloud VPN gateway with two tunnels connecting to a single on-premises VPN gateway. This setup is designed to provide high availability by ensuring that if one tunnel or gateway fails, the other can take over, thereby minimizing downtime. HA Cloud VPN is specifically designed to offer enhanced reliability and uptime, which aligns with the business requirement of maximizing system availability. Additionally, the expected data traffic is low, so this setup would be both cost-effective and efficient, providing the necessary redundancy without the complexity or expense of managing multiple gateways. Deploying a Classic Cloud VPN with multiple tunnels or gateways could increase costs and complexity without providing significant additional benefits, especially given the low data traffic. On the other hand, deploying two HA Cloud VPN gateways connected to a single on-premises gateway is unnecessary and could lead to over-provisioning, which is not cost-effective. A single Classic Cloud VPN gateway with one tunnel would not meet the high availability requirement, as it would be more vulnerable to outages. Therefore, the HA Cloud VPN gateway with dual tunnels is the optimal choice for balancing availability and cost."
+  },
+  {
+    "number": 6,
+    "question": "Your client is aiming to enhance the accuracy and transparency of their machine learning models used for race predictions. The team wants to leverage Vertex AI to make the predictions more interpretable for stakeholders. Which solution should you implement?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Apply Vision AI for better insights.",
+      "B": "Use Google Cloud's operations tools for monitoring.",
+      "C": "Develop and analyze with Jupyter Notebooks.",
+      "D": "Utilize Explainable AI features."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "To achieve the goal of making the machine learning models' predictions more interpretable and transparent, the best approach is to use Explainable AI. Explainable AI provides tools that help in understanding how the model arrives at its predictions, which is crucial for improving prediction accuracy and gaining stakeholder trust. Vision AI is more suited for image-related tasks and would not address the need for model interpretability in this context. Google Cloud's operations tools are focused on monitoring and managing infrastructure rather than enhancing the interpretability of AI models. Jupyter Notebooks are useful for data exploration and model development but do not inherently offer the specific capabilities needed to interpret and explain machine learning predictions in production."
+  },
+  {
+    "number": 7,
+    "question": "Your organization recently migrated its legacy applications to Google Compute Engine to meet immediate operational needs. Now, with a timeline of 9 months, the goal is to transition to a more cloud-native architecture that requires minimal operational overhead and supports automatic scaling based on demand. Which two compute services should you consider for this future solution? (Choose two.)\n\nChoose ALL answers that apply.",
+    "options": {
+      "A": "Compute Engine with preemptible instances",
+      "B": "Google Kubernetes Engine with containers",
+      "C": "Compute Engine with autoscaling instance groups",
+      "D": "Cloud Run",
+      "E": "Compute Engine with SSD persistent disks"
+    },
+    "question_type": "multiple_answers",
+    "correct_answer": "B, D",
+    "explanation": "Google Kubernetes Engine (GKE) with containers and Cloud Run are the most suitable choices for building a cloud-native, no-ops, and auto-scaling solution. GKE provides a managed environment for deploying, managing, and scaling containerized applications, allowing you to leverage Kubernetes' powerful orchestration features with minimal operational burden. It supports automatic scaling and self-healing, which are critical for maintaining high availability with reduced manual intervention. Cloud Run is a fully managed, serverless platform for running containerized applications without managing servers or clusters. It automatically scales from zero to handle any level of incoming requests and scales back down when idle, ensuring efficient use of resources. Cloud Run abstracts away all infrastructure management, offering a true no-operations experience while maintaining the flexibility of containerized deployments. Using Compute Engine with preemptible instances or autoscaling instance groups can provide some level of scalability and cost savings, but these options require more hands-on management compared to GKE or Cloud Run. Compute Engine with SSD persistent disks, while offering high performance, does not inherently support the auto-scaling or no-ops features that are essential for a cloud-native architecture. By selecting GKE and Cloud Run, you align your solution with best practices for building scalable, resilient, and low-maintenance applications on Google Cloud."
+  },
+  {
+    "number": 8,
+    "question": "Your organization plans to move a 10-TB dataset from its on-premises environment to a Google Cloud Storage bucket. The dataset consists of large binary files, and the on-premises network connection has a maximum throughput of 1 Gbps. You need to complete this transfer efficiently while minimizing the overall cost and following best practices. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a Google Compute Engine instance as a proxy and use rsync to transfer the data directly to the Cloud Storage bucket.",
+      "B": "Use the gcloud storage cp command to upload the data directly to Cloud Storage from your on-premises environment.",
+      "C": "Use the Transfer Appliance to perform the migration and then upload the data to the Cloud Storage bucket.",
+      "D": "Use a third-party data transfer tool with multi-threading capabilities to upload the data directly to Cloud Storage."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Given the 1 Gbps network connection, transferring 10 TB of data would take approximately 1 day under ideal conditions, making an online transfer feasible. The best approach to minimize time and cost while following Google-recommended practices is to use the gcloud storage cp command directly from the on-premises environment to Cloud Storage. Using a Transfer Appliance is more suited for scenarios where the data transfer would take significantly longer over the network. Setting up a GCE instance involves unnecessary complexity with no significant benefit, and introducing a third party tool, while potentially adding multi-threading, doesn't provide a clear advantage over the built-in tools provided by Google Cloud."
+  },
+  {
+    "number": 9,
+    "question": "Your company recently migrated a containerized application consisting of several interdependent services to a GKE cluster. The SRE team needs to quickly stand up monitoring so they can detect and troubleshoot performance issues across the cluster during the initial stabilization period. The team wants to use Google Cloud's native tools and avoid building custom infrastructure for metrics collection. You need to configure monitoring for the GKE environment. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a log sink to export all GKE logs to BigQuery and create scheduled queries that check for error patterns and send notifications through Pub/Sub",
+      "B": "Deploy a Cloud Run Function on a schedule to scrape metrics from each pod's endpoints and store the results in Cloud Storage for the SRE team to review",
+      "C": "Create a separate Cloud Monitoring workspace for each service and configure independent dashboards and alert policies within each workspace",
+      "D": "Use the predefined GKE dashboards in Cloud Monitoring and set up alert policies on key metrics to notify the SRE team when thresholds are breached"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Cloud Monitoring includes predefined dashboards that are specifically built for GKE and automatically surface important cluster, node, and workload metrics without any custom setup. This gives the SRE team immediate visibility into the health of the environment, which is exactly what they need during the stabilization period. From there, configuring alert policies on relevant metrics like CPU utilization, memory pressure, pod restart counts, or error rates ensures the team is proactively notified when something degrades rather than having to watch dashboards continuously. This approach uses native tooling, requires no custom infrastructure, and can be operational quickly. Exporting logs to BigQuery and running scheduled queries to detect issues introduces significant delay between when a problem occurs and when the team finds out about it. BigQuery is well suited for historical analysis and trend investigation, but scheduled queries are not a substitute for real-time alerting during an active stabilization period where rapid detection matters. Deploying a Cloud Run Function to scrape pod metrics on a schedule and write results to Cloud Storage recreates metrics collection functionality that Cloud Monitoring already provides natively for GKE workloads. It also requires the team to build and maintain custom code and does not provide alerting or dashboard capabilities out of the box. Creating a separate Cloud Monitoring workspace for each service splits the observability picture across isolated views, which makes it harder for on-call engineers to see cross-service dependencies and correlate issues that span multiple services. In a multi-service application where problems in one service often manifest as symptoms in another, a unified view of the entire cluster is far more effective for troubleshooting."
+  },
+  {
+    "number": 10,
+    "question": "A financial institution is migrating several petabytes of transaction logs to Google Cloud. The logs need to be available around the clock for querying. The company's data analysts are proficient in SQL. Which Google Cloud service should they use?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Google Cloud SQL",
+      "B": "Google Cloud Storage",
+      "C": "Google Firestore",
+      "D": "Google BigQuery"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Google BigQuery is the most suitable option in this scenario. It is optimized for handling large datasets and supports SQL, making it ideal for the company's requirements. Google Cloud SQL, while capable of handling relational data, might struggle with the scale of multi-petabyte datasets. Google Cloud Storage is excellent for file storage but would require additional steps to enable querying. Google Firestore is a NoSQL solution and does not support SQL natively, which does not align with the analysts' expertise."
+  },
+  {
+    "number": 11,
+    "question": "After a recent update, your company's Google Cloud Function that processes incoming requests started experiencing significant delays, with some requests taking up to 15 seconds to complete. This issue was not present before the update. How should you proceed to address this problem?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Contact your internet service provider (ISP) to investigate the network latency.",
+      "B": "Revert to the previous stable version, and then use Cloud Trace and Cloud Logging to diagnose the issue in a testing environment.",
+      "C": "File a support ticket for network analysis and immediately roll back the update.",
+      "D": "Roll back to the previous version, then redeploy the update during a low-traffic period to investigate using Cloud Trace and Cloud Logging."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Rolling back to the last known good version is a prudent first step to prevent further disruption for users. Once the rollback is complete, using Cloud Trace and Cloud Logging in a testing environment will help you identify the root cause of the delay without impacting production. Involving the ISP is not appropriate since the issue began following the application update, indicating that the problem is likely related to the update rather than network issues. Filing a support ticket for network analysis might help, but it does not address the immediate need to restore service and analyze the problem in a controlled environment. Redeploying the update during a quieter period does not ensure the problem is isolated and resolved, which could lead to further user disruptions."
+  },
+  {
+    "number": 12,
+    "question": "Your company recently deployed a new feature in its cloud-based game, which quickly gained popularity. However, many users are experiencing slow response times and 503 errors. The game servers are not scaling up as expected. Which of the following should you do first?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Confirm that the database is fully operational.",
+      "B": "Investigate the new feature for potential performance issues.",
+      "C": "Check if the project is hitting its resource quota limits.",
+      "D": "Ensure that the load testing tools are not running against the production environment."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The first step should be to check if the project has exceeded its resource quotas. When a project hits its quota limits, new instances cannot be created, which leads to performance issues like slow response times and 503 errors because the existing servers are overwhelmed by the high demand. While ensuring that the database is operational, investigating the new feature for bugs, and checking for unintended load testing are important steps, the most likely cause of a failure to scale is hitting the resource limits set by Google Cloud. This should be checked first before moving on to other potential issues."
+  },
+  {
+    "number": 13,
+    "question": "A national insurance company is migrating its monolithic claims processing system from an on-premises data center to Compute Engine as a first step in a broader modernization effort. The current system exposes SOAP-based web services that are consumed by a partner portal, a customer-facing mobile app, and an internal adjuster dashboard. Over the next two years, the company plans to decompose the monolith into independent microservices built on Cloud Run. During and after this transition, the consuming applications must continue to function using the same API contracts without needing to be modified or reconfigured. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Register the backend service endpoints in Service Directory and configure each consuming application to query Service Directory to locate the correct backend at runtime",
+      "B": "Set up an external Application Load Balancer with a static IP address in front of the Compute Engine instances and point all consuming applications to that address",
+      "C": "Place an Apigee API gateway in front of the legacy system and have all consuming applications send requests through the gateway's published API endpoints",
+      "D": "Create a Pub/Sub topic for each API operation and have the consuming applications publish requests as messages that the backend services process asynchronously"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "An API gateway acts as a facade that presents a stable set of API contracts to consuming applications while hiding the implementation details of the services behind it. When the insurance company begins decomposing the monolith into Cloud Run microservices, the gateway can reroute individual API paths to the new services without the consuming applications knowing anything has changed. Apigee also provides request and response transformation capabilities, which means it can translate between the SOAP formats used by the legacy system and modern REST or gRPC formats used by the new microservices during the transition period. An Application Load Balancer with a static IP provides a consistent network address for routing traffic, but it does not offer request transformation or the ability to maintain a stable API contract when the backend changes. Service Directory provides service registration and discovery but does not present a unified API contract or transform requests between different formats. Using Pub/Sub fundamentally changes the communication pattern from synchronous request-response to asynchronous messaging, which would require significant changes to every consuming application."
+  },
+  {
+    "number": 14,
+    "question": "Your organization operates an application on several Compute Engine instances, generating 1 TB of logs daily. Due to compliance requirements, these logs must be retained for at least two years. For the first 30 days, the logs should be readily accessible for active querying, but afterward, they only need to be kept for audit purposes. You need a storage solution that meets compliance standards, minimizes costs, and aligns with Google-recommended practices. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Write a daily cron job on all instances to upload logs to a Cloud Storage bucket. Create a sink to export logs to a regional Cloud Storage bucket. Set an Object Lifecycle rule to move files to a Coldline Cloud Storage bucket after 30 days.",
+      "B": "Install the Ops Agent on all instances. Export logs into a partitioned BigQuery table. Configure a time_partitioning_expiration of 30 days for the BigQuery table.",
+      "C": "Set up a daily cron job on all instances to upload logs into a partitioned BigQuery table. Configure a time_partitioning_expiration of 30 days for the BigQuery table.",
+      "D": "Install the Ops Agent on all Compute Engine instances. Set up a sink to export logs to a regional Cloud Storage bucket. Implement an Object Lifecycle rule to transition logs to a Coldline Cloud Storage bucket after 30 days. Apply a retention policy at the bucket level using bucket lock."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The most effective and cost-efficient approach is to install the Ops Agent on all Compute Engine instances and configure a sink to export logs into a regional Cloud Storage bucket. After 30 days, you can apply an Object Lifecycle rule to move these logs into a Coldline Cloud Storage bucket, which is more cost-effective for long-term storage. Additionally, enforcing a retention policy using bucket lock ensures compliance by preventing the deletion of logs before the required retention period ends. Using a cron job on each instance to manually upload logs to Cloud Storage introduces unnecessary complexity and operational overhead, whereas the Ops Agent automates the process. Exporting logs directly into BigQuery is more suited for scenarios where active querying over longer periods is required, but it can be costly for storing large volumes of logs over time, especially when the logs are no longer actively queried after 30 days. Coldline storage, in contrast, offers a more cost-effective solution for retaining logs that are infrequently accessed, making the first option the optimal solution for balancing cost, compliance, and storage needs."
+  },
+  {
+    "number": 15,
+    "question": "Your company operates a SaaS platform that provides real-time collaboration tools to enterprise customers in the Americas, Europe, and the Asia-Pacific region. The platform runs on GKE and must continue operating without customer-facing impact if an entire Google Cloud region experiences an outage. Your operations team has also raised concerns about configuration drift between environments, since engineers currently apply Kubernetes manifests to each cluster independently. You need to design an architecture that provides resilience against regional failures while ensuring all clusters run identical configurations. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Deploy GKE clusters in multiple regions, use Config Sync to keep configurations consistent across all clusters, and route traffic through a global external Application Load Balancer",
+      "B": "Deploy a single GKE cluster in a multi-zone configuration within one region and route user traffic through a global external Application Load Balancer",
+      "C": "Deploy GKE clusters in multiple regions, apply configuration changes to each cluster through separate per-cluster CI/CD pipelines, and use Cloud DNS with geolocation routing",
+      "D": "Deploy a single GKE Autopilot cluster in one region with Horizontal Pod Autoscaler enabled and place Cloud CDN in front of the cluster to serve edge-cached responses"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "This architecture satisfies all three requirements in the question. Running GKE clusters in multiple regions means the platform survives a full regional outage because clusters in unaffected regions continue handling traffic. Config Sync is a GitOps tool that watches a central Git repository and automatically applies any configuration changes to every enrolled cluster, which eliminates the drift problem that comes from engineers managing each cluster independently. The global external Application Load Balancer completes the picture by routing users to the nearest healthy backend and automatically directing traffic away from any region that becomes unavailable. A single GKE cluster spread across multiple zones within one region provides zone-level redundancy but cannot survive if the entire region goes down. Deploying clusters in multiple regions but relying on separate CI/CD pipelines per cluster is prone to configuration drift. A single Autopilot cluster in one region with Cloud CDN caches static content at edge locations to reduce latency, but the application itself still runs in only one region."
+  },
+  {
+    "number": 16,
+    "question": "A global company wants to monitor activity from its network of over 1,000 environmental sensors distributed across multiple facilities worldwide. Each sensor transmits a small data packet every second, containing a sensor ID and key metrics. Analysts will combine this data with user logs and facility locations for comprehensive analysis. Which type of database should you choose?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "NoSQL",
+      "B": "Relational",
+      "C": "Object storage",
+      "D": "Text files"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "A NoSQL database is the best option for managing the large volume of small, continuously streaming data from sensors. NoSQL systems are optimized for scalability and handling semi-structured data, making them ideal for real-time processing of sensor outputs. A relational database may face performance challenges when dealing with this level of constant, high-throughput data. Object storage, while useful for storing large files or unstructured data, is not designed for handling continuous streams of small data packets. Text files lack the indexing and querying capabilities necessary for real-time analysis and would be cumbersome to manage at this scale."
+  },
+  {
+    "number": 17,
+    "question": "Your company runs a suite of internal microservices on a GKE Standard cluster. After reviewing Cloud Monitoring dashboards, the platform team discovers that most pods across the cluster are consuming less than 25% of their requested CPU and memory. Nodes are frequently near full capacity based on resource requests, but actual utilization remains low, which means new pods often fail to schedule even though plenty of compute capacity is going unused. You need to address this inefficiency without requiring developers to manually tune each workload's resource specifications. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Configure Horizontal Pod Autoscaler on each deployment and set the target CPU utilization threshold to 25% to align scaling with actual usage",
+      "B": "Enable Vertical Pod Autoscaler in Auto mode on the affected workloads to adjust resource requests based on observed consumption",
+      "C": "Use kubectl to edit each deployment and lower the CPU and memory requests to values that reflect the current usage shown in Cloud Monitoring",
+      "D": "Enable cluster autoscaler with aggressive scale-down settings so that underutilized nodes are removed from the cluster more quickly"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Vertical Pod Autoscaler in Auto mode continuously monitors the actual CPU and memory usage of your pods and automatically updates the resource requests to reflect real consumption patterns. When pods are requesting far more than they use, VPA lowers those requests so that the Kubernetes scheduler sees a more accurate picture of how much capacity each pod actually needs. This frees up allocatable space on existing nodes, allowing new pods to schedule successfully and improving overall cluster efficiency. Auto mode handles the full cycle by evicting pods and recreating them with right-sized resource values, so no manual intervention is needed after the initial configuration. Horizontal Pod Autoscaler controls how many replicas of a pod are running based on metrics like CPU utilization, but it does not change the resource requests on individual pods. Manually editing each deployment to lower resource values would produce an immediate improvement, but it requires someone to analyze usage data for every workload and repeat that process whenever usage patterns shift. Enabling cluster autoscaler with aggressive scale-down settings removes nodes that the scheduler considers underutilized, but nodes appear fully utilized based on the inflated resource requests. The autoscaler would not remove them because the requested capacity still fills the node, even though actual usage is low."
+  },
+  {
+    "number": 18,
+    "question": "Your company is preparing for a large-scale event, and you have set up an autoscaling instance group to handle the expected surge in traffic. This instance group is configured as a backend service for an HTTP(S) load balancer. After deployment, you observe that the instances are being restarted every minute, and they do not have public IP addresses. You've confirmed that each instance responds correctly to HTTP requests using the curl command. To ensure the backend setup is correct and stable, what should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Add public IP addresses to the instances and create a firewall rule that allows traffic from the load balancer to the instances' public IPs.",
+      "B": "Verify that a firewall rule allows the load balancer's health checks to access the instances in the instance group.",
+      "C": "Ensure that a firewall rule exists to permit incoming HTTP/HTTPS traffic from the source IPs to the load balancer.",
+      "D": "Tag each instance with the load balancer's name and create a firewall rule that allows traffic from the load balancer to the instances based on this tag."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The best approach is to verify that a firewall rule is in place to allow the load balancer's health checks to reach the instances in the instance group. If the load balancer cannot perform health checks, it will assume the instances are unhealthy and trigger their termination and restart, leading to the observed behavior. Assigning public IP addresses to instances and setting up corresponding firewall rules is unnecessary because the load balancer interacts with instances via internal IPs, not public ones. Permitting HTTP/HTTPS traffic to the load balancer ensures proper traffic routing but does not address the issue of health checks failing to reach the instances. Tagging instances and configuring rules based on those tags is a more complex solution that isn't required when a simple firewall rule for health checks will suffice."
+  },
+  {
+    "number": 19,
+    "question": "Your company runs a photo-sharing application on Google App Engine that allows users to upload images directly from their browsers. The uploaded images need to be stored in Cloud Storage without passing through your backend servers. The application must ensure that only authorized users can upload images and that the process is secure. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Configure CORS in the target Cloud Storage bucket, allowing the base URL of the App Engine application as an allowed origin. Assign the Cloud Storage Object Admin role to users who upload images.",
+      "B": "Generate a Cloud Storage Signed URL for file uploads. Use the App Engine default service account to authorize upload requests.",
+      "C": "Configure CORS in the target Cloud Storage bucket, allowing the base URL of the App Engine application as an allowed origin. Generate a Cloud Storage Signed URL for users to securely upload files.",
+      "D": "Assign the Cloud Storage Object Admin role to users who upload images. Use the App Engine default service account to sign upload requests."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The best solution for this scenario is to configure CORS (Cross-Origin Resource Sharing) in the Cloud Storage bucket and generate a Cloud Storage Signed URL for users to securely upload files. By configuring CORS, you ensure that only requests originating from the App Engine application are allowed to interact with the Cloud Storage bucket, enhancing security. The Signed URL feature allows users to upload files directly to Cloud Storage without passing through your backend, which is more efficient and reduces server load. It also ensures that the uploads are authorized and secure, as the Signed URL includes a time-bound token that restricts access. Assigning Cloud Storage Object Admin roles directly to users is not recommended because it provides overly broad permissions and increases the risk of unauthorized access. Using the App Engine default service account to authorize uploads is also less secure, as it may expose your credentials. Therefore, the combination of CORS and Signed URLs is the most secure and efficient approach, ensuring that the application meets both security and performance requirements."
+  },
+  {
+    "number": 20,
+    "question": "Your company has 15 TB of archived data stored with a third-party cloud storage provider. Due to a change in your data strategy, the operations team needs to migrate this data to a Google Cloud Storage bucket as efficiently and cost-effectively as possible. What approach should they take?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use the gsutil cp command to copy the data from the third-party provider to the Cloud Storage bucket.",
+      "B": "Download the data to your on-premises servers, and then upload it to the Cloud Storage bucket using gsutil.",
+      "C": "Request a Transfer Appliance, load the data onto it, and ship it to Google for uploading to the Cloud Storage bucket.",
+      "D": "Utilize the Storage Transfer Service to migrate the data from the third-party storage provider to the Cloud Storage bucket."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The best approach is to utilize the Storage Transfer Service to migrate the data from the third-party storage provider to the Google Cloud Storage bucket. This service is specifically designed for transferring large amounts of data directly from other cloud providers or on-premises storage to Google Cloud. It automates the process, provides optimizations for performance, and helps to minimize costs by avoiding unnecessary data transfer fees or manual steps. Using gsutil cp or gsutil mv for such a large transfer (15 TB) could be inefficient and more expensive because it requires downloading the data to a local machine before uploading it to Cloud Storage, which could incur additional egress charges from the third-party provider. Downloading the data to on-premises servers and then uploading it also adds significant time and complexity, making it less ideal. A Transfer Appliance is typically used for very large data transfers when network-based transfers are impractical, but in this scenario, Storage Transfer Service is the recommended option for its efficiency and cost-effectiveness, given the size of the data set and the existing cloud-to-cloud nature of the transfer."
+  },
+  {
+    "number": 21,
+    "question": "Your company is migrating customer data storage to Google Cloud Firestore and will run application workloads on Google Compute Engine (GCE). During the transition, the current on-premises systems must access Firestore to transfer the customer data. What is the best service account key management strategy to ensure secure and effective access during the migration?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create service account keys for both the on-premises systems and the GCE virtual machines.",
+      "B": "Generate service account keys for the on-premises systems while relying on Google-managed keys for the GCE virtual machines.",
+      "C": "Use user-based authentication for the on-premises systems and service account keys for the GCE virtual machines.",
+      "D": "Set up a custom authentication mechanism on GCE/Google Kubernetes Engine (GKE) for the on-premises systems, using Google-managed keys for the virtual machines."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The optimal approach is to generate service account keys for the on-premises systems while utilizing Google-managed keys for the GCE virtual machines. This strategy ensures that the on-premises systems have the necessary credentials to access Google Cloud services during the migration. Using Google-managed keys for the GCE VMs simplifies key management and enhances security by leveraging GCP's automated key rotation and management features. Creating service account keys for both the on-premises systems and the GCE VMs increases the complexity and risk of key management, as it requires manual handling of keys for both environments, which can lead to security vulnerabilities. User-based authentication is not recommended for system-to-system interactions, as it complicates automation and can introduce additional security risks. Deploying a custom authentication service adds unnecessary complexity and requires additional maintenance, without offering significant benefits over the recommended approach. By leveraging Google-managed keys for the GCE VMs, you ensure that the virtual machines are securely and efficiently authenticated with minimal overhead, while the on-premises systems can continue to operate with the necessary access to Firestore during the migration."
+  },
+  {
+    "number": 22,
+    "question": "Your company operates an e-commerce platform built with a Java backend and a MySQL database that stores product catalog and order information. Your data science team maintains a custom recommendation engine that suggests products to users in real time as they browse the site. Leadership wants to modernize the ML infrastructure so the team can quickly experiment with and deploy new model architectures, including foundation models, without requiring changes to the application code each time a model is updated. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Migrate the MySQL database to Cloud Spanner and have the data science team build and iterate on models using Vertex AI Workbench notebooks with custom serving scripts",
+      "B": "Use Datastream to replicate the MySQL database into BigQuery and rebuild the recommendation engine using BigQuery ML with scheduled prediction jobs",
+      "C": "Replace the custom recommendation engine with AutoML, configure it to run batch predictions on a recurring schedule, and store results in Cloud Storage for the application to read",
+      "D": "Deploy the recommendation model to a Vertex AI endpoint and have the Java application call the endpoint to retrieve predictions for each user session"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Vertex AI endpoints provide managed model serving that separates the ML lifecycle from the application lifecycle, which is exactly what this scenario requires. When the recommendation model runs behind a Vertex AI endpoint, the data science team can train, evaluate, and deploy new models or entirely different model architectures without touching the Java application code. The application simply calls the endpoint and receives predictions, and the team can swap out what is running behind that endpoint at any time. Vertex AI is Google Cloud's unified ML platform where the latest capabilities, including foundation models and advanced MLOps tooling, are made available first. The endpoint also provides the low-latency responses needed for real-time recommendations during active user sessions. Replicating data into BigQuery and using BigQuery ML works well for analytical workloads and batch scoring across large datasets, but it is not designed for the low-latency, per-request predictions needed to serve recommendations while a user is actively browsing. Using AutoML with batch predictions on a recurring schedule introduces a delay between when data changes and when new recommendations become available. Migrating the database to Cloud Spanner addresses database scalability concerns that are not part of the problem described here, and building models in Vertex AI Workbench only covers the development phase without providing a managed serving layer."
+  },
+  {
+    "number": 23,
+    "question": "A software company is rolling out a new version of its API while ensuring that existing users continue to access the current version without disruption. They plan to direct all traffic through the same SSL and DNS configurations but want to route requests to the appropriate API version based on the specific paths used by clients. What should they implement to achieve this?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Introduce a new load balancer dedicated to the new API version.",
+      "B": "Require existing clients to switch to a new endpoint for the updated API.",
+      "C": "Set up distinct backend services behind the load balancer to handle traffic for each API version based on request paths.",
+      "D": "Modify the old API to proxy requests to the new API depending on the requested paths."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "To manage multiple API versions under the same SSL and DNS configurations, using separate backend services for each API version behind a load balancer is the most effective approach. This setup allows you to route traffic to the correct version based on the path in the request, ensuring that both versions of the API can be served simultaneously without requiring changes from existing clients. Setting up a new load balancer for the new API would complicate the DNS and SSL management, creating additional overhead. Requiring clients to switch endpoints is not ideal as it introduces unnecessary complexity for existing users and disrupts their workflow. Proxying requests from the old API to the new one can introduce latency and potential issues with request handling, making it less efficient and more error-prone than managing traffic directly with a load balancer."
+  },
+  {
+    "number": 24,
+    "question": "A company is transitioning its internal CRM application from an on-premises data center to Google Cloud Platform. The IT department needs to ensure that users experience minimal disruption during the migration. Additionally, the security team mandates that passwords must not be stored in Google Cloud. What authentication method should be implemented?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Sync passwords to Google using a third-party tool.",
+      "B": "Manually provision users in Google Cloud and have them reset their passwords.",
+      "C": "Request users to set their Google password to match their existing corporate password.",
+      "D": "Set up federated authentication using SAML 2.0 with the existing Identity Provider."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Federating authentication via SAML 2.0 with the existing Identity Provider is the most appropriate strategy. It allows users to continue using their existing credentials without storing passwords in Google Cloud, meeting the security team's requirements. This method also minimizes user disruption because it integrates seamlessly with the existing authentication infrastructure. Syncing passwords to Google, even with a third-party tool, does not comply with the requirement to avoid storing passwords in Google Cloud. Manually provisioning users and requiring them to reset passwords introduces unnecessary complexity and user friction. Asking users to manually match their Google password to their corporate password poses security risks and is not a scalable solution."
+  },
+  {
+    "number": 25,
+    "question": "Your company needs a cost-efficient solution to store vast amounts of telemetry data. The data needs to be retained indefinitely for compliance purposes, while only the most recent data will be used for analytics and machine learning model training. As the data volume grows over time, the solution should easily scale to accommodate this increase. Which data storage solution should you recommend?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Leverage BigQuery for its scalability and support for adding fields to schemas, organizing data by time period through partitioning",
+      "B": "Use Firestore for its flexibility and scalability, grouping telemetry data by time period in collections",
+      "C": "Utilize Cloud Spanner for its ability to handle schema changes with no downtime and distribute data by time period",
+      "D": "Choose Cloud SQL for its automatic storage scaling and MySQL compatibility, creating separate databases per time period"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "BigQuery is the ideal choice due to its scalable architecture and ability to efficiently manage large analytical datasets that grow indefinitely. Partitioning the data by time period in BigQuery not only optimizes query performance but also simplifies data management as the dataset grows, allowing you to apply different storage tiers to older data while keeping recent data readily accessible for model training. This approach aligns with the need to retain historical data indefinitely while focusing analytical workloads on recent data, and BigQuery's separation of storage and compute ensures cost efficiency as data volumes increase over time. Firestore, while flexible, is better suited for document-based operational use cases rather than large-scale analytical workloads involving telemetry data that requires complex queries and aggregations. Cloud Spanner offers strong consistency and zero-downtime schema changes but may be cost-prohibitive for storing large volumes of historical data indefinitely, especially when much of that data is not actively queried. Cloud SQL, though compatible with MySQL, may not handle the scale and growth of telemetry data as efficiently as BigQuery, particularly in analytical contexts where you need to query across massive datasets and perform complex aggregations for machine learning purposes."
+  },
+  {
+    "number": 26,
+    "question": "You are setting up the network for a new project in Google Cloud where Compute Engine instances will be deployed across two subnets (sub-x and sub-y) within the same region. Instances in sub-x are configured with public IP addresses. Instances in sub-y are only assigned private IP addresses. The application running on instances in sub-y needs to download updates from a public repository outside Google Cloud, but it cannot directly access the internet. You need to ensure that these instances can connect to external resources securely. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Enable Private Google Access on sub-y.",
+      "B": "Configure a bastion host instance in sub-x to proxy requests from instances in sub-y.",
+      "C": "Enable Identity-Aware Proxy for TCP forwarding on instances in sub-y.",
+      "D": "Configure Cloud NAT and select sub-y in the NAT mapping section."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The correct solution is to configure Cloud NAT and select sub-y in the NAT mapping section. Cloud NAT (Network Address Translation) allows instances in private subnets without external IP addresses to access the internet for tasks such as downloading updates, without exposing the instances themselves to incoming traffic from the internet. This solution ensures that instances in sub-y can securely connect to external resources while maintaining their private IP addresses. Enabling Private Google Access would only allow the instances to connect to Google services, not external repositories. Setting up a bastion host in sub-x is less efficient and would introduce unnecessary complexity and potential security risks. Using Identity-Aware Proxy for TCP forwarding is intended for managing secure connections for specific applications and is not a suitable solution for general internet access from instances in sub-y. Therefore, configuring Cloud NAT is the most effective and secure approach to meet the requirements."
+  },
+  {
+    "number": 27,
+    "question": "Your company handles sensitive financial contracts, and these contracts are stored in Google Cloud Storage. To comply with regulatory requirements, you need to ensure that these documents cannot be deleted or altered for the next 3 years. Any updates to the contracts must be saved as new, separate files. How should you configure your storage bucket to meet these requirements?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set an organization-wide constraint with constraints/storage.retentionPolicySeconds to enforce a 3-year retention policy.",
+      "B": "Use a customer-managed encryption key for the bucket, and schedule a key rotation after 3 years.",
+      "C": "Apply a 3-year retention policy to the bucket and lock the retention policy.",
+      "D": "Configure a project-level constraint with constraints/storage.retentionPolicySeconds to enforce a 3-year retention policy."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The correct approach is to apply a retention policy directly on the Cloud Storage bucket and then lock that policy to prevent any deletions or modifications for 3 years. This ensures that all objects stored in the bucket are immutable for the specified period, meeting the regulatory requirements. Locking the policy is crucial because it prevents accidental or intentional changes to the retention period, ensuring that the data remains protected for the full duration. Setting a retention policy at the organization or project level using constraints is incorrect because it affects all buckets within that scope, which may be overly restrictive or not applicable to other buckets that don't require such strict data retention. Furthermore, using encryption keys and scheduling key rotation does not address the need to prevent deletion or overwriting of the files, as encryption primarily concerns data protection from unauthorized access rather than data immutability."
+  },
+  {
+    "number": 28,
+    "question": "Your company uses Google Cloud Storage to store important customer data. This data is frequently updated, and there is a requirement to keep track of all historical versions of each file for audit purposes. Additionally, if any file is accidentally modified or deleted, you need to be able to restore the previous version easily. Which feature should you enable?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Retention policy",
+      "B": "Object Lifecycle Management",
+      "C": "Object change notification",
+      "D": "Object Versioning"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The best solution is to enable Object Versioning on the Cloud Storage bucket. Object Versioning allows you to maintain a complete history of all versions of an object, which is essential for tracking changes and recovering from accidental modifications or deletions. With this feature, every time an object is overwritten or deleted, a new version is created, allowing you to restore the previous state of the data as needed. Setting up Object Lifecycle Management can help manage storage costs by moving older versions to a different storage class, but it does not inherently track or preserve every change made to an object. Object change notification can inform you of changes but does not store previous versions, so it cannot help with restoration. Applying a retention policy prevents deletions within a set period but does not address the need for tracking multiple versions or recovering from accidental overwrites. Object Versioning provides the most comprehensive solution for maintaining a detailed history of changes and ensuring that data integrity can be preserved through easy restoration of previous versions."
+  },
+  {
+    "number": 29,
+    "question": "Your company's security team requires that all Cloud Firewall log events be retained for a period of one year for compliance purposes. You need to configure the cloud infrastructure to ensure that these logs are stored appropriately. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a filter in Cloud Logging to capture the relevant logs and configure a Cloud Storage bucket as the export destination.",
+      "B": "Enable the VPC Service Controls API and then enable logging on the firewall rules that correspond to the traffic you want to save.",
+      "C": "Set up a Cloud Logging Dashboard specifically for Cloud Firewall Logs and configure it to display data over a one-year period.",
+      "D": "Create a filter in Cloud Logging and set up a Cloud Pub/Sub topic to publish the logs for long-term storage."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The best approach is to set up a filter in Cloud Logging to capture the relevant firewall logs and configure a Cloud Storage bucket as the export destination. This method ensures that logs are systematically collected and stored in a secure, durable, and cost-effective manner. Cloud Storage is ideal for long-term retention, and by setting up an export from Cloud Logging, you can ensure that the logs are preserved for the required one-year period while adhering to compliance requirements. Enabling the VPC Service Controls API and logging on firewall rules might help in monitoring and managing security, but it does not directly address the requirement for long-term log storage. Setting up a Cloud Logging Dashboard provides visibility into logs but is not a solution for log retention. The Dashboard is designed for monitoring and not for long-term storage. Using Cloud Pub/Sub to publish logs could be a part of a logging pipeline, but it introduces complexity without directly addressing the need for durable, long-term storage. By using Cloud Storage as the export target, you create a straightforward and effective solution for retaining firewall logs for one year."
+  },
+  {
+    "number": 30,
+    "question": "You have developed a Python script to interact with a Google Cloud SQL database from a Google Compute Engine instance. However, when you run the script, it throws errors indicating that it cannot connect to the Cloud SQL instance. How can you resolve this issue?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Install the latest Python client library for Cloud SQL.",
+      "B": "Launch a new VM instance with Cloud SQL access scope enabled.",
+      "C": "Create and use a service account with Cloud SQL access, and execute your script under this account.",
+      "D": "Install the gcloud SQL client using gcloud components install sql."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "To resolve the issue, you should create a service account with the necessary Cloud SQL permissions and run your script under this account. This ensures that your script is properly authenticated and authorized to connect to the Cloud SQL instance. While installing the latest Python client library is important for interacting with Cloud SQL, it doesn't address the access issue related to authentication. Setting up a new VM with Cloud SQL access scope might work, but it is not necessary if you can assign a service account with appropriate permissions to your existing VM. Installing the gcloud SQL client is useful for command-line operations but does not solve the connection issue in your Python script."
+  },
+  {
+    "number": 31,
+    "question": "Your company runs a video streaming service on Google Compute Engine that encounters high memory usage during peak viewing times. To handle the increased load, you've configured autoscaling based on memory usage with the following settings: Metric identifier: agent.googleapis.com/memory/percent_used Filter: metric.label.state = 'used' Target utilization level: 70% Target type: GAUGE Despite the memory usage exceeding the set threshold during peak hours, the application is not scaling up as expected. What should you do to correct this issue?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Update the filter to include additional memory states: metric.label.state = 'used' AND metric.label.state = 'buffered' AND metric.label.state = 'cached' AND metric.label.state = 'slab'",
+      "B": "Change the Target type to CUMULATIVE",
+      "C": "Adjust the Metric identifier to agent.googleapis.com/memory/utilization_rate",
+      "D": "Modify the Target utilization level to 30% and update the filter to metric.label.state = 'free'"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The most effective solution is to update the filter to include additional memory states: metric.label.state = 'used' AND metric.label.state = 'buffered' AND metric.label.state = 'cached' AND metric.label.state = 'slab'. This adjustment ensures that the autoscaling policy accounts for all relevant memory usage categories, not just the memory labeled as used. Memory in Linux and many other systems can be categorized into different states such as used, buffered, cached, and slab, which together represent the overall memory consumption. By using AND in the filter, you ensure that the autoscaling mechanism considers the full spectrum of memory usage, thereby triggering scaling operations more accurately during periods of high demand. Switching the Target type to CUMULATIVE or changing the Metric identifier to a different metric might not provide a real-time reflection of memory usage necessary for effective autoscaling. Reducing the Target utilization level and focusing solely on free memory does not address the need to monitor all relevant memory states, which is crucial for ensuring that autoscaling is triggered appropriately. Therefore, including all memory states in the filter using AND is the correct approach to ensure that your application scales correctly based on actual memory usage."
+  },
+  {
+    "number": 32,
+    "question": "Your team is tasked with developing a secure payment card storage system for customers, including viewers, merchandise purchasers, and season ticket holders. The system must provide low latency, avoid storing plaintext card numbers, detect duplicate cards, and support yearly key rotation. What is the best approach for designing this tokenization storage system?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Apply deterministic encryption to the card data and store it in Firestore.",
+      "B": "Utilize column-level encryption and store the data within Cloud SQL.",
+      "C": "Encrypt the card details and store them in Secret Manager after performing a duplicate check.",
+      "D": "Distribute encrypted card data across several Memorystore instances for low-latency access."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Using deterministic encryption with Firestore is the most suitable solution. This option provides secure storage, enables quick duplicate detection, and avoids plaintext storage, all while maintaining low-latency access necessary for processing payment information efficiently. Column-level encryption in Cloud SQL introduces complexity and may not meet the performance demands of a high-throughput payment system. Secret Manager is primarily designed for managing secrets, not for storing large amounts of structured data like payment card information, and is not optimized for detecting duplicates. Sharding the data across multiple Memorystore instances adds unnecessary complexity without offering the same query capabilities and efficiency as Firestore."
+  },
+  {
+    "number": 33,
+    "question": "Your team has deployed a Cloud Run service that processes image uploads and needs to store metadata in a Cloud SQL for PostgreSQL instance. The Cloud SQL instance is configured with a private IP address only and resides in your project's VPC. When the Cloud Run service attempts to write to the database, the connection times out. You need to resolve the connectivity issue for this new deployment. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a Serverless VPC Access connector in your VPC and attach it to the Cloud Run service to route database traffic into the private network",
+      "B": "Deploy a Cloud NAT gateway in the VPC and configure the Cloud Run service to send database traffic through the gateway to reach the private IP",
+      "C": "Configure Direct VPC Egress on the Cloud Run service so that it operates with a private IP address inside your VPC network",
+      "D": "Create a Private Service Connect endpoint in your VPC that maps to the Cloud SQL instance and point the Cloud Run service to that endpoint"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Cloud Run services run on Google's managed infrastructure outside of your VPC by default, which means they have no network path to resources that are only reachable via private IP. Direct VPC Egress solves this by placing the Cloud Run service directly onto your VPC with its own private IP address, allowing it to communicate with the Cloud SQL instance as if both were standard resources on the same network. This is Google's current recommended approach for connecting Cloud Run to private VPC resources. It provides the best performance characteristics and does not require provisioning or managing any additional networking infrastructure. For new deployments like the one described in this question, Direct VPC Egress is the simplest and most straightforward configuration. Serverless VPC Access connectors can establish a network path between Cloud Run and your VPC, but they are the older approach that has been superseded by Direct VPC Egress. Connectors require you to provision and manage a separate resource, they introduce additional latency in the network path, and they impose a bandwidth ceiling of 2 Gbps per connector. Cloud NAT provides outbound internet access for resources that only have private IP addresses, but it does not create connectivity between Cloud Run and private resources inside your VPC. Private Service Connect is designed for scenarios where you need to expose a service across project or VPC boundaries through a managed endpoint, which adds unnecessary complexity when the Cloud Run service and the Cloud SQL instance already exist in the same project and VPC."
+  },
+  {
+    "number": 34,
+    "question": "A national grocery chain operates a central PostgreSQL database at its corporate office that tracks inventory levels, pricing updates, and vendor contracts for all store locations. Each store currently receives a nightly data export in CSV format that is uploaded to a shared SFTP server, but store managers have reported frequent discrepancies between the prices displayed in their local systems and the prices listed in the corporate database. Corporate IT wants to eliminate these inconsistencies and ensure every store is reading from a single, authoritative data source without relying on file-based transfers. What should they do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Deploy a Pub/Sub topic for each data category and configure store systems to subscribe to the relevant topics using Pull subscriptions for periodic data retrieval",
+      "B": "Migrate the corporate PostgreSQL database to Cloud SQL and provision read replicas in the regions where stores operate so each store reads directly from its nearest replica",
+      "C": "Export the corporate PostgreSQL database to Cloud Storage on an hourly schedule and configure each store's application to download and ingest the latest export file",
+      "D": "Create a Pub/Sub topic with Push subscriptions that deliver inventory and pricing messages to each store's local endpoint for processing and local storage"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Cloud SQL with regional read replicas gives every store location direct access to data that is kept in sync with the corporate database through managed replication. Because stores read from replicas rather than local file copies, the data they see always reflects the current state of the source database. This eliminates the staleness and drift that come with periodic file exports, and it removes the need for stores to run their own import processes. Cloud SQL handles replication automatically, so corporate IT does not need to build or maintain synchronization logic. The corporate database remains the single source of truth, and headquarters retains full control over the schema and data. Publishing database changes as Pub/Sub messages would require building a change data capture layer that serializes database updates into messages, and each store would need to reconstruct a consistent view of the data from a stream of individual events. This adds complexity around message ordering, deduplication, and local state management that is unnecessary when the goal is simply to provide consistent read access to a relational dataset. Exporting the database to Cloud Storage on an hourly schedule is an improvement over nightly CSV exports, but it still creates windows where store data is out of date and still depends on each store correctly downloading and processing export files without errors."
+  },
+  {
+    "number": 35,
+    "question": "Your organization places a high value on data integrity and requires that all modifications to application data be thoroughly logged. To ensure that these logs can be trusted and have not been tampered with, you need a method to verify their authenticity. How should you implement your logging system?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Write log entries to both Google Cloud and an on-premises server simultaneously.",
+      "B": "Digitally sign each log entry with a cryptographic signature and store the signature alongside the log entry.",
+      "C": "Store all log entries in a secure, write-protected SQL database.",
+      "D": "Generate a JSON export of each log entry and periodically back it up to Google Cloud Storage."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The correct approach is to digitally sign each log entry with a cryptographic signature and store that signature alongside the log entry. This method ensures the authenticity of the logs by providing a verifiable way to detect any tampering. If someone were to alter a log entry, the cryptographic signature would no longer match, thus indicating a potential integrity breach. Digital signatures are widely recognized as a reliable way to ensure the integrity and authenticity of data. Writing log entries to both the cloud and an on-premises server might provide redundancy, but it does not ensure the authenticity of the logs. Storing logs in a write-protected SQL database limits who can modify the logs but doesn't prevent unauthorized changes by those with access. Creating JSON exports of logs and storing them in Google Cloud Storage offers archival benefits but doesn't inherently provide a method for verifying log authenticity. By digitally signing each log entry, you implement a robust mechanism that directly addresses the need for trusted and tamper-evident logs."
+  },
+  {
+    "number": 36,
+    "question": "Your company runs several critical internal applications on Compute Engine. Recently, one of the applications has been experiencing significant performance degradation, causing it to slow down noticeably over the past few days. Business users have reported the issue and are looking for a resolution. You need to identify the root cause of the performance issue before deciding on a solution. What should you do first?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Upgrade the Compute Engine instances running the application to a machine type with higher CPU and memory specifications.",
+      "B": "Restore the application from a backup taken before the performance issues began.",
+      "C": "Migrate the application to a managed instance group with autoscaling and set up a load balancer to distribute the traffic.",
+      "D": "Review the logs and metrics from the Compute Engine instances using Cloud Logging and Cloud Monitoring."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The first step in troubleshooting a performance issue is to gather relevant data to understand what is happening. Reviewing the logs and metrics using Cloud Logging and Cloud Monitoring allows you to inspect the performance of the Compute Engine instances running the application. By analyzing these logs and metrics, you can identify potential bottlenecks, such as high CPU or memory usage, disk I/O issues, or network latency, that could be causing the application to slow down. This approach helps pinpoint the root cause of the problem before taking any corrective actions. Upgrading the machine type to one with more CPU and memory might improve performance, but without understanding the underlying issue, this could be an unnecessary or ineffective change. Restoring from a backup should only be considered if there is evidence of data corruption or configuration changes that coincided with the performance degradation. Moving the application to a managed instance group with autoscaling and adding a load balancer could improve scalability but would not directly address the root cause of the current performance issue and might introduce unnecessary complexity. By starting with log and metric analysis, you ensure that any subsequent actions are informed by actual data rather than assumptions."
+  },
+  {
+    "number": 37,
+    "question": "A global retail company has launched a new version of their e-commerce platform on Google Cloud Platform, specifically tailored to serve customers in Europe. You need to track the platform's performance to ensure it aligns with the company's business and technical objectives. Which metrics should you focus on?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Track the total number of visits and average load times for European users.",
+      "B": "Measure error rates for requests originating from Europe.",
+      "C": "Compare the latency differences between users in Europe and the US.",
+      "D": "Monitor total user visits, error rates, and response times from European customers.",
+      "E": "Analyze the diversity of languages in the customer support database."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The most comprehensive way to measure the success of the platform against business and technical goals is to monitor the total user visits, error rates, and response times from European customers. These metrics provide a clear picture of how well the platform is performing in terms of both user engagement (total visits) and technical reliability (error rates and latency). This data is essential for identifying any issues that could impact the user experience and for making informed decisions about further optimizations. Tracking only error rates or only latency does not provide a complete view of the platform's performance, as it overlooks user engagement metrics, which are critical for business success. Comparing latency differences between Europe and the US might highlight regional performance issues but does not directly address the specific needs of the European user base. Finally, analyzing the diversity of languages in the customer support database, while potentially interesting, does not directly correlate with the platform's performance or user satisfaction in Europe. By focusing on total visits, error rates, and latency, you can ensure that the platform meets both the technical and business expectations in its target region."
+  },
+  {
+    "number": 38,
+    "question": "Your platform team is setting up the deployment workflow for a new microservices application that runs on GKE. The application code is stored in a Git repository, and each service is packaged as a container image. The team needs an automated pipeline that builds and tests images when code is merged, stores the verified images in a registry, and then rolls them out sequentially through development, QA, and production GKE clusters. Promotion between environments should require explicit approval from designated reviewers. What should you implement?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Configure Cloud Deploy to clone the Git repository, build container images, store them in Artifact Registry, and manage the rollout across all three GKE clusters",
+      "B": "Configure Cloud Build to build and test images and push them to Artifact Registry, then set up separate Cloud Build triggers with manual approval to deploy to each environment",
+      "C": "Configure Cloud Build to build images, push them to Artifact Registry, and invoke Cloud Deploy directly from the build steps to initiate the rollout through all three environments",
+      "D": "Configure Cloud Build to build and test images and push them to Artifact Registry, then configure Cloud Deploy to promote releases across the three environments"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "This approach uses each service for what it was designed to do. Cloud Build handles the continuous integration side by compiling source code, running tests, building container images, and pushing verified artifacts to Artifact Registry. Cloud Deploy then picks up from there and manages the continuous delivery side by orchestrating how those images move through your target environments. Cloud Deploy has native support for sequential promotion between targets, approval gates that require designated reviewers to sign off before advancing, and rollback capabilities if something goes wrong after promotion. Cloud Deploy is a delivery service, not a build service. It does not have the ability to clone repositories, compile code, or produce container images. Using Cloud Build triggers with manual approval steps to handle deployments to each environment forces you to build custom deployment orchestration logic that Cloud Deploy already provides natively. Having Cloud Build invoke Cloud Deploy directly from build steps creates tight coupling between the two services, when Cloud Deploy is designed to watch Artifact Registry for new images and initiate delivery pipelines on its own."
+  },
+  {
+    "number": 39,
+    "question": "Your company has recently implemented Cloud Identity to manage users, and the Google Cloud Organization has been set up. The security team wants to ensure that only users within the company's domain have permissions within the organization's projects. They need to prevent any external IAM users from being granted permissions going forward. What should they do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Apply an organization policy to restrict IAM users by domain to only those within the company's domain.",
+      "B": "Set up an organization policy that disables the creation of new service accounts.",
+      "C": "Configure a Cloud Function triggered by Cloud Scheduler every hour to remove users who do not belong to the company domain from all projects.",
+      "D": "Assign a technical user (e.g., security-bot@yourdomain.com) with project owner rights at the organization level. Develop a script that lists IAM roles in all projects and removes users not in the company domain, then schedule this script to run hourly via cron."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The correct solution is to apply an organization policy that restricts IAM users by domain to only those within the company's domain. This approach ensures that from this point forward, only users with an email address that belongs to the company's domain can be assigned roles and permissions within the Google Cloud Organization. This is a proactive measure that aligns with Google-recommended practices for securing access within an organization. Blocking the creation of new service accounts would not directly address the issue of restricting external users' access and could disrupt valid operations. Configuring a Cloud Function or scripting a solution to remove non-domain users after they have already been added is a reactive approach, and it's less efficient and more error-prone than setting up an appropriate organization policy from the start. By using an organization policy to restrict identities by domain, you enforce this security measure at the organization level, which is the most effective and straightforward way to achieve the desired security outcome."
+  },
+  {
+    "number": 40,
+    "question": "Your company runs an application on Google Cloud that collects sensor data from a large number of IoT devices deployed worldwide. The data is published to Pub/Sub and then processed in real-time by a Dataflow pipeline, which writes the data to a Cloud Bigtable cluster using SSD storage. The operations team has reported that the Cloud Bigtable cluster is experiencing performance issues due to a hotspot, causing query latency to increase. You need to address this issue and prevent it from recurring. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Instruct clients to switch from using NodeJS APIs to Python APIs.",
+      "B": "Review and modify the RowKey design to distribute data more evenly across the Bigtable cluster.",
+      "C": "Increase the number of nodes in the Cloud Bigtable cluster to handle more traffic.",
+      "D": "Set up a policy to delete data older than 30 days to reduce the load on the cluster."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The best approach is to review and modify the RowKey design to ensure that data is evenly distributed across the Cloud Bigtable cluster. Hotspots in Bigtable often occur when RowKeys are not well-distributed, causing a disproportionate amount of data to be directed to specific nodes. By adjusting the RowKey design, such as incorporating a hashing mechanism or ensuring a more balanced alphabetical distribution, you can prevent the formation of hotspots, thereby improving overall performance and reducing query latency. Switching from NodeJS APIs to Python APIs does not address the underlying problem of how data is stored and distributed within the Bigtable cluster and is unlikely to have a significant impact on performance. Increasing the number of nodes may temporarily alleviate the symptoms by distributing the load, but it does not solve the root cause of the hotspot, which is the uneven distribution of data. Deleting older data can help manage storage costs and long-term performance but does not directly address the immediate issue of hotspots affecting query performance. By focusing on optimizing the RowKey design, you tackle the problem at its source, ensuring better performance and scalability for the application."
+  },
+  {
+    "number": 41,
+    "question": "A manufacturing company operates several business-critical applications on VMware virtual machines in its on-premises data center. Management has mandated a disaster recovery strategy that uses Google Cloud as the recovery site, with a maximum tolerable data loss of 2 hours and a requirement to have applications running again within 6 hours of a declared disaster. The IT team is small and wants to avoid building and maintaining custom recovery scripts or manual runbooks. What should you implement?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Migrate to Virtual Machines to replicate the on-premises VMs to Compute Engine and write automated failover scripts that launch the replicated instances during a disaster",
+      "B": "Create scheduled exports of the VMware VM disk images using a third-party tool, upload them to Cloud Storage on a recurring basis, and import them to Compute Engine when recovery is needed",
+      "C": "Configure Backup and DR service to replicate the on-premises VMware VMs to Google Cloud and define recovery plans that orchestrate the restoration of applications during failover",
+      "D": "Set up Persistent Disk snapshots on Compute Engine instances that mirror the on-premises VMs and use Cloud Scheduler to trigger a Cloud Run Function that manages the snapshot replication cycle"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Backup and DR is purpose-built for disaster recovery of on-premises workloads to Google Cloud, including VMware environments. It provides continuous replication that keeps recovery points within the defined RPO window, and its recovery plans allow you to define the sequence in which applications and their dependencies are brought online during failover. This means the IT team does not need to build or maintain custom automation to meet their recovery time target. The service also includes capabilities like non-disruptive DR testing, so the team can validate that their recovery plans actually work without affecting production systems. Migrate to Virtual Machines is designed to move workloads permanently from on-premises to Google Cloud, not to maintain an ongoing disaster recovery posture. Exporting VM disk images on a schedule and importing them during recovery introduces manual steps and extended restoration times that are unlikely to meet a 6-hour RTO. Persistent Disk snapshots apply to Compute Engine instances that already exist in Google Cloud, not to on-premises VMware VMs, so this approach does not address the source environment described in the question."
+  },
+  {
+    "number": 42,
+    "question": "Your organization operates all its workloads on a single large Google Kubernetes Engine (GKE) cluster, which hosts a mix of batch processing, stateful services, and stateless applications. The cluster consists of a single node pool with 250 nodes. To optimize costs without sacrificing application availability, what strategy should you adopt?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a separate GKE cluster exclusively for batch workloads, distributing the existing nodes between the two clusters.",
+      "B": "Configure Horizontal Pod Autoscalers (HPA) for all stateless and compatible stateful workloads, and enable cluster autoscaling for dynamic node management.",
+      "C": "Implement CPU and memory quotas for each namespace and ensure all Pods have defined resource limits.",
+      "D": "Transition the node pool to utilize preemptible virtual machines to reduce costs."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The optimal solution involves setting up Horizontal Pod Autoscalers (HPA) for stateless and compatible stateful workloads, coupled with enabling cluster autoscaling. HPAs automatically adjust the number of Pod replicas based on current demand, ensuring efficient resource utilization. When combined with cluster autoscaling, the GKE cluster can dynamically adjust the number of nodes in response to the workloads' requirements. This synergy ensures that the cluster only consumes the necessary resources, leading to cost savings without compromising the availability or performance of applications. Creating a separate cluster for batch workloads introduces additional overhead and complexity without guaranteeing significant cost reductions. Implementing CPU and memory quotas helps in resource management but doesn't inherently reduce costs, especially if the workloads don't fully utilize the allocated resources. Using preemptible VMs can lower costs but comes with the risk of sudden instance terminations, which might not be suitable for all workloads, especially stateful services that require stability. Therefore, leveraging HPAs and cluster autoscaling offers a balanced approach to cost optimization and maintaining application reliability."
+  },
+  {
+    "number": 43,
+    "question": "Your organization and one of its business partners each have a Google Cloud project within separate organizations. Your organization's project (proj-x) operates in Virtual Private Cloud (vpc-x), while the partner's project (proj-y) operates in vpc-y. There are multiple instances running in vpc-x and vpc-y, with non-overlapping subnets. You need to ensure that all instances across both VPCs can communicate with each other via internal IPs, with an emphasis on minimizing latency and maximizing network throughput. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Establish a Cloud VPN tunnel between vpc-x and vpc-y using Google Cloud VPN.",
+      "B": "Configure Identity-Aware Proxy (IAP) TCP forwarding on instances in vpc-y and use the gcloud command to initiate tunnels from vpc-x.",
+      "C": "Set up VPC network peering between vpc-x and vpc-y.",
+      "D": "Create additional instances in both vpc-x and vpc-y, install OpenVPN on these instances, and configure a VPN tunnel between the VPCs."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The most efficient solution is to set up VPC network peering between vpc-x and vpc-y. VPC peering enables direct communication between instances in different VPCs using internal IP addresses, which minimizes latency and maximizes throughput by eliminating the need for data to traverse the public internet. It also supports full mesh connectivity between instances in the peered VPCs, which is ideal for scenarios where multiple instances need to communicate seamlessly. Establishing a Cloud VPN tunnel is an alternative but introduces more complexity and potential overhead, which may increase latency and reduce throughput compared to VPC peering. Using Identity-Aware Proxy (IAP) TCP forwarding is not suited for achieving continuous, high-performance connectivity across multiple instances as it is more geared towards securing specific connections. Finally, setting up OpenVPN on additional instances adds unnecessary complexity and management overhead, making it less efficient than using native Google Cloud features like VPC peering."
+  },
+  {
+    "number": 44,
+    "question": "Your organization uses BigQuery for storing and analyzing data. Some of the tables within a dataset contain sensitive financial information that should only be accessible to the finance team. The marketing team requires access to the same dataset for analysis, but they should not be able to view any of the sensitive financial information. You need to implement a solution that provides appropriate access levels while minimizing both costs and administrative effort. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a new dataset for the marketing team. Create authorized views that exclude the sensitive financial columns, and assign dataset-level IAM roles to the marketing team for the new dataset.",
+      "B": "Use the existing dataset, create materialized views that exclude the sensitive financial columns, and assign project-level IAM roles to the marketing team for those views.",
+      "C": "Create a separate dataset for the marketing team. Build views that filter out the sensitive financial data from the original tables. Assign dataset-level IAM roles to the marketing team for the new dataset and authorize the views to access the original dataset.",
+      "D": "Create a new dataset for both the finance and marketing teams. Move the non-sensitive data to the new dataset, and assign the marketing team project-level IAM roles for that dataset."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The correct solution is to create a separate dataset for the marketing team, build views that exclude sensitive financial data, and then assign dataset-level IAM roles to the marketing team for this new dataset. Authorizing the views to access the original dataset ensures that the marketing team can only query the non-sensitive data. This approach isolates the sensitive data while minimizing administrative effort and ensuring that access controls are correctly applied at the appropriate levels. Creating materialized views would be unnecessary and could lead to higher costs, as they require more storage and processing resources than regular views. Simply creating a new dataset for both teams and moving non-sensitive data there increases complexity and can lead to data duplication, which is not ideal for long-term data management. Allowing the marketing team access to the existing dataset directly risks exposing sensitive financial data, which violates the requirement of restricting access. The chosen solution of using views and a separate dataset provides a clear separation of duties and data access, ensuring compliance and security while minimizing costs."
+  },
+  {
+    "number": 45,
+    "question": "A retail company is planning to migrate their customer profile management system to Google Cloud Platform. They need a highly scalable, NoSQL database service that can handle a large number of customer profiles with flexible and hierarchical data structures. Which Google Cloud database service should they choose?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Google Cloud SQL",
+      "B": "Google BigQuery",
+      "C": "Google Cloud Spanner",
+      "D": "Google Cloud Firestore"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Google Cloud Firestore is the most suitable option for storing and managing customer profiles in this scenario. Firestore is a NoSQL document database that offers flexible data modeling and supports hierarchical data structures, making it ideal for storing user profiles with complex relationships. It is also highly scalable and provides strong consistency, which is essential for maintaining accurate and up-to-date customer information. Google Cloud SQL is a relational database service that is better suited for structured data with predefined schemas but is not as flexible as Firestore for handling hierarchical or unstructured data. Google BigQuery is a powerful data warehouse designed for analytics and large-scale data processing, which is not the primary use case here. Google Cloud Spanner is a globally distributed relational database service that provides strong consistency and scalability, but it is more complex and over-engineered for simple use cases like storing user profiles. Thus, Google Cloud Firestore is the best choice for this use case due to its flexibility, scalability, and ability to handle hierarchical data structures, which are typical requirements for managing customer profiles."
+  },
+  {
+    "number": 46,
+    "question": "Your company operates a video streaming application hosted on Google Compute Engine, where users can watch their favorite videos. The application runs on a fixed number of instances, and the video files are stored in Cloud Storage, streamed directly to users. Users have reported that they occasionally need to attempt to play popular videos multiple times before they are successful. You need to enhance the application's performance to address this issue. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Mount the Cloud Storage bucket using gcsfuse on all Compute Engine instances, and serve the video files directly from the backend instances.",
+      "B": "Create a Cloud Filestore NFS volume, attach it to the Compute Engine instances, download popular videos to Cloud Filestore, and serve the videos directly from the instances.",
+      "C": "Store popular videos as blobs in CloudSQL, and modify the application to retrieve videos from CloudSQL when Cloud Storage experiences high load.",
+      "D": "Set up a managed instance group with Compute Engine instances, create a global load balancer with two backends (the managed instance group and the Cloud Storage bucket), and enable Cloud CDN on the Cloud Storage bucket backend."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The best approach is to create a managed instance group with Compute Engine instances and configure a global load balancer with two backends: the managed instance group and the Cloud Storage bucket. By enabling Cloud CDN on the Cloud Storage bucket, you ensure that popular content is cached at the edge, reducing latency and improving the chances of successful playback on the first attempt. The global load balancer distributes traffic effectively, ensuring that requests are routed to the optimal backend, further enhancing the application's performance. Mounting the Cloud Storage bucket using gcsfuse adds unnecessary complexity and may not provide the performance benefits required for high-demand content. Using Cloud Filestore and downloading videos adds overhead and limits scalability, as Cloud Filestore is not designed for high-throughput streaming scenarios. Storing videos as blobs in CloudSQL is not an appropriate solution because CloudSQL is a relational database, not optimized for large file storage or high-throughput data access required for video streaming. By leveraging Cloud CDN, the global load balancer, and Cloud Storage, you create a scalable, efficient solution that meets user demand and enhances the overall performance of the application."
+  },
+  {
+    "number": 47,
+    "question": "Your organization is partnering with an external auditing firm to review financial data stored in BigQuery datasets. The engagement lasts 14 days, and the auditors need to run queries against specific datasets during that window. After the 14 days, their access must cease without anyone on your team needing to take action. Your compliance team also requires a detailed record of which individual auditors queried which datasets and when. The auditors will authenticate using their own corporate Google Workspace identities. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a dedicated service account with BigQuery access for the auditing firm and deploy a Cloud Run Function that revokes the service account's roles after 14 days",
+      "B": "Generate a shared API key scoped to the relevant BigQuery datasets and configure the key to expire after 14 days",
+      "C": "Assign the auditors' Google Workspace accounts the appropriate BigQuery roles with an IAM Condition that sets an expiration timestamp 14 days from the start of the engagement",
+      "D": "Add the auditors' accounts to a Google Group that has BigQuery access and create a Cloud Scheduler job to remove the group's IAM bindings after 14 days"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "IAM Conditions support time-based expressions that allow you to set a precise expiration on role bindings. Once the timestamp passes, the permission becomes invalid automatically with no manual steps or external automation required. Because each auditor authenticates with their own Google Workspace identity, Cloud Audit Logs will record exactly which individual ran each query and when, satisfying the compliance team's traceability requirement. This approach uses native IAM functionality and does not require provisioning additional infrastructure or writing custom revocation logic. It is the most direct way to grant temporary, auditable, per-user access to Google Cloud resources. Using a shared service account for the entire auditing firm means all queries would be logged under a single identity, making it impossible to distinguish which individual auditor performed which action. Generating a shared API key has a similar problem with attribution. Adding auditors to a Google Group with a Cloud Scheduler job to remove bindings later depends on an external automation step to enforce the expiration, and if the scheduler job fails, access continues beyond the intended window."
+  },
+  {
+    "number": 48,
+    "question": "You are responsible for managing multiple Google Cloud projects and need to frequently interact with services such as BigQuery, Bigtable, and Kubernetes Engine using the gcloud CLI. Due to your frequent travels and use of various workstations throughout the week, you want a consistent and hassle-free experience without having to install and configure the gcloud CLI on each machine. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a dedicated Compute Engine instance with gcloud installed, and connect via SSH to access the gcloud CLI consistently.",
+      "B": "Use Google Cloud Shell in the Google Cloud Console to manage and interact with your Google Cloud resources.",
+      "C": "Install the gcloud CLI on each of your workstations and configure auto-updates to keep the CLI up to date.",
+      "D": "Utilize a package manager to install the gcloud CLI on each of your workstations for easier management."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The best solution is to use Google Cloud Shell, a fully managed and up-to-date environment available directly in the Google Cloud Console. Cloud Shell provides a consistent and secure environment with the gcloud CLI pre-installed, removing the need for manual installations and updates on various workstations. It also comes with access to the Google Cloud SDK and other development tools, ensuring you can interact with your cloud resources from anywhere without worrying about software versions or configurations. Setting up a dedicated Compute Engine instance with gcloud installed would require additional overhead to maintain and ensure connectivity, making it less convenient. Installing the gcloud CLI on each workstation and enabling auto-updates would work, but it would still require managing and configuring the tool on multiple machines, which can be cumbersome. Using a package manager could simplify installation but does not eliminate the need for configuration and updates on each machine, nor does it offer the same level of convenience as Cloud Shell. Cloud Shell is specifically designed to solve this problem by providing a ready-to-use environment, making it the most efficient and Google-recommended approach."
+  },
+  {
+    "number": 49,
+    "question": "A financial services company runs its trading platform on GKE and is preparing for a regulatory audit. The compliance team requires a complete record of all administrative actions taken against the cluster, including who created or modified deployments, which service accounts accessed Kubernetes secrets containing API credentials, and which users executed commands inside running pods. The records must include the identity of the actor and a timestamp for each action. You need to configure the environment to satisfy these audit requirements. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Deploy a Fluentd DaemonSet on every node in the cluster to collect container stdout and stderr logs and export them to a Cloud Storage bucket for long-term retention",
+      "B": "Enable Security Command Center Premium tier and configure it to continuously scan the GKE clusters for policy violations and configuration drift",
+      "C": "Set up Binary Authorization with attestation policies that verify container image signatures before allowing deployments to the production cluster",
+      "D": "Enable Cloud Audit Logs for the project and activate GKE Audit Logging to record all requests made to the Kubernetes API server"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Every administrative action in a GKE cluster flows through the Kubernetes API server, which makes it the single point where all control plane activity can be captured. When GKE Audit Logging is enabled, it records a detailed entry for each API call, including the identity of the user or service account that made the request, what resource was affected, what action was taken, and when it occurred. This covers the specific activities the compliance team is asking about: creating and modifying deployments, reading secrets, and executing commands inside containers. These logs are sent to Cloud Logging, where they are stored in a tamper-resistant format that auditors can query and review. Deploying a Fluentd DaemonSet to collect container logs captures application-level output but does not record who performed administrative actions against the cluster or who accessed secrets through the API. Security Command Center Premium provides vulnerability scanning and misconfiguration detection but functions as a risk analysis tool rather than a source of identity-based audit records. Binary Authorization enforces policies about which container images are allowed to run in the cluster but operates only at deploy time and does not track ongoing administrative activity."
+  },
+  {
+    "number": 50,
+    "question": "During a recent financial audit, it was discovered that an unusually large number of Compute Engine instances were allocated for video processing tasks like encoding and transcoding. You suspect that these instances were not terminated after completing their tasks and are now sitting idle. You need to quickly identify which of these virtual machines are no longer in use. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use gcloud compute instances list to identify instances labeled as idle.",
+      "B": "Run the gcloud recommender command to find idle virtual machine instances.",
+      "C": "Log into each instance and manually collect usage metrics like CPU, disk, and network activity.",
+      "D": "Use the Google Console to see which instances in managed groups have failed health checks."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "To efficiently identify idle virtual machines, the best option is to use the \"gcloud recommender\" command. This command leverages Google's AI-powered recommendations to pinpoint instances that are underutilized or idle, making it a quick and effective way to detect potential zombie machines. Listing instances with gcloud compute instances list would not specifically identify idle instances, as this command does not automatically flag underutilized resources. Logging into each instance and manually checking metrics would be time-consuming and impractical, especially at scale. Similarly, checking failed health probes in managed instance groups wouldn't necessarily identify idle machines, as it only indicates if instances are unresponsive, not if they are unused or idle."
+  },
+  {
+    "number": 51,
+    "question": "Your development team deploys a new version of your application every Wednesday at 2 AM UTC. Your security team has developed a Cloud Run Function (formerly called Cloud Function) that needs to automatically run security tests on the newly deployed version immediately after each weekly deployment. How should you automate the execution of this Cloud Run Function to align with the weekly deployment schedule?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Cloud Tasks with a Cloud Storage bucket trigger to initiate the Cloud Run Function",
+      "B": "Create a Cloud Logging sink combined with a Cloud Storage trigger to activate the Cloud Run Function",
+      "C": "Configure the deployment pipeline to send a notification to a Pub/Sub topic, which will trigger the Cloud Run Function",
+      "D": "Set up IAM and Confidential Computing to trigger the Cloud Run Function based on the deployment"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Integrating the Cloud Run Function trigger directly into your deployment pipeline through Pub/Sub ensures that the security tests execute immediately after each deployment completes. By configuring your CI/CD pipeline to publish a message to a Pub/Sub topic when deployment finishes, the Cloud Run Function subscribes to that topic and automatically triggers in response to the deployment event. This event-driven approach provides precise timing that aligns perfectly with your deployment schedule, eliminates the need for scheduled jobs that might run before deployment completes or miss deployments entirely, and creates a reliable automation chain where security testing happens as part of the deployment workflow. Using Cloud Tasks or Cloud Logging with Cloud Storage introduces unnecessary complexity and may not align precisely with deployment timing since these approaches rely on indirect signals rather than explicit deployment completion events. Setting up IAM and Confidential Computing to trigger functions does not provide a practical mechanism for responding to deployment events, as these services focus on security and access control rather than event-based function invocation."
+  },
+  {
+    "number": 52,
+    "question": "Your company manages a critical application deployed on Google Kubernetes Engine (GKE) that is updated regularly through rolling deployments. Recently, production outages have occurred due to misconfigurations that are specific to the production environment, causing the application to fail during updates. To prevent future outages, you need to implement a solution that ensures the application is healthy before completing the rollout of a new version. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Implement liveness and readiness probes in the Pod specification to monitor the application's health during deployments.",
+      "B": "Configure a custom health check on the Google Cloud Load Balancer that routes traffic to the GKE cluster.",
+      "C": "Set up a Cloud Scheduler job that runs periodic checks to confirm the application's availability.",
+      "D": "Create a Cloud Monitoring alert to notify the team if the application experiences downtime after a deployment."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The best approach to prevent outages during rolling deployments is to implement liveness and readiness probes in the Pod specification. These probes allow Kubernetes to automatically check if the application is healthy and ready to serve traffic. The readiness probe, in particular, ensures that traffic is only sent to Pods that are fully initialized and ready to handle requests. This prevents misconfigured or unhealthy Pods from causing outages during the rollout process. Configuring a health check on the load balancer would only verify the external availability of the application and does not provide the fine-grained, in-cluster checks that liveness and readiness probes offer. Setting up a periodic check with Cloud Scheduler might help detect issues after they occur but would not proactively prevent outages during deployments. Creating a Cloud Monitoring alert can be useful for detecting downtime but does not address the root cause of preventing misconfigured Pods from becoming active in the first place. Therefore, liveness and readiness probes are the most effective and Kubernetes-native solution to ensure that your application is healthy during rolling updates."
+  },
+  {
+    "number": 53,
+    "question": "BoldGame is developing a new multiplayer game with a high likelihood of rapid growth. They need a solution to handle real-time scoring data and publish it on a global leaderboard while also keeping costs low. Which combination of Google Cloud technologies will fulfill all their requirements?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Cloud Dataflow, Cloud Storage, Cloud Pub/Sub, and BigQuery",
+      "B": "Kubernetes Engine, Cloud Pub/Sub, and Firestore",
+      "C": "Cloud Dataproc, Cloud Functions, Cloud SQL, and Cloud Pub/Sub",
+      "D": "App Engine, Cloud SQL, Cloud Pub/Sub, and Cloud Storage",
+      "E": "Compute Engine, Cloud Storage, Cloud Pub/Sub, and Spanner"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Kubernetes Engine, Cloud Pub/Sub, and Firestore are the best fit for BoldGame's requirements. Real-time scoring and a global leaderboard are primarily a low-latency serving problem, not an analytics problem. Cloud Pub/Sub efficiently ingests high volumes of score events and decouples game clients from backend processing. Firestore is designed for frequent small writes and fast global reads, and it supports real-time updates, which makes it well suited for live leaderboards that players are constantly viewing. Kubernetes Engine allows the game backend to scale horizontally as usage grows unpredictably, while keeping costs reasonable through autoscaling and fine-grained control over resources. The Cloud Dataflow, Cloud Storage, Cloud Pub/Sub, and BigQuery combination focuses on streaming analytics rather than real-time serving. While Dataflow and Pub/Sub can process score events, BigQuery is optimized for analytical queries and batch-style aggregations, not for frequent low-latency leaderboard lookups by end users. The Dataproc-based option is more suitable for batch processing workloads, and Cloud SQL can become a bottleneck under high write rates and global traffic. The App Engine and Cloud SQL option simplifies deployment, but Cloud SQL is not ideal for rapidly updating, globally distributed leaderboard data."
+  },
+  {
+    "number": 54,
+    "question": "Your company has multiple production projects within a specific folder in your Google Cloud Organization. The operations team needs to collect and store logs from all these production projects in a central location. You want to ensure that logs from both existing and newly created production projects are automatically included without having to set up logging for each project individually. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up an aggregated export at the organization level, and direct the log sink to a Cloud Storage bucket in an operations project.",
+      "B": "Configure log exports in each individual production project, and set the log sinks to store logs in a Cloud Storage bucket in the operations project.",
+      "C": "Create an aggregated export at the folder level for the production projects, and configure the log sink to store logs in a Cloud Storage bucket within a dedicated operations project.",
+      "D": "Set up log exports in each production project, sending the logs to BigQuery datasets in the respective projects, and grant the operations team IAM access to run queries on those datasets."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The best solution is to create an aggregated export at the folder level for the production projects, configuring the log sink to store logs in a Cloud Storage bucket within a dedicated operations project. This approach ensures that all logs from any current and future projects within the production folder are automatically captured and stored in a centralized location. Aggregated exports at the folder level are ideal for managing logs across multiple projects without the need to set up individual log exports for each project, providing both scalability and ease of management. Setting up an aggregated export at the organization level would include logs from all projects within the organization, not just the production projects, which is not the desired outcome. Configuring log exports in each individual production project would require manual setup and maintenance for each project, making it inefficient and prone to errors, especially as new projects are added. Using BigQuery datasets for storing logs requires additional configuration and permissions management and might not be as efficient or cost-effective as storing logs in a Cloud Storage bucket, which is better suited for log retention and archiving. The folder-level aggregated export solution ensures that all relevant logs are captured with minimal ongoing management, aligning with the requirements for a scalable and centralized logging infrastructure."
+  },
+  {
+    "number": 55,
+    "question": "Your team is preparing to launch a new load-testing initiative to assess the scalability of your core cloud services, which are deployed on Google Compute Engine and leverage Cloud Spanner for data storage. What steps should be included in the load-testing plan to ensure thorough evaluation and reliable results? (Choose three.)\n\nChoose ALL answers that apply.",
+    "options": {
+      "A": "Ensure that the load tests specifically measure the performance of Cloud Spanner under high load.",
+      "B": "Set up a dedicated Google Cloud project exclusively for running the load tests.",
+      "C": "Regularly execute the load-testing tool directly against the live production environment.",
+      "D": "Integrate detailed monitoring and logging into both the load-testing tool and the cloud services under test.",
+      "E": "Make sure that all third-party APIs used by your services can handle the anticipated load."
+    },
+    "question_type": "multiple_answers",
+    "correct_answer": "A, B, D",
+    "explanation": "When conducting load testing for cloud services, it's critical to include specific components of your infrastructure, such as Cloud Spanner, to ensure they can handle the expected load. Setting up a dedicated Google Cloud project for these tests is important to avoid any potential disruptions to the production environment and to maintain a controlled testing space. Additionally, integrating detailed monitoring and logging within both the load-testing tool and the target services is essential for collecting valuable data. This data will allow you to analyze the performance of your services under stress and identify any bottlenecks that need addressing. Running load tests against the production environment can lead to unintended service disruptions and should be avoided. Instead, testing should occur in a separate environment to protect production stability. While considering the load capacity of third-party APIs is relevant, it isn't the primary focus of testing your internal services' scalability. Lastly, using production logs for load testing can introduce unnecessary complexity and privacy concerns. It's better to generate a representative load that simulates real-world conditions without relying directly on production data."
+  },
+  {
+    "number": 56,
+    "question": "A logistics company has moved its operations to Google Cloud and wants to start analyzing real-time sensor data from its fleet of delivery vehicles. The company also needs to process daily reports that summarize vehicle performance. They currently have no codebase for this analysis and are considering all possible solutions. What technology should they choose to efficiently handle both real-time and batch data processing?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Google Cloud Dataflow",
+      "B": "Google Kubernetes Engine with BigQuery",
+      "C": "Google Cloud Dataproc",
+      "D": "Google Compute Engine with Cloud SQL"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Google Cloud Dataflow is the optimal choice because it is designed to handle both stream and batch processing within the same framework, making it ideal for scenarios where you need to process real-time data alongside scheduled batch jobs. Dataflow provides a unified programming model, which simplifies development and ensures scalability for both types of workloads. Google Cloud Dataproc is more suitable for existing Hadoop or Spark jobs, but it might not be the best fit if you are starting from scratch and need a more versatile solution. Google Kubernetes Engine with BigQuery would add unnecessary complexity for real-time data processing. Google Compute Engine with Cloud SQL is more appropriate for traditional database workloads and does not natively support stream processing, making it less suitable for this use case."
+  },
+  {
+    "number": 57,
+    "question": "Your company has recently merged with another organization that also has its infrastructure in Google Cloud. Each organization operates within its own Google Cloud organization and utilizes a Shared VPC for network connectivity. There are overlapping subnets between the two Shared VPCs. However, the applications that need to communicate across the two organizations are not on overlapping subnets. You need to establish private network connectivity between these applications with minimal disruption and without extensive re-engineering. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up VPC peering between the Shared VPCs in each organization.",
+      "B": "Migrate the acquired company's projects into your company's Google Cloud organization and reconfigure network settings.",
+      "C": "Deploy Cloud VPN gateways in each Shared VPC and establish VPN connections between them.",
+      "D": "Implement application-level proxying to allow traffic between applications in the different Shared VPCs."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The correct approach is to deploy Cloud VPN gateways in each Shared VPC and establish VPN connections between them. This method allows the applications to communicate privately over the network without needing to re-engineer the existing infrastructure. Cloud VPN provides a straightforward way to connect separate VPCs, even across different Google Cloud organizations, and can handle scenarios where VPC peering is not feasible due to overlapping subnets. VPC peering would not work in this scenario because of the subnet overlap between the two Shared VPCs, which can cause routing conflicts. Migrating the projects from one organization to another would require significant re-engineering, including reconfiguring network settings and potentially relaunching instances, leading to unnecessary complexity and downtime. Application-level proxying could work, but it would introduce additional overhead and complexity, particularly in terms of configuration and maintenance, making it less ideal than using Cloud VPN."
+  },
+  {
+    "number": 58,
+    "question": "The IT department at a large retail company requires that all Google Cloud Platform resources adhere to a strict least privilege model, with distinct roles and responsibilities for managing production and non-production environments. The company wants to ensure that developers and operations teams only have access to the environments necessary for their tasks. What structure should you implement for the GCP resource hierarchy?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up two Workspace domains with a GCP Organization corresponding to each. One for development and one for production, each containing all applications within a single project under the corresponding domain.",
+      "B": "Create separate Workspace domains for each stage of the development lifecycle, and manage all applications within a single project per domain.",
+      "C": "Configure one Workspace domain for user management, with one project encompassing all non-production environments and another project for production.",
+      "D": "Set up a single Workspace domain to manage users, with separate projects for each stage of each application's development lifecycle."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The best approach is to use a single Workspace domain, and a single GCP Org, to manage users, while assigning each stage of each application its own project within the Organization. This structure supports the principle of least privilege by ensuring that permissions can be finely controlled at the project level, giving different teams access only to the environments they need. By segregating the environments into individual projects, you also maintain a clear separation of duties, which is essential for managing production and non-production environments securely. Using separate Workspace domains and Organizations for different environments or placing all applications within a single project under one domain limits the flexibility to enforce least privilege effectively. These approaches may either result in overly broad access or complicate user management and access control. Similarly, combining all non-production environments into one project under a single Workspace domain fails to provide adequate separation between environments, increasing the risk of cross-environment contamination and reducing the ability to enforce strict access controls. Thus, organizing each stage of each application into its own project within a single Workspace domain (and therefore Organization) is the optimal solution for maintaining a secure, least privilege model."
+  },
+  {
+    "number": 59,
+    "question": "You have deployed a web application on a Google Kubernetes Engine (GKE) cluster named prod-cluster, and you expect the workload to vary based on user traffic. You want to enable your GKE cluster to automatically adjust the number of nodes in response to changing demand. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Add more nodes to prod-cluster using the command: gcloud container clusters resize prod-cluster --size 10.",
+      "B": "Add labels to the instances in prod-cluster to enable autoscaling with the command: gcloud compute instances add-labels INSTANCE --labels=enable-autoscaling,max-nodes-10.",
+      "C": "Update prod-cluster to enable autoscaling by using the command: gcloud container clusters update prod-cluster --enable-autoscaling --min-nodes=1 --max-nodes=10.",
+      "D": "Create a new GKE cluster named prod-cluster with autoscaling enabled by running the command: gcloud container clusters create prod-cluster --enable-autoscaling --min-nodes=1 --max-nodes=10, then redeploy your application."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The correct action is to update the existing GKE cluster, prod-cluster, by enabling autoscaling using the gcloud container clusters update command. This setup allows the cluster to dynamically scale the number of nodes within the specified range based on actual demand, ensuring that your application can effectively handle fluctuating workloads without requiring manual intervention. Adding more nodes with the resize command only increases the fixed number of nodes and does not provide the flexibility of autoscaling. Applying labels to instances is not the correct method for enabling autoscaling, as autoscaling needs to be configured at the cluster or node pool level. While creating a new cluster with autoscaling enabled could work, it involves redeploying your application, which is unnecessary and introduces additional complexity. By simply updating prod-cluster to support autoscaling, you achieve the desired functionality without the need for redeployment, making it the most straightforward and effective solution."
+  },
+  {
+    "number": 60,
+    "question": "Your company is focused on rapid software development and continuous deployment to meet market demands. The leadership team emphasizes minimizing security risks without slowing down the development process. What two steps can you take to prevent security vulnerabilities from being introduced into the codebase? (Choose two.)\n\nChoose ALL answers that apply.",
+    "options": {
+      "A": "Require all code changes to be reviewed by a dedicated security team before merging.",
+      "B": "Integrate automated static code analysis tools into your CI/CD pipeline.",
+      "C": "Implement comprehensive end-to-end testing to ensure system stability.",
+      "D": "Incorporate a vulnerability scanning tool into your CI/CD pipeline to check for security issues.",
+      "E": "Use a manual deployment process to review changes before they go live."
+    },
+    "question_type": "multiple_answers",
+    "correct_answer": "B, D",
+    "explanation": "Integrating automated static code analysis tools into your CI/CD pipeline helps to automatically identify potential security issues in the code as soon as it is written. This approach is fast and scalable, aligning well with the company's focus on rapid development and deployment. It ensures that code quality and security are continuously monitored without creating bottlenecks in the development process. Adding a vulnerability scanning tool to the CI/CD pipeline further enhances security by automatically detecting known vulnerabilities in dependencies, configurations, or the code itself before the software is released. This proactive measure ensures that security flaws are addressed early, reducing the risk of deploying insecure software while maintaining the desired speed and efficiency. Requiring all code changes to be reviewed by a dedicated security team can slow down the development process, which conflicts with the goal of maintaining speed. Comprehensive end-to-end testing is valuable for ensuring system stability but does not specifically target security vulnerabilities. A manual deployment process might catch some issues but is less efficient and scalable than automated checks, making it less suitable for a fast-paced development environment. By incorporating static analysis and vulnerability scanning into the CI/CD pipeline, you achieve a balance between security and development agility."
+  }
+]

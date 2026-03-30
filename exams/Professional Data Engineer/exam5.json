@@ -1,0 +1,652 @@
+[
+  {
+    "number": 1,
+    "question": "Your logistics company receives shipment updates from suppliers. To ensure timely and accurate processing, you use a pull subscription in Pub/Sub so that logistics coordinators can get details from the shipment updates. You must guarantee that each shipment update is processed only once by a coordinator without adding unnecessary complexity to the workflow. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Utilize Pub/Sub's exactly-once delivery in your pull subscription.",
+      "B": "Use a Dataflow job with a deduplication step before delivering messages to the coordinators.",
+      "C": "Implement a transactional database to track which messages have been processed.",
+      "D": "Set up a new Pub/Sub push subscription to track processed shipment updates in the coordinator's system."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Utilizing Pub/Sub's exactly-once delivery ensures each message is processed only once, preventing duplicates and maintaining workflow simplicity. Dataflow deduplication adds unnecessary complexity and is not as efficient for this purpose. A transactional database would also complicate the system, adding an additional layer of management. A push subscription does not address the issue of ensuring a single processing instance for each message."
+  },
+  {
+    "number": 2,
+    "question": "Your company has migrated its on-premises Hadoop data lake to Google Cloud Storage. The data analytics team needs to process this data using Apache Spark and SQL, while enforcing column-level security policies. You require a scalable and cost-effective solution that supports a data mesh architecture. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Deploy a persistent Dataproc cluster with Apache Hive and Ranger. Configure Ranger for column-level security, and use Dataproc Spark or Hive SQL for processing.",
+      "B": "Load the data into BigQuery tables. Create a taxonomy of policy tags in Data Catalog. Add policy tags to columns, and process with the Spark-BigQuery connector or BigQuery SQL.",
+      "C": "Define a BigLake table. Create a taxonomy of policy tags in Data Catalog. Add policy tags to columns, and process with the Spark-BigQuery connector or BigQuery SQL.",
+      "D": "Apply Identity and Access Management (IAM) policies at the file level in Cloud Storage. Define a BigQuery external table for SQL processing. Use Dataproc Spark to process the Cloud Storage files."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Defining a BigLake table and using Data Catalog to create and apply policy tags ensures that column-level security is enforced in a scalable and cost-effective manner. This approach provides seamless integration with both Apache Spark and BigQuery for processing without introducing unnecessary complexity.\n\nWhile loading data into BigQuery tables is a viable option, it adds an extra step that may not be necessary. BigLake allows you to keep data in Google Cloud Storage (GCS) while maintaining a unified data management layer across multiple storage systems, which aligns with the principles of a data mesh architecture by enabling decentralized, scalable data management.\n\nDeploying a persistent Dataproc cluster with Hive and Ranger increases complexity and cost, while managing IAM policies at the file level does not provide the same fine-grained, column-level security that BigLake offers through policy tags."
+  },
+  {
+    "number": 3,
+    "question": "You have a dataset in BigQuery used for generating company reports. Some fields in the monthly finance reports do not adhere to the company's format standards, such as inconsistent date formats and varying currency symbols. This issue occurs frequently, so you need to establish a recurring job to standardize the data. You prefer a solution that requires no coding. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Dataflow SQL to create a job that standardizes the data, then schedule the pipeline to run recurrently.",
+      "B": "Create a Dataproc Serverless job using Spark to normalize the data, and set it up as a recurring job.",
+      "C": "Use BigQuery and GoogleSQL to standardize the data, and schedule recurring queries in BigQuery.",
+      "D": "Use Cloud Data Fusion and Wrangler to standardize the data, and configure a recurring job."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Using Cloud Data Fusion and Wrangler provides a no-code solution to standardize the data. Wrangler allows for data transformation and normalization through an intuitive interface, and Cloud Data Fusion can schedule these transformations to run recurrently, ensuring data consistency without requiring coding expertise.\n\nDataflow SQL, while powerful, requires some SQL coding and might not be as intuitive for non-developers.\n\nCreating a Dataproc Serverless job with Spark involves coding and is more complex than necessary for this task.\n\nUsing BigQuery and GoogleSQL requires writing and maintaining SQL queries, which does not align with the requirement for a no-code solution."
+  },
+  {
+    "number": 4,
+    "question": "Your organization recently discovered that one of its Cloud KMS encryption keys was compromised. You need to re-encrypt all data in your CMEK-protected BigQuery datasets that used this key and then delete the compromised key. Additionally, you want to minimize the risk of any future data being written without customer-managed encryption key (CMEK) protection. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Rotate the Cloud KMS key version and continue to use the same BigQuery datasets.",
+      "B": "Create a new Cloud KMS key and set it as the default CMEK key for the existing BigQuery datasets.",
+      "C": "Create a new Cloud KMS key and re-encrypt the data in the existing datasets by specifying the new key in a batch update.",
+      "D": "Create a new Cloud KMS key, then create new BigQuery datasets configured to use the new key. Copy all data to the new datasets without specifying a key in the transfer."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Creating a new Cloud KMS key and setting up new BigQuery datasets to use the new key as the default ensures that all future data written to these datasets is protected with the new key. Copying data from the old datasets to the new ones without specifying a key during the copy process guarantees that the new key is used for encryption, addressing the compromised key issue effectively.\n\nRotating the Cloud KMS key version does not fully mitigate the risk associated with the compromised key.\n\nSimply setting a new default CMEK key on the existing datasets does not re-encrypt the existing data.\n\nRe-encrypting data in place may be complex and does not ensure future writes will use the new key consistently.\n\nTherefore, creating new BigQuery datasets with the new key and copying the data over is the most thorough and secure approach."
+  },
+  {
+    "number": 5,
+    "question": "Your organization employs a hybrid cloud strategy, storing data in Google Cloud Storage and Amazon Web Services (AWS) S3 buckets, with all data residing in US regions. You need to perform real-time queries on this data using BigQuery without giving users direct access to the underlying storage. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Establish a BigQuery Omni connection to access the AWS S3 bucket data. Define external tables over both Cloud Storage and S3 data, and use BigQuery to query the data directly.",
+      "B": "Utilize Dataflow to transfer data from AWS S3 to Cloud Storage. Create external tables over the Cloud Storage data and perform queries using BigQuery.",
+      "C": "Configure a BigQuery Omni connection for the AWS S3 bucket data. Create BigLake tables over both Cloud Storage and S3 data, and query the data directly with BigQuery.",
+      "D": "Implement the Storage Transfer Service to move data from AWS S3 to Cloud Storage. Set up BigLake tables over the Cloud Storage data and use BigQuery to query the data."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Configuring a BigQuery Omni connection allows seamless querying across different cloud storage providers without needing to move the data, ensuring timely access and reducing data transfer costs. Creating BigLake tables over both Cloud Storage and S3 data enables consistent and optimized querying across clouds. Using Dataflow or Storage Transfer Service to copy data introduces unnecessary complexity and potential delays. External tables do not offer the same level of integration and performance optimization as BigLake tables, making BigLake the more effective solution for this scenario."
+  },
+  {
+    "number": 6,
+    "question": "You are designing a data transformation solution for BigQuery. Your team is skilled in SQL and prefers using the ELT (Extract, Load, Transform) approach. Additionally, they require an intuitive development environment and tools to manage SQL code efficiently. You need to select a platform that enables your developers to build and manage these pipelines effectively. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Cloud Data Fusion to design and run ETL pipelines.",
+      "B": "Use Dataform to create, manage, and schedule SQL pipelines.",
+      "C": "Use Dataflow to process data streams from Pub/Sub, transform the data, and load it into BigQuery.",
+      "D": "Use Cloud Composer to orchestrate data loading and execute SQL pipelines using BigQuery job operators."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Leveraging Dataform is the best choice because it provides an intuitive environment specifically designed for managing SQL-based ELT pipelines. It allows developers to handle SQL as code, offering tools for version control and collaboration. Cloud Data Fusion is more suited for ETL processes and might not be the best fit for teams focusing on ELT. Dataflow is ideal for streaming and batch data processing but is less intuitive for SQL-based workflows. Cloud Composer, while powerful for orchestration, is more complex and not as focused on providing an intuitive SQL development environment."
+  },
+  {
+    "number": 7,
+    "question": "Your company manages a large table containing millions of rows of transaction data, partitioned by date. This data is frequently queried by various applications and users multiple times per minute. The queries need to calculate aggregations such as AVG, MAX, and SUM over the past six months of data, while maintaining full historical data in the base table. You want to ensure the query results include the most recent data from the table and reduce the cost, maintenance, and processing time. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a materialized view to aggregate the base table data. Apply partition expiration on the base table to keep only the last six months of partitions.",
+      "B": "Create a view to aggregate the base table data. Apply a filter to limit the view to the last six months of partitions.",
+      "C": "Create a new table that aggregates the base table data. Apply a filter to limit the table to the last six months of partitions. Schedule a query to refresh the new table every hour.",
+      "D": "Set up a materialized view to aggregate the base table data. Include a filter to restrict the view to the last six months of partitions."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Using a materialized view with a filter for the last six months of data optimizes query performance by precomputing the required aggregations and ensuring the results are always up-to-date with minimal processing overhead. Applying partition expiration on the base table is not suitable since you need to retain full historical data. A regular view does not offer the same performance benefits as a materialized view. Creating and scheduling updates to a new table increases maintenance and processing costs, making it less efficient than a materialized view."
+  },
+  {
+    "number": 8,
+    "question": "You have 100 GB of archived transaction records stored in a BigQuery table. These records are rarely accessed, perhaps only once or twice a year for regulatory reporting. You need to store this data securely and immutably for the next 3 years, while also minimizing storage costs. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a BigQuery table clone and query the clone when needed.",
+      "B": "Create a BigQuery table snapshot and restore it when you need to perform analytics.",
+      "C": "Export the data to a Cloud Storage bucket with an archive storage class, set a locked retention policy on the bucket, and create a BigQuery external table on the exported files.",
+      "D": "Export the data to a Cloud Storage bucket with an archive storage class, enable versioning on the bucket, and create a BigQuery external table on the exported files."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Exporting the data to a Cloud Storage bucket with an archive storage class, setting a locked retention policy on the bucket, and creating a BigQuery external table on the exported files is the best solution. This approach minimizes storage costs by using the archive storage class, ensures immutability with a locked retention policy, and allows for easy access through an external table when needed.\n\nCreating a BigQuery table clone does not minimize storage costs as effectively as using archive storage.\n\nA BigQuery table snapshot is not as cost-effective for long-term infrequent access and does not provide immutability.\n\nEnabling versioning on the bucket increases complexity and costs without providing the same level of immutability as a locked retention policy."
+  },
+  {
+    "number": 9,
+    "question": "You need to connect various client applications with fluctuating public IP addresses to a Cloud SQL database instance. You have ensured strong password policies and enforced SSL connections for the database. You aim to use the Cloud SQL public IP while maintaining secure connections. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Leave the Authorized Network empty and implement the Cloud SQL Auth proxy on each client application.",
+      "B": "Add the CIDR range 0.0.0.0/0 to the Authorized Network and manage access through Identity and Access Management (IAM).",
+      "C": "Regularly update the Authorized Network list with the current IP addresses of the client applications.",
+      "D": "Add the CIDR range 0.0.0.0/0 to the Authorized Network and implement the Cloud SQL Auth proxy on each client application."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Using the Cloud SQL Auth proxy ensures secure connections without needing to manage the IP addresses of the client applications. Adding the CIDR range 0.0.0.0/0 to the Authorized Network without additional security measures is not recommended as it exposes the database to the entire internet. Regularly updating the Authorized Network list with dynamic IPs can be cumbersome and error-prone. Using IAM alone does not address the need for dynamic IP management. Implementing the Cloud SQL Auth proxy on each client application is the most secure and scalable solution."
+  },
+  {
+    "number": 10,
+    "question": "Your company currently runs a PostgreSQL database on-premises that handles both transactional and analytical workloads. You plan to migrate this database to Google Cloud to modernize your infrastructure while minimizing costs and complexity. You want to continue using PostgreSQL. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Migrate your database to BigQuery for improved analytics capabilities.",
+      "B": "Transfer your database to Cloud Spanner to take advantage of its scalability and global distribution.",
+      "C": "Move your PostgreSQL database to Cloud SQL for PostgreSQL.",
+      "D": "Upgrade to AlloyDB for PostgreSQL to benefit from high performance and integrated analytics."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Migrating your PostgreSQL database to Cloud SQL for PostgreSQL is the best choice because it provides a managed service that retains compatibility with your existing PostgreSQL setup. This approach ensures minimal changes to your database management system, reducing both cost and complexity during migration.\n\nBigQuery is primarily for analytics and does not support transactional workloads.\n\nCloud Spanner involves switching to a different database system, which can increase complexity and costs.\n\nAlloyDB for PostgreSQL, while high-performance, may introduce additional complexity and higher costs compared to Cloud SQL for PostgreSQL.\n\nTherefore, Cloud SQL for PostgreSQL is the optimal solution for balancing cost, complexity, and maintaining the existing PostgreSQL environment."
+  },
+  {
+    "number": 11,
+    "question": "You are transferring a large dataset from a secure FTP server to Google Cloud Storage. The files are accessed using temporary access tokens. You created a CSV file listing the file URLs and initiated a transfer job using the Storage Transfer Service. The job ran smoothly for a while but then failed due to HTTP 403 errors on the remaining files. You confirmed that there were no changes to the source FTP server. You need to address the issue to continue the transfer. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Mount the Cloud Storage bucket using Cloud Storage FUSE on a Compute Engine instance. Remove the transferred files from the CSV file and use a script to download the remaining files to the mounted bucket.",
+      "B": "Refresh the access credentials for the FTP server. Remove the transferred files from the CSV file and rerun the Storage Transfer Service job.",
+      "C": "Change the hash algorithm used in the CSV file from MD5 to SHA256. Remove the transferred files from the CSV file and rerun the Storage Transfer Service job.",
+      "D": "Generate new access tokens with an extended expiration time for the remaining files. Create multiple smaller CSV files from the updated list and submit them as separate Storage Transfer Service jobs."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "403 error means \"forbidden.\" In other words, the credentials are no longer working, so the temporary access tokens are probably expired. Generating new access tokens with a longer expiration period and splitting the job into smaller chunks ensures that the remaining files are accessible and reduces the likelihood of hitting timeouts or other limits. Partitioning large files into smaller segments and using concurrent transfer/upload jobs can help it go more quickly.\n\nMounting Cloud Storage using FUSE and scripting the downloads introduces unnecessary complexity. Refreshing access credentials without addressing token expiration won't solve the problem if the tokens expire before the transfer completes. Changing the hash algorithm does not address the access issue causing the HTTP 403 errors."
+  },
+  {
+    "number": 12,
+    "question": "You work for a media streaming company and use Pub/Sub to ingest user interaction data for analytics. You notice that when a new subscriber connects to an existing topic, they cannot access historical data. With an upcoming major streaming event in two months, you need a solution that ensures any new subscriber can access the last 30 days of data once implemented. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a new topic and republish the last 30 days of data whenever a new subscriber connects to the existing topic.",
+      "B": "Set the subscriber's acknowledgement deadline to 30 days.",
+      "C": "Request the data source to resend the data to Pub/Sub, and have the new subscriber connect to this feed.",
+      "D": "Set the topic message retention duration to 30 days."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Setting the topic message retention duration to 30 days ensures that messages published to the topic are retained for 30 days, allowing any new subscriber to access the last 30 days of data. This approach directly addresses the need for historical data access without requiring republishing or changes to the subscriber's configuration.\n\nRepublishing data whenever a new subscriber connects is inefficient and impractical.\n\nSetting the subscriber's acknowledgement deadline to 30 days does not affect the retention of messages in the topic.\n\nRequesting the data source to resend data is not feasible for accessing historical data in an automated and efficient manner."
+  },
+  {
+    "number": 13,
+    "question": "You work for a logistics company that tracks the status of 5000 delivery vehicles. You have a BigQuery table named vehicles, which is about 500 MB and contains columns for id, name, and location. This table is updated every hour. Each vehicle generates one status update every minute along with a timestamp, which you want to store in BigQuery. You want to run an analytical query on the data once a week for monitoring purposes. You also want to minimize costs. What data model should you use?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a status_updates table partitioned by timestamp. Add a vehicleId column to the status_updates table, linking it to the id column in the vehicles table. Use an INSERT statement every minute to append new status updates to the status_updates table. Join the two tables when running the analytical query.",
+      "B": "Create a status_updates table partitioned by timestamp. Add a vehicleId column to the status_updates table, linking it to the id column in the vehicles table. Use an UPDATE statement every minute to append new status updates to the status_updates table. Join the two tables when running the analytical query.",
+      "C": "Add a status_updates column to the vehicles table. Set it as a RECORD type with REPEATED mode. Use an UPDATE statement every minute to add new status updates.",
+      "D": "Add a status_updates column to the vehicles table. Set it as a RECORD type with REPEATED mode. Use an INSERT statement every minute to add new status updates."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The correct solution is to create a separate status_updates table partitioned by timestamp and use INSERT statements to append new updates. This approach is both efficient and cost-effective because it keeps the data organized and allows for partitioning, which ensures that only relevant data is scanned during analytical queries. This minimizes computational overhead and costs. By separating the fast-growing status_updates table from the vehicles table, you avoid unnecessary complexity in the schema and keep the core data clean. INSERT statements are more suitable for BigQuery's architecture than UPDATE statements, which tend to be slower and more expensive. Additionally, while joins can sometimes be costly, the partitioning of the status_updates table makes the join more efficient since only specific data partitions (e.g., updates for a particular time period) are accessed during queries, keeping the operation cost-effective.\n\nThe approach that involves using UPDATE statements for appending new status updates is not ideal. UPDATE operations are slower and more expensive in BigQuery's append-only system, and using them would lead to unnecessary computational costs compared to INSERT statements, which simply append new data efficiently.\n\nAdding a status_updates column directly to the vehicles table would introduce schema complexity and increase maintenance overhead. Using a RECORD type with REPEATED mode further complicates the data structure, and it would make querying more difficult. Additionally, adding frequent updates to the vehicles table would increase its size unnecessarily, leading to slower queries. This would also result in less optimal performance when compared to using a separate, partitioned status_updates table.\n\nAnother suggestion to add a status_updates column but use INSERT statements would also complicate the schema unnecessarily. While INSERT is more efficient than UPDATE, combining frequent updates with the core vehicles table is not advisable because it would lead to a large, bloated table, making the querying process slower and more costly."
+  },
+  {
+    "number": 14,
+    "question": "Your finance team needs to clean and prepare financial transaction data before conducting detailed analysis. The team members prefer using graphical user interfaces for defining their data transformations due to their limited technical skills. After transforming the data, they want to analyze it directly within a spreadsheet application. What solution should you recommend?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Dataprep to process and clean the data, store the cleaned data in BigQuery, and perform analysis using Connected Sheets.",
+      "B": "Use Dataflow to process and clean the data, store the cleaned data in BigQuery, and perform analysis using Looker Studio.",
+      "C": "Use Dataprep to process and clean the data, store the cleaned data in BigQuery, and perform analysis using Looker Studio.",
+      "D": "Use Dataflow to process and clean the data, store the cleaned data in BigQuery, and perform analysis using Connected Sheets."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Using Dataprep allows the finance team to clean and prepare data through an intuitive graphical interface, which suits their skill level. Storing the cleaned data in BigQuery provides a robust and scalable storage solution. Connected Sheets then allows the team to analyze the data directly within a spreadsheet, which aligns with their preference for using familiar spreadsheet tools.\n\nLooker Studio offers advanced data visualization and analysis capabilities, but it may not align with the team's preference for using spreadsheets.\n\nDataflow is a more complex tool requiring greater technical expertise, making it less suitable for a team that prefers graphical interfaces."
+  },
+  {
+    "number": 15,
+    "question": "You have a large volume of user interaction data streaming from an online platform into BigQuery daily. Your customer data, such as preferences, is stored in a Cloud SQL for MySQL database, and your sales data is hosted in a Cloud SQL for PostgreSQL database. The marketing team needs to use data from both databases as well as the interaction data in BigQuery to create dynamic, ongoing marketing campaigns for the company's active users. They need to run these campaigns 50-100 times per day, without creating too much load for the Cloud SQL databases that hose the customer and sales data. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create BigQuery connections to both Cloud SQL databases and use federated queries to combine data from the databases and BigQuery.",
+      "B": "Use Dataproc Serverless with Apache Spark to query both Cloud SQL databases and the interaction data in BigQuery.",
+      "C": "Set up Datastream to replicate the required tables from both Cloud SQL databases to BigQuery for these queries.",
+      "D": "Deploy a Dataproc cluster with Trino to connect to both Cloud SQL databases and BigQuery to execute the queries."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Setting up Datastream to replicate the required tables from both Cloud SQL databases to BigQuery ensures that the data is continuously available in BigQuery without putting additional load on the Cloud SQL databases. This approach allows the marketing team to run their queries directly on BigQuery, leveraging its scalability and performance.\n\nFederated queries would put a continuous load on the Cloud SQL databases, which is what you want to avoid.\n\nUsing Dataproc Serverless with Apache Spark involves additional complexity and still requires querying the Cloud SQL databases directly.\n\nDeploying a Dataproc cluster with Trino adds unnecessary complexity and may not effectively minimize the load on the Cloud SQL databases."
+  },
+  {
+    "number": 16,
+    "question": "You are setting up a Dataflow job to process data from Cloud Storage and load it into BigQuery. The network team has given you access to a Shared VPC network and subnetwork for your Dataflow pipelines. To ensure that your Dataflow job can deploy on the Shared VPC network, what should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Assign the compute.networkUser role to the Dataflow service account.",
+      "B": "Assign the dataflow.admin role to the Dataflow service account.",
+      "C": "Assign the compute.networkUser role to the service account running the Dataflow pipeline.",
+      "D": "Assign the dataflow.admin role to the service account running the Dataflow pipeline."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Assigning the compute.networkUser role to the service account that runs the Dataflow pipeline allows it to use the Shared VPC network and subnetwork, ensuring that the pipeline can access the necessary network resources. This role grants the required permissions for network operations without giving unnecessary permissions that come with the dataflow.admin role.\n\nAssigning the compute.networkUser role to the Dataflow service account is incorrect because it's the service account running the Dataflow pipeline that needs network access.\n\nAssigning the dataflow.admin role provides broader permissions than needed and does not specifically grant network access.\n\nSimilarly, assigning the dataflow.admin role to the service account running the pipeline gives more permissions than necessary and does not directly address network access needs."
+  },
+  {
+    "number": 17,
+    "question": "You have built a centralized data warehouse in BigQuery to analyze marketing data. You need to provide a self-service, low-maintenance, and cost-effective way for different departments in your organization to access the marketing dataset. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Grant the other departments’ projects access to authorized views of the marketing dataset.",
+      "B": "Set up an Analytics Hub private exchange and publish the marketing dataset.",
+      "C": "Create and share views of the marketing dataset with users in the other departments.",
+      "D": "Use the BigQuery Data Transfer Service to regularly copy the marketing dataset to the other departments’ projects."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Setting up an Analytics Hub private exchange and publishing the marketing dataset allows different departments to access the data in a self-service manner. This approach is low-maintenance as it leverages BigQuery's built-in sharing capabilities without the need for duplicating data or managing multiple access points.\n\nGranting access to authorized views can be complex to manage and might not be as scalable.\n\nCreating and sharing views with users involves ongoing maintenance to manage permissions and access.\n\nUsing the BigQuery Data Transfer Service to copy datasets increases costs and complexity by duplicating data across projects."
+  },
+  {
+    "number": 18,
+    "question": "You are responsible for a company-wide sales analysis. The customer transaction data is stored in a secure Cloud Storage bucket and needs transformations performed on it before it can be used for the analysis. To comply with strict data privacy regulations, you must also ensure that sensitive information is protected during the preprocessing stage. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Encrypt the data in Cloud Storage with customer-managed encryption keys (CMEK). Use BigQuery federated queries to access the data. Share the encryption key securely.",
+      "B": "Use Dataflow to preprocess the data, and the Cloud Data Loss Prevention API to anonymize sensitive information. Store the output data in BigQuery.",
+      "C": "Detect and strip out sensitive information from the data in Cloud Storage using the Cloud Data Loss Prevention API and Dataflow. Store the sanitized data in BigQuery.",
+      "D": "Use Dataflow and Cloud KMS to encrypt sensitive data fields and store the encrypted data in BigQuery. Share the encryption key securely."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Using Dataflow and the Cloud Data Loss Prevention API to mask sensitive data before writing it to BigQuery ensures that sensitive information is protected and complies with data privacy requirements. Encrypting data directly in Cloud Storage with CMEK and using federated queries does not address the need for preprocessing and data masking. Simply detecting and removing sensitive fields might not be sufficient if masking is required instead of removal. Encrypting fields with Cloud KMS adds complexity and does not inherently provide the data masking needed for compliance."
+  },
+  {
+    "number": 19,
+    "question": "You manage order data for a large online retail company, storing it in Bigtable. The data has a garbage collection policy to delete entries after 30 days, with the number of versions set to 1. However, data analysts occasionally encounter order data older than 30 days in their reports. You need to ensure that the analysts only see data within the last 30 days, while keeping costs and overhead low. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Adjust the column families' expiration setting to 29 days and keep the number of versions at 1.",
+      "B": "Set up a daily job to scan the table and remove data older than 30 days.",
+      "C": "Apply a timestamp filter in the queries to retrieve customer data within the desired time range (last 30 days).",
+      "D": "Change the column families' expiration setting to 30 days and increase the number of versions to 2."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Using a timestamp range filter in queries ensures that only data within the desired date range (last 30 days) is retrieved, effectively excluding older data. This solution does not require any additional jobs or changes to the Bigtable configuration, making it both efficient and cost-effective.\n\nWhile the garbage collection policy is mentioned in the question, it is a background detail that does not affect the solution. The goal is simply to narrow the timeframe for reports, and applying a timestamp filter directly in the query resolves this issue, regardless of how garbage collection operates.\n\nAdjusting the expiration to 29 days would only slightly reduce the data window but doesn't fully address the problem if the garbage collection timing varies. This would still leave gaps or inconsistencies depending on the timing of the garbage collection process.\n\nScheduling a daily job to remove older data adds unnecessary operational overhead and complexity, requiring constant maintenance.\n\nIncreasing the number of versions to 2 would raise storage costs without solving the issue of filtering data by age, as it simply creates multiple versions of the same data rather than ensuring only recent data is retrieved."
+  },
+  {
+    "number": 20,
+    "question": "You are designing a data processing system using Pub/Sub to handle real-time event data from IoT devices. The processing application relies on a push subscription and needs to be robust against temporary outages. You also require the system to store unprocessed messages and retry failed messages gradually to prevent overwhelming the application. Additionally, any message that fails to process after a maximum of 12 retries should be stored in a Pub/Sub topic instead of being continuously sent to the subscriber after that. How should you set up the subscription?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Extend the acknowledgement deadline to 12 minutes.",
+      "B": "Implement immediate redelivery as the Pub/Sub retry policy. Use dead lettering to a separate topic with a maximum delivery attempt of 12.",
+      "C": "Implement exponential backoff as the Pub/Sub retry policy. Use dead lettering to a separate topic with a maximum delivery attempt of 12.",
+      "D": "Implement exponential backoff as the Pub/Sub retry policy. Use dead lettering to the same source topic with a maximum delivery attempt of 12."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Using exponential backoff for the retry policy ensures that failed messages are retried gradually, preventing overload on the consumer application during temporary downtimes. Configuring dead lettering to a separate topic with a maximum of 12 delivery attempts ensures that messages that cannot be processed after multiple retries are stored for further investigation or processing.\n\nExtending the acknowledgement deadline does not address the need for gradual retries or storing failed messages.\n\nImmediate redelivery can overwhelm the consumer app and does not provide the gradual retry mechanism.\n\nConfiguring dead lettering to the same source topic creates a loop that may lead to processing inefficiencies and potential message flooding."
+  },
+  {
+    "number": 21,
+    "question": "Your company has established a direct network connection between its on-premises infrastructure and Google Cloud. Your job is to design a high-throughput data ingestion pipeline to stream data from an on-premises Apache Kafka cluster into BigQuery. The overwhelming priority here is achieving minimal latency. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Implement a Kafka Connect bridge to emit Kafka data to Pub/Sub. Use a Dataflow template, provided by GCP, to read from Pub/Sub and write to BigQuery.",
+      "B": "Implement a Dataflow pipeline that directly reads data from the on-premises Kafka cluster and writes the data to BigQuery.",
+      "C": "Implement a proxy server in the Google Cloud VPC to connect to Kafka. Build a Dataflow pipeline to read data from the proxy server and write to BigQuery.",
+      "D": "Implement a Kafka Connect bridge to emit data to Pub/Sub. Build a Dataflow pipeline to read from Pub/Sub and write to BigQuery."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "https://cloud.google.com/dataflow/docs/kafka-dataflow\n\nDeveloping a Dataflow pipeline that directly reads from the on-premises Kafka cluster and writes to BigQuery ensures minimal latency by eliminating intermediate steps. This approach leverages Dataflow's capabilities for real-time data processing and direct integration with BigQuery, providing a streamlined and efficient solution.\n\nUsing a Kafka Connect bridge to Pub/Sub introduces an additional layer that can increase latency.\n\nUsing a proxy server adds unnecessary complexity and potential bottlenecks in the data flow.\n\nSetting up Kafka Connect to Pub/Sub and then using Dataflow adds unnecessary intermediate steps and complexity, potentially increasing latency.\n\nTherefore, developing a Dataflow pipeline that directly reads data from the on-premises Kafka cluster and writes the data to BigQuery is the optimal solution for achieving minimal latency and high throughput."
+  },
+  {
+    "number": 22,
+    "question": "You work for a financial services company where data is stored and managed by different departments across various storage systems. This decentralized setup has made it challenging to discover, manage, and ensure the quality of data. You need a cost-effective solution to help your organization with:\n\nData management and discovery\nData lineage tracking\nData quality validation\n\nWhat should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Dataplex to manage data, track data lineage, and validate data quality.",
+      "B": "Use BigQuery to manage data, and develop custom scripts for data lineage and quality validation.",
+      "C": "Deploy a new data management platform on Google Kubernetes Engine to handle data discovery and lineage tracking.",
+      "D": "Use BigLake to consolidate data into a unified data lake architecture."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Use Dataplex is the best solution because it provides integrated capabilities for data management, discovery, lineage tracking, and quality validation. It is designed to work seamlessly across various storage systems, helping to simplify the management of a decentralized data ecosystem.\n\nUsing BigQuery with custom scripts increases complexity and maintenance efforts.\n\nDeveloping a new platform on Google Kubernetes Engine would be time-consuming and costly.\n\nBigLake is focused on creating a unified data lake but does not address all the requirements such as lineage tracking and data quality validation comprehensively."
+  },
+  {
+    "number": 23,
+    "question": "You need to analyze data in a BigQuery table that holds several petabytes of information to provide daily reports to your team. The reports require frequent and up-to-date summaries based on the large dataset. To ensure your queries run faster and you get real-time insights, you need a solution that optimizes performance and efficiency. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a recurring query to fetch the data at regular intervals throughout the day.",
+      "B": "Create a materialized view based on the query you frequently run.",
+      "C": "Utilize a query cache to speed up the result retrieval process.",
+      "D": "Optimize the query by selecting only the necessary columns in the final output."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Creating a materialized view provides faster query performance and up-to-date insights by storing the precomputed results, significantly reducing the time needed to retrieve data. Setting up a recurring query or using query caching does not ensure the same level of performance improvement or real-time updates. Simply optimizing the query by limiting columns can help, but it does not address the fundamental issue of processing large volumes of data efficiently. Materialized views are designed to handle such scenarios effectively, making them the optimal choice."
+  },
+  {
+    "number": 24,
+    "question": "You are deploying a streaming data processing pipeline in Dataflow. This pipeline reads data from Pub/Sub, processes it, and writes the results to BigQuery. Your organization's security team has enforced a policy that all Compute Engine instances must use only internal IP addresses and not external IP addresses. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Ensure that Private Google Access is enabled in the subnetwork. Use Dataflow with only internal IP addresses.",
+      "B": "Ensure that your workers have network tags to access Pub/Sub and BigQuery. Use Dataflow with only internal IP addresses.",
+      "C": "Ensure that the firewall rules allow access to Pub/Sub and BigQuery. Use Dataflow with only internal IPs.",
+      "D": "Create a VPC Service Controls perimeter that includes the VPC network and add Dataflow, Pub/Sub, and BigQuery as allowed services within the perimeter. Use Dataflow with only internal IP addresses."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Enabling Private Google Access ensures that instances without external IP addresses can still access Google APIs and services, such as Pub/Sub and BigQuery, via internal IP addresses. This allows the Dataflow workers to communicate with Pub/Sub and BigQuery without violating the security policy that restricts external IP addresses.\n\nNetwork tags alone do not ensure access to Google services via internal IP addresses.\n\nFirewall rules are necessary for security but do not address the need to access Google services using internal IP addresses.\n\nVPC Service Controls enhance security but do not specifically resolve the issue of accessing Google services without external IP addresses."
+  },
+  {
+    "number": 25,
+    "question": "Your retail company collects transaction data from point-of-sale systems, which are published as messages to a Pub/Sub topic in your Google Cloud project. A Dataflow streaming job, developed using the Apache Beam SDK, reads these messages, acknowledges them to Pub/Sub, applies custom validation and transformation logic in a DoFn, and writes the results to BigQuery. To ensure that any message that fails the custom logic is redirected to a separate Pub/Sub topic for monitoring and alerting purposes, what should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use an exception handling block in your Dataflow’s DoFn to route messages that fail processing to a SideOutput, and publish these messages to a new Pub/Sub topic. Monitor the number of unacknowledged messages in this topic using Cloud Monitoring.",
+      "B": "Enable the retention of acknowledged messages in your Pub/Sub pull subscription. Use Cloud Monitoring to track the number of retained acknowledged messages.",
+      "C": "Configure dead letter delivery in your Pub/Sub subscription to send undeliverable messages to a new Pub/Sub topic. Use Cloud Monitoring to observe the dead letter message count metric.",
+      "D": "Create a snapshot of your Pub/Sub subscription. Use Cloud Monitoring to monitor the number of messages in the snapshot."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Using an exception handling block in your Dataflow’s DoFn to route failed messages to a SideOutput and publish them to a new Pub/Sub topic allows you to efficiently capture and monitor any messages that fail the custom logic. This ensures that issues are detected and addressed promptly.\n\nRetaining acknowledged messages does not help in capturing and routing messages that fail processing.\n\nConfiguring dead letter delivery in Pub/Sub addresses undeliverable messages, not those that fail custom processing logic within Dataflow.\n\nCreating a snapshot of the subscription does not provide real-time alerting and monitoring for processing failures."
+  },
+  {
+    "number": 26,
+    "question": "You are tasked with setting up a data processing pipeline for your company's financial reports. The pipeline needs to perform an aggregate SQL transformation on a BigQuery table every hour and append the results to another BigQuery table. The pipeline should retry automatically if any errors occur and send an email notification after three consecutive failures. How should you configure this pipeline?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use the BigQueryInsertJobOperator in Cloud Composer, set the retry parameter to three, and set the email_on_failure parameter to true.",
+      "B": "Use the BigQueryExecuteQueryOperator in Cloud Composer, set the retry parameter to three, and set the email_on_failure parameter to true.",
+      "C": "Create a BigQuery scheduled query to run the SQL transformation every hour and enable email notifications.",
+      "D": "Create a BigQuery scheduled query to run the SQL transformation every hour and enable notifications to a Pub/Sub topic. Use Pub/Sub and Cloud Functions to send an email after three failed executions."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Using the BigQueryInsertJobOperator in Cloud Composer is the best approach as it allows you to schedule the SQL transformation job, configure retries, and set up email notifications for failures. Setting the retry parameter to three ensures the job will retry upon failure, and setting the email_on_failure parameter to true triggers an email notification after three consecutive failures.\n\nThe BigQueryExecuteQueryOperator is not suitable for job insertion and may lack the required configurations.\n\nA BigQuery scheduled query can handle periodic execution but does not provide built-in retry mechanisms and detailed failure notifications.\n\nUsing Pub/Sub and Cloud Functions to handle failure notifications adds unnecessary complexity and is less efficient compared to Cloud Composer's built-in capabilities."
+  },
+  {
+    "number": 27,
+    "question": "You manage two Google Cloud projects that run BigQuery jobs:\n\nThe first project handles critical production jobs with strict SLAs for completion times. These high-priority jobs consistently utilize at least 400 slots but can occasionally spike by an additional 600 slots.\nThe second project is used by data analysts for ad-hoc queries. This project generally uses no more than 250 slots at a time, and you prefer these queries to be billed based on data scanned rather than slot capacity.\n\nYou need to ensure that both projects have the necessary compute resources while optimizing costs. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a single Enterprise Edition reservation shared by both projects with a baseline of 400 slots and enable autoscaling up to 1000 slots.",
+      "B": "Create two reservations: one for the production project with an Enterprise Edition baseline of 400 slots and autoscaling up to 600 slots, and the other for the ad-hoc project using on-demand billing.",
+      "C": "Set up two Enterprise Edition reservations, one for each project. For the production project, set a baseline of 400 slots and enable autoscaling up to 600 slots. For the ad-hoc project, set the baseline to 0 slots and disable idle slots.",
+      "D": "Establish two Enterprise Edition reservations: one for the production project with a baseline of 1000 slots, and the other for the ad-hoc project with autoscaling up to 250 slots."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Creating two separate reservations is the most efficient approach:\n\nFor the production project, using an Enterprise Edition reservation with a baseline of 400 slots and autoscaling up to 600 slots ensures that the critical jobs have the required resources and can handle occasional spikes.\n\nFor the ad-hoc project, on-demand billing is more cost-effective as it charges based on the data scanned, fitting the nature of sporadic analytical queries.\n\nSharing a single reservation might lead to resource contention and does not differentiate between the high-priority and ad-hoc jobs.\n\nSetting a baseline of 0 slots with Enterprise Edition is not suitable for the ad-hoc project, as it needs a flexible billing model based on data scanned.\n\nOver-allocating slots (1000) for the production project would be cost-inefficient, and setting fixed slots for the ad-hoc project does not match its usage pattern."
+  },
+  {
+    "number": 28,
+    "question": "You are running a Dataflow streaming pipeline that processes log entries from a Pub/Sub topic into BigQuery. The pipeline uses Streaming Engine and Horizontal Autoscaling with a maximum of 800 workers. One of the pipeline transforms parses JSON logs and emits a record for each log entry. The job performance is poor, the pipeline is only utilizing 15 workers, and the autoscaler is not adding more workers. What should you do to improve performance?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Enable Vertical Autoscaling to allow the pipeline to use larger workers.",
+      "B": "Update the job configuration to increase the maximum number of workers.",
+      "C": "Use Dataflow Prime and enable Right Fitting to increase the worker resources.",
+      "D": "Modify the pipeline code to include a Reshuffle step to prevent fusion."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The key indicator of a fusion problem is that the pipeline is only utilizing a small number of workers (15 out of a maximum 800) and the autoscaler is not adding more workers. This suggests that the stages in the pipeline are not parallelizing efficiently, a classic symptom of fusion, which is limiting the workload's distribution across the available resources.\n\nIncluding a Reshuffle step in the pipeline code can help improve performance by breaking the fusion of adjacent transforms, which allows better parallelism and utilization of resources. This can lead to the autoscaler adding more workers as it can then distribute the workload more effectively.\n\nVertical Autoscaling allows for larger workers but does not address the fundamental issue of suboptimal resource utilization due to fusion.\n\nIncreasing the maximum number of workers does not help if the pipeline is not efficiently using the current workers due to the fusion issue.\n\nDataflow Prime and Right Fitting might optimize resources but also do not directly address the fusion problem that is limiting parallelism."
+  },
+  {
+    "number": 29,
+    "question": "Your company runs thousands of Apache Spark jobs on an on-premises Hadoop cluster. You plan to migrate these jobs to Google Cloud and prefer to use managed services to avoid the overhead of maintaining a Hadoop cluster. Given a tight timeline, you want to minimize code changes during the migration. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Migrate your data to BigQuery and rewrite your Spark jobs to use SQL-based processing.",
+      "B": "Move your data to Cloud Storage and run your Spark jobs on Dataproc.",
+      "C": "Rewrite your Spark jobs in Apache Beam and run them using Dataflow.",
+      "D": "Copy your data to Compute Engine instances and run your Spark jobs on those instances."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Moving your data to Cloud Storage and running your Spark jobs on Dataproc is the best solution because it allows you to use a managed service for running Spark jobs with minimal code changes. Dataproc is designed to run Hadoop and Spark workloads natively, making it easier to migrate existing jobs compared to other options.\n\nMigrating to BigQuery and converting scripts to SQL would require significant code changes.\n\nRewriting jobs in Apache Beam for Dataflow involves considerable effort and may not be feasible within a tight timeline.\n\nRunning jobs directly on Compute Engine instances does not utilize managed services and would require significant maintenance effort."
+  },
+  {
+    "number": 30,
+    "question": "You work for a retail company that collects daily sales data to train a machine learning model. The model only requires the most recent 60 days of sales data. To reduce storage costs and avoid keeping unnecessary historical data, you need an efficient solution to manage the BigQuery table storing this data. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a BigQuery table with an ingestion timestamp for each record and schedule a query to remove rows older than 60 days.",
+      "B": "Use a BigQuery table partitioned by ingestion time and set partition expiration to 60 days.",
+      "C": "Use a BigQuery table partitioned by the date of the sale and configure the partition expiration to 60 days.",
+      "D": "Create a BigQuery table with a date column for each sale and schedule a query to delete records with dates older than 60 days."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Using a BigQuery table partitioned by the date of the sale and setting the partition expiration to 60 days ensures that only the necessary data is retained, and older data is automatically removed. This method efficiently manages storage costs and keeps the data up to date for the machine learning model.\n\nSimply scheduling queries to delete old data or partitioning by ingestion time might work, but they add unnecessary work. Partitioning by the sale date aligns directly with the data usage requirements and simplifies data management."
+  },
+  {
+    "number": 31,
+    "question": "You are managing a Cloud Composer 2 instance for a logistics company. This instance processes incoming shipment data files stored in a Cloud Storage bucket, processing one file at a time. The Cloud Composer instance is deployed in a subnetwork without Internet access. You want the system to automatically trigger the processing workflow whenever a new shipment file arrives, rather than running on a fixed schedule. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Enable Private Google Access in the subnetwork, and configure Cloud Storage notifications to a Pub/Sub topic. Create a push subscription to the Cloud Composer web server URL.",
+      "B": "Enable the Airflow REST API and set up Cloud Storage notifications to trigger a Cloud Function. Create a Private Service Connect (PSC) endpoint, and configure the Cloud Function to connect to the Cloud Composer cluster through the PSC endpoint.",
+      "C": "Enable the Cloud Composer API and set up Cloud Storage notifications to invoke a Cloud Function. Use this Cloud Function to call the DAG via the Cloud Composer API and the web server URL, utilizing VPC Serverless Access for connectivity.",
+      "D": "Enable the Airflow REST API and configure Cloud Storage notifications to invoke a Cloud Function. The Cloud Function should call the DAG using the Airflow REST API and the web server URL, leveraging VPC Serverless Access for connectivity."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Enabling the Airflow REST API and setting up Cloud Storage notifications to trigger a Cloud Function allows you to reactively start the DAG. Creating a Private Service Connect (PSC) endpoint ensures secure, private connectivity between the Cloud Function and the Cloud Composer cluster. This setup respects the no-Internet access constraint and ensures secure communication.\n\nPrivate Google Access alone does not handle secure internal communication necessary for triggering the DAG.\n\nUsing the Cloud Composer API with VPC Serverless Access involves more complexity and less direct control compared to using Private Service Connect.\n\nDirectly calling the web server URL with VPC Serverless Access does not leverage the secure connectivity advantages of Private Service Connect."
+  },
+  {
+    "number": 32,
+    "question": "You are running a Dataflow streaming job that ingests messages from a message queue that does not guarantee exactly-once delivery. The job performs transformations and writes the results to BigQuery. To ensure that the data is streamed into BigQuery with exactly-once delivery semantics, and given that your expected ingestion throughput is about 2 GB per second, what should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use the BigQuery Storage Write API and configure your target BigQuery table as multiregional.",
+      "B": "Use the BigQuery Storage Write API and configure your target BigQuery table as regional.",
+      "C": "Use the BigQuery Streaming API and configure your target BigQuery table as regional.",
+      "D": "Use the BigQuery Streaming API and configure your target BigQuery table as multiregional."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Using the BigQuery Storage Write API provides exactly-once delivery semantics, which is essential for ensuring data consistency and accuracy. Configuring the target table as regional optimizes for higher performance and lower latency, which is crucial for handling high throughput rates like 2 GB per second.\n\nUsing the BigQuery Storage Write API with a multiregional table could increase latency and complexity, which is unnecessary for your needs.\n\nThe BigQuery Streaming API does not guarantee exactly-once delivery, which is a critical requirement for your use case.\n\nConfiguring the target table as regional is better suited for performance optimization compared to multiregional configuration."
+  },
+  {
+    "number": 33,
+    "question": "You are designing a robust data storage solution for your company's sales data in a regional BigQuery dataset. Your goal is to ensure that your application can recover from any data corruption that may have occurred within the last week. You want to use managed services that offer the lowest Recovery Point Objective (RPO) and are cost-effective. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Regularly export the data from BigQuery to a new table excluding any corrupted records.",
+      "B": "Create daily snapshots of your BigQuery tables.",
+      "C": "Use BigQuery’s time travel feature to access historical versions of the data.",
+      "D": "Migrate your data to multi-region BigQuery storage for redundancy."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Using BigQuery’s time travel feature is the most effective solution because it allows you to access historical versions of your data within the past seven days without additional costs or complex setup. This feature provides a low RPO by enabling you to quickly recover from corruption by querying a version of the table from before the corruption occurred.\n\nRegularly exporting data is more manual and does not provide the same level of efficiency and low RPO.\n\nCreating daily snapshots of your BigQuery tables can help with recovery but is more complex and may incur additional storage costs.\n\nMigrating to multi-region storage increases redundancy but does not specifically address the need to recover from data corruption within the past seven days."
+  },
+  {
+    "number": 34,
+    "question": "You are operating your BigQuery project on an on-demand billing model and have a process that performs change data capture (CDC) to ingest data. This CDC process loads 1 GB of data every 10 minutes into a temporary table, followed by a merge into a 10 TB target table. The process is scan-intensive, and you want to implement a predictable cost model. Based on utilization data gathered from BigQuery Monitoring, you need to create a BigQuery reservation and apply it to the CDC process. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a BigQuery reservation for the specific dataset.",
+      "B": "Create a BigQuery reservation for the specific job.",
+      "C": "Create a BigQuery reservation for the service account executing the job.",
+      "D": "Create a BigQuery reservation for the entire project."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Creating a BigQuery reservation for the entire project allows you to allocate a set amount of processing capacity to be shared across all jobs within the project, providing a predictable cost model. This approach ensures that the CDC process, along with any other queries, can run within the reserved capacity, avoiding unpredictable costs associated with on-demand pricing.\n\nReserving capacity for a specific dataset does not address the needs of the entire project's workload.\n\nReserving capacity for a specific job limits the flexibility and might not optimize the overall project resource usage.\n\nReserving capacity for a specific service account is less effective than project-wide reservation, which provides a more holistic and efficient utilization of resources."
+  },
+  {
+    "number": 35,
+    "question": "You have set up an external table in BigQuery for partitioned Apache Hive data stored in a Cloud Storage bucket containing numerous files. You observe that queries against this table are slow. You need to enhance the performance of these queries. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Upgrade the external table to a BigLake table and enable metadata caching.",
+      "B": "Change the storage class of the Hive partitioned data from Nearline to Standard.",
+      "C": "Create separate external tables for each Hive partition using a common table name prefix, and use wildcard queries to access the data.",
+      "D": "Move the Hive partitioned data to a multi-region Cloud Storage bucket."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Upgrading the external table to a BigLake table and enabling metadata caching improves query performance by optimizing metadata operations and reducing latency when accessing partitioned data.\n\nChanging the storage class does not directly address query performance issues related to metadata access and partitioning.\n\nCreating separate external tables for each partition adds complexity and is not an efficient solution for managing and querying large datasets.\n\nMoving the data to a multi-region bucket does not necessarily improve query performance and may increase costs."
+  },
+  {
+    "number": 36,
+    "question": "You are designing a real-time analytics system for a food delivery app to identify areas with high demand for deliveries so that available delivery personnel can be efficiently routed. The system ingests data from multiple sources into Pub/Sub, processes it, and stores the results for visualization in real-time dashboards. The data sources include delivery personnel location updates every 5 seconds and order placement events from customers. The processing requires real-time aggregation of supply and demand data for the last 30 seconds, updated every 2 seconds, and storing the results in a low-latency system for visualization. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Group the data using a fixed window in a Dataflow pipeline, and write the aggregated data to Cloud Spanner.",
+      "B": "Group the data using a sliding window in a Dataflow pipeline, and write the aggregated data to Memorystore.",
+      "C": "Group the data using a session window in a Dataflow pipeline, and write the aggregated data to Bigtable.",
+      "D": "Group the data using a sliding window in a Dataflow pipeline, and write the aggregated data to BigQuery."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Using a sliding window (also known as a hopping window) in a Dataflow pipeline ensures that the data is aggregated every 2 seconds over the last 30 seconds, providing near real-time updates. Writing the aggregated data to Memorystore ensures low-latency access for real-time visualization, which is crucial for dashboards that need to display current demand and supply metrics.\n\nA fixed window does not provide the continuous overlapping intervals required for this use case.\n\nUsing a session window is not suitable for fixed time intervals and real-time updates.\n\nBigtable is optimized for large-scale, high-throughput workloads but might not be the best fit for low-latency requirements.\n\nBigQuery is excellent for large-scale analytics but may introduce higher latency compared to Memorystore for real-time dashboards."
+  },
+  {
+    "number": 37,
+    "question": "You want to create a collaborative data environment for your team. Shared tables should be stored in a common dataset that all analysts can read but not modify. Additionally, each analyst should have their own workspace within the same project to create and store personal tables, which should not be accessible to other analysts. How should you set this up?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Assign analysts the BigQuery Data Viewer role at the project level. Create a separate dataset for shared tables and assign analysts the BigQuery Data Editor role on that dataset.",
+      "B": "Assign analysts the BigQuery Data Viewer role at the project level. Create individual datasets for each analyst and assign them the BigQuery Data Editor role at the project level.",
+      "C": "Assign analysts the BigQuery Data Viewer role on the shared dataset. Create a separate dataset for personal tables and assign analysts the BigQuery Data Editor role on that dataset.",
+      "D": "Assign analysts the BigQuery Data Viewer role on the shared dataset. Create individual datasets for each analyst and assign them the BigQuery Data Editor role at the dataset level for their personal datasets."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Assigning analysts the BigQuery Data Viewer role on the shared dataset ensures they can read but not modify shared tables. Creating individual datasets for each analyst and assigning them the BigQuery Data Editor role at the dataset level for their personal datasets provides them with the ability to create and manage their own tables without others accessing them.\n\nAssigning roles at the project level does not provide the necessary granularity for controlling access to individual datasets.\n\nCreating a single dataset for personal tables does not isolate the tables of individual analysts."
+  },
+  {
+    "number": 38,
+    "question": "You are designing a data warehouse in BigQuery to analyze inventory data for a manufacturing company. You need to create a data model for products, suppliers, and shipments. All products, suppliers, and shipments can be updated monthly, but you must maintain a historical record of all data. You plan to use the visualization layer for current and historical reporting. You need to ensure that the data model is simple, easy to use, and cost-effective. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a single, denormalized table that includes nested and repeated fields for products, suppliers, and shipments. Use periodic snapshots to track historical changes.",
+      "B": "Create a denormalized table that appends new records with nested and repeated fields for products, suppliers, and shipments. Use an ingestion timestamp to maintain historical data.",
+      "C": "Create a normalized model with separate tables for products, suppliers, and shipments. Use periodic snapshots to maintain historical records.",
+      "D": "Create a normalized model with separate tables for each entity and store all update files in Cloud Storage for historical tracking."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Creating a denormalized table that appends new records with nested and repeated fields is ideal for this scenario. This approach simplifies the schema by combining related data into a single table, making it easier to query without complex joins. By appending new records and using the ingestion timestamp, you can efficiently maintain a historical record of changes without the need for complex snapshotting or archival processes. This method leverages BigQuery's strengths in handling large, nested datasets efficiently and cost-effectively.\n\nA normalized model with periodic snapshots adds complexity and can be harder to manage.\n\nStoring update files in Cloud Storage for historical tracking is cumbersome and not as seamlessly integrated with BigQuery's querying capabilities.\n\nAlthough a denormalized table (combining related data into a single structure) is effective for this scenario, using periodic snapshots in such a model introduces additional steps to manage changes over time. Every time you take a snapshot, you are essentially storing a new version of the entire table, rather than just tracking and appending incremental changes. This results in more complexity and storage costs."
+  },
+  {
+    "number": 39,
+    "question": "You are designing a document storage system for your company's archival records. The documents will be uploaded from various internal departments, with each document being uploaded only once. Access to these documents will be sporadic and unpredictable. You need to minimize the cost of storing and retrieving these documents while ensuring that the cost optimization measures do not affect the user experience. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Set up a Cloud Storage bucket with Autoclass enabled to automatically manage storage classes.",
+      "B": "Set up a Cloud Storage bucket with an Object Lifecycle Management policy to transition documents from Standard to Coldline storage class after 60 days.",
+      "C": "Use a single Cloud Storage bucket with a Standard storage class and manually move documents to a Coldline storage class after a certain period.",
+      "D": "Create two Cloud Storage buckets: one with Standard storage class for recent uploads and another with Coldline storage class for older documents, manually transferring documents after 60 days."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Enabling Autoclass in Cloud Storage allows for automatic management of storage classes, optimizing costs based on access patterns without requiring manual intervention. This ensures that documents are stored in the most cost-effective manner while maintaining transparency for users and applications.\n\nUsing an Object Lifecycle Management policy requires setting fixed rules that may not adapt well to unpredictable access patterns.\n\nManually managing storage classes adds administrative overhead and increases the risk of human error.\n\nMaintaining two separate buckets and transferring documents manually also involves more effort and complexity, and may not be as efficient as Autoclass."
+  },
+  {
+    "number": 40,
+    "question": "Your organization’s data lake is hosted on BigQuery, where Dataflow pipelines read data from Pub/Sub and write data into BigQuery tables. After deploying a new version of the ingestion pipelines, you notice a 70% increase in daily stored data, with some tables having their daily partition data size doubled. This appears strange to you, because the volume of data in Pub/Sub remains unchanged. You need to investigate and resolve the cause of the data increase. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Investigate for duplicate rows in the BigQuery tables that have doubled in daily partition data size. Schedule daily SQL jobs to remove duplicates and share the deduplication script with operational teams for future use.",
+      "B": "Investigate for duplicate rows in the affected BigQuery tables. Examine the BigQuery Audit logs to identify relevant job IDs. Use Cloud Monitoring to determine when the Dataflow jobs started and verify the pipeline code version. If multiple pipelines are ingesting data into a table, stop all but the latest version.",
+      "C": "Investigate for code errors in the new pipelines. Check for multiple instances writing to the BigQuery sink. Look for errors in Cloud Logging from the day of the new deployment. If no errors are found, restore the tables to their previous state using BigQuery’s time travel feature.",
+      "D": "Roll back the last deployment. Restore the BigQuery tables to their previous state using time travel. Restart the Dataflow jobs and replay the messages by seeking the Pub/Sub subscription to the time of the release."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Investigating for duplicate rows and examining BigQuery Audit logs helps identify if the issue is due to duplicate data being written by the new pipelines. Cloud Monitoring can confirm when the jobs started and their versions, ensuring that only the latest pipeline version is running. This approach directly addresses potential duplication and improper pipeline management.\n\nScheduling daily deduplication jobs is a workaround rather than a fix.\n\nRestoring tables and replaying messages without identifying the root cause could lead to repeated issues.\n\nRolling back deployments and restoring tables might resolve immediate issues but does not identify or fix the underlying problem."
+  },
+  {
+    "number": 41,
+    "question": "You have multiple types of data sources, including JSON and ORC files, and you want to store these files in Cloud Storage. You need to set up an object sink for your data that allows you to use your own encryption keys. You prefer using a graphical user interface (GUI) to configure this solution. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Storage Transfer Service to transfer files into Cloud Storage.",
+      "B": "Use Dataflow to ingest files into Cloud Storage.",
+      "C": "Use BigQuery Data Transfer Service to import files into BigQuery.",
+      "D": "Use Cloud Data Fusion to load files into Cloud Storage."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Cloud Data Fusion provides a GUI-based solution that allows you to create pipelines for moving data from various sources, including different file types, into Cloud Storage. It supports the use of customer-managed encryption keys, which meets your requirement for encryption.\n\nStorage Transfer Service is typically used for transferring large datasets and may not provide the same level of flexibility for different file types or a GUI-based interface.\n\nDataflow is a powerful tool for data processing but requires more technical expertise and is not GUI-based.\n\nBigQuery Data Transfer Service is designed to load data into BigQuery, not into Cloud Storage, and does not address the need for a GUI-based solution for various file types."
+  },
+  {
+    "number": 42,
+    "question": "You are developing a Dataflow streaming pipeline that collects temperature readings from hundreds of sensors deployed in agricultural fields. Each sensor sends temperature data every five seconds when the temperature exceeds 90°F. You need to calculate the average temperature from a sensor over periods longer than 20 minutes, but the window should close when no data is received from the sensor for 10 minutes. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use session windows with a 20-minute gap duration.",
+      "B": "Use session windows with a 10-minute gap duration.",
+      "C": "Use hopping windows with a 10-minute window and a twenty-minute period.",
+      "D": "Use tumbling windows with a 10-minute window and a ten-minute .withAllowedLateness operator."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "Session windows with a 10-minute gap duration are appropriate because they automatically close the window if no data is received for the specified gap duration, which in this case is 10 minutes. This matches the requirement to close the window after 10 minutes of inactivity, while still allowing for periods of data collection longer than 20 minutes.\n\nUsing session windows with a 20-minute gap duration would not match the requirement to close the window after 10 minutes of inactivity.\n\nUsing hopping windows with a 10-minute window and a twenty-minute period would not properly handle the intermittent nature of the data and does not close the window based on inactivity.\n\nUsing tumbling windows with a 10-minute window and a ten-minute .withAllowedLateness operator does not fit the need for session-based, activity-driven windowing."
+  },
+  {
+    "number": 43,
+    "question": "You have set up an analytics environment on Google Cloud for your data science team to explore data without affecting the on-premises Apache Hadoop system. The data on the on-premises Hadoop Distributed File System (HDFS) is stored in Parquet files with multiple columns of Hive partitioning. The data science team needs to query this data using SQL in a similar manner to how they did with Hive on-premises. You need to find the most cost-effective storage and processing solution. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Import the Parquet files to Bigtable tables for the data science team.",
+      "B": "Import the Parquet files to BigQuery tables for the data science team.",
+      "C": "Copy the Parquet files to Cloud Storage, then create external BigQuery tables for the data science team.",
+      "D": "Copy the Parquet files to Cloud Storage, then deploy a Dataproc cluster for the data science team."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "If the data is currently stored in Parquet format with Hive partitions, you can directly ingest that data into BigQuery, but it won't automatically maintain the Hive partitioning scheme. You'd have to reconfigure partitioning in BigQuery based on some column (such as a timestamp) to optimize query performance.\n\nTherefore, copying the Parquet files to Cloud Storage and creating external BigQuery tables provides a cost-effective solution that allows the data science team to query the data using SQL in the same way they were previously. This method leverages the scalability and performance of BigQuery for querying, while keeping storage costs low by using Cloud Storage, and maintaining their current workflow.\n\nBigQuery long-term storage is comparable to GCS in terms of cost, but it would require extra steps because of the way the data is currently partitioned. So it's just slightly less convenient for the team given their stated goals.\n\nImporting the data into Bigtable is not ideal for SQL-based exploration and might incur higher costs.\n\nDeploying a Dataproc cluster is more complex and may incur higher operational and computational costs."
+  },
+  {
+    "number": 44,
+    "question": "Your company has a fleet of 12,000 IoT devices that generate telemetry data: one data point per device every second, including a timestamp. You currently have 1.5 TB of data and expect it to grow by 4 GB daily. You need to access this data in two ways.\n\nYou need to quickly retrieve a data point from a specific device at a specific timestamp, with a median latency of single-digit milliseconds.\nYou need to run complex analytical queries, including joins, on the data once a day.\n\nGiven these requirements, how should you handle the telemetry data?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Store your data in BigQuery. Combine the device ID and timestamp as the primary key.",
+      "B": "Store your data in Bigtable. Combine the device ID and metric as the row key. Export the data to BigQuery daily.",
+      "C": "Store your data in BigQuery. Use the metric as the primary key.",
+      "D": "Store your data in Bigtable. Combine the device ID and timestamp as the row key. Export the data to BigQuery daily."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Storing the data in Bigtable with a row key that combines the device ID and timestamp ensures that you can quickly retrieve specific data points with low latency, meeting the requirement for fast access. Exporting the data to BigQuery daily allows you to run complex analytical queries on a relational database optimized for such tasks.\n\nStoring data in BigQuery and using concatenated keys does not provide the low-latency access required for retrieving specific data points.\n\nCombining the device ID and metric as the row key is incorrect because it does not utilize the timestamp, which is crucial for time series data retrieval.\n\nUsing the metric as the primary key in BigQuery is not appropriate as it doesn't address the need for efficient time-based retrieval or low-latency access."
+  },
+  {
+    "number": 45,
+    "question": "You have a MySQL database hosted on a virtual machine within a Virtual Private Cloud (VPC) network. Your goal is to replicate and continuously synchronize 90 tables from MySQL to BigQuery. You prefer to minimize infrastructure management overhead. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Deploy Apache Kafka within the VPC network, use Kafka Connect MySQL Change Data Capture (CDC), and Dataflow to stream the Kafka topic to BigQuery.",
+      "B": "Set up a Pub/Sub subscription to write directly to BigQuery. Deploy the Debezium MySQL connector to capture changes in the MySQL database and sink to the Pub/Sub topic.",
+      "C": "Create a Datastream service from MySQL to BigQuery, use a private connectivity configuration to the same VPC network, and a connection profile to BigQuery.",
+      "D": "Deploy Apache Kafka within the VPC network, use Kafka Connect MySQL Change Data Capture (CDC), and the Kafka Connect Google BigQuery Sink Connector."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Using Datastream for replicating and continuously synchronizing data from MySQL to BigQuery is a managed service that minimizes the need for managing additional infrastructure. Datastream provides a serverless and reliable way to capture and replicate changes from the source database to BigQuery, using private connectivity to ensure secure data transfer.\n\nDeploying Apache Kafka with Kafka Connect and managing CDC involves substantial infrastructure management and complexity.\n\nSetting up a Pub/Sub subscription with the Debezium connector requires additional management of the CDC process and integration with Pub/Sub.\n\nUsing Kafka Connect Google BigQuery Sink Connector still involves deploying and managing Kafka, adding unnecessary complexity."
+  },
+  {
+    "number": 46,
+    "question": "You are the data manager at a retail company that is planning to migrate its existing Teradata data warehouse to BigQuery. Your goal is to efficiently transfer the historical sales data to BigQuery, ensuring minimal disruption and programming effort. The current storage space on your Teradata system is limited, so you need a solution that doesn't require extensive local storage. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Leverage the BigQuery Data Transfer Service with a JDBC connection and FastExport to transfer the data directly from Teradata to BigQuery.",
+      "B": "Use the BigQuery Data Transfer Service with the Teradata Parallel Transporter (TPT) utility to move the data.",
+      "C": "Create a script using the Teradata Parallel Transporter (TPT) to export the historical data and then load it into BigQuery using the bq command-line tool.",
+      "D": "Develop a script to export the historical data in segments, upload the segments to Google Cloud Storage, and then configure a BigQuery Data Transfer Service job to import the data from Cloud Storage into BigQuery."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Leveraging the BigQuery Data Transfer Service with a JDBC connection and FastExport is the most efficient and least programming-intensive method. This approach directly transfers data from Teradata to BigQuery, making optimal use of available tools and connections while avoiding extensive local storage requirements.\n\nUsing the Teradata Parallel Transporter (TPT) utility requires additional scripting and handling, which involves more programming effort.\n\nCreating a script with TPT and using the bq command-line tool involves multiple steps and increases programming complexity.\n\nDeveloping a script to export data in segments and using Google Cloud Storage introduces additional programming and storage management challenges."
+  },
+  {
+    "number": 47,
+    "question": "You are establishing a CI/CD pipeline for deploying directed acyclic graphs (DAGs) in Cloud Composer. Your team uses two separate Cloud Composer environments: one for development and one for production. A Git repository is used to manage and develop the DAG code. You need an automated deployment process that triggers when a specific tag is pushed to the Git repository. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Configure Cloud Build to create a container with the DAG code and use the KubernetesPodOperator to deploy the code to the Google Kubernetes Engine (GKE) cluster of the development environment for testing. If the tests are successful, use the KubernetesPodOperator to deploy the container to the GKE cluster of the production environment.",
+      "B": "Configure Cloud Build to create a container with the DAG code and use the KubernetesPodOperator to deploy it to the Google Kubernetes Engine (GKE) cluster of the development environment for testing. If the tests pass, copy the code to the Cloud Storage bucket of the production environment.",
+      "C": "Configure Cloud Build to upload the DAG code to the Cloud Storage bucket of the development environment for testing. If the tests are successful, configure Cloud Build to create a container with the DAG code and use the KubernetesPodOperator to deploy the container to the Google Kubernetes Engine (GKE) cluster of the production environment.",
+      "D": "Configure Cloud Build to upload the DAG code to the Cloud Storage bucket of the development environment for testing. Upon successful testing, configure Cloud Build to upload the code to the Cloud Storage bucket of the production environment."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Using Cloud Build to upload the DAG code to the Cloud Storage bucket of the development environment for testing ensures that the DAGs are validated in a setup similar to production. If the tests pass, copying the code to the production environment’s bucket ensures a seamless deployment process without unnecessary complexity.\n\nCreating and deploying containers with the KubernetesPodOperator adds unnecessary complexity when the primary goal is to deploy DAGs to Cloud Composer.\n\nDeploying directly to GKE does not align with Cloud Composer’s architecture, which relies on Cloud Storage for DAG storage."
+  },
+  {
+    "number": 48,
+    "question": "You have developed a new version of a Dataflow streaming pipeline that reads from Pub/Sub and writes to Bigtable. The current production pipeline processes data with a 3-minute window. You need to deploy the new version of the pipeline without data loss, inconsistencies, or increasing the processing latency by more than 15 minutes. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Update the existing pipeline with the new pipeline code directly.",
+      "B": "Snapshot the current pipeline, stop it, and then start the new pipeline from the snapshot.",
+      "C": "Cancel the current pipeline, then start the new pipeline.",
+      "D": "Drain the current pipeline, then start the new pipeline."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Draining the current pipeline ensures that all in-flight data is processed and written to the output before the pipeline shuts down, preventing data loss and inconsistencies. Starting the new pipeline after draining ensures a smooth transition without gaps in data processing.\n\nUpdating the existing pipeline directly could cause data loss or inconsistencies if there are discrepancies between the old and new versions.\n\nTaking a snapshot and starting from it is not a recommended approach for streaming data pipelines due to potential latency and consistency issues.\n\nCancelling the current pipeline abruptly can result in data loss and inconsistencies, as in-flight data would not be processed."
+  },
+  {
+    "number": 49,
+    "question": "You are designing a data model in BigQuery to store e-commerce order data. Your two largest tables, order_header and order_items, have a tightly coupled immutable relationship. These tables are rarely modified after initial load and are frequently joined during queries. You need to model the order_header and order_items tables to enhance the performance of data analytics queries. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create an order table that holds the order_header information as rows and the order_items rows as nested and repeated fields.",
+      "B": "Create an order table that holds both order_header and order_items information as rows, duplicating the order_header data for each item.",
+      "C": "Create an order table that stores the order_header and order_items data as a JSON data type.",
+      "D": "Create separate order_header and order_items tables and, when querying, specify the order_items table first in the WHERE clause."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Using nested and repeated fields in a single table to store the order_header and order_items data allows for more efficient storage and querying, as it reduces the need for frequent joins and leverages BigQuery’s nested data structures. This approach improves performance for analytics queries by keeping related data together and optimizing query execution.\n\nDuplicating the header data for each item increases storage costs and complexity.\n\nStoring the data as JSON loses the benefits of structured querying and can be less efficient.\n\nSeparate tables require frequent joins, which can be less performant."
+  },
+  {
+    "number": 50,
+    "question": "You have a BigQuery dataset named \"sales_data\". All tables will be tagged using a Data Catalog tag template called \"confidentiality\". The template includes a mandatory field, \"contains_sensitive_info\", with a boolean value. All employees need to perform simple searches to find tables in the dataset based on the \"contains_sensitive_info\" field being either true or false. However, only the Legal department should be able to access data in tables where \"contains_sensitive_info\" is true. You have given all employees the bigquery.metadataViewer and bigquery.connectionUser roles on the dataset. You want to minimize configuration overhead. What should you do next?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create the \"confidentiality\" tag template with public visibility. Assign the bigquery.dataViewer role to the Legal department on the tables that contain sensitive information.",
+      "B": "Create the \"confidentiality\" tag template with private visibility. Assign the bigquery.dataViewer role to the Legal department on the tables that contain sensitive information.",
+      "C": "Create the \"confidentiality\" tag template with private visibility. Assign the datacatalog.tagTemplateViewer role on this tag to all employees, and assign the bigquery.dataViewer role to the Legal department on the tables that contain sensitive information.",
+      "D": "Create the \"confidentiality\" tag template with public visibility. Assign the datacatalog.tagTemplateViewer role on this tag to all employees, and assign the bigquery.dataViewer role to the Legal department on the tables that contain sensitive information."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Creating the \"confidentiality\" tag template with public visibility ensures that all employees can perform searches based on the \"contains_sensitive_info\" field without additional permissions. Assigning the bigquery.dataViewer role to the Legal department on tables with sensitive information ensures that only the Legal department can access the sensitive data, while minimizing configuration overhead.\n\nUsing private visibility requires additional role assignments, increasing configuration complexity.\n\nAssigning datacatalog.tagTemplateViewer on the tag to all employees is unnecessary with public visibility and adds complexity.\n\nThe solution should focus on minimal configuration while meeting the requirements."
+  }
+]

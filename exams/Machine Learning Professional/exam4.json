@@ -1,0 +1,653 @@
+[
+  {
+    "number": 1,
+    "question": "You are developing a TensorFlow model that analyzes multilingual news content to track economic signals for a global research firm. The model takes many hours to train on each update cycle, and your training pipeline includes automatic checkpointing every five minutes. Your team wants to reduce infrastructure costs as much as possible while keeping training performance reasonable. What setup should you use?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Run a custom training job in Vertex AI using a non-preemptible v5e-8 TPU",
+      "B": "Use a managed notebooks instance with a preemptible T4 GPU",
+      "C": "Use Vertex AI Workbench with 2 NVIDIA A100 GPUs and a high-memory machine type",
+      "D": "Run a custom training job in Vertex AI using a preemptible v5e-8 TPU"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The best choice is the preemptible v5e-8 TPU. Preemptible TPUs offer substantial cost savings and are ideal when training can resume from checkpoints, as in this case. v5e TPUs also offer better performance and efficiency compared to older TPU versions.\n\nNon-preemptible TPUs are more reliable but significantly more expensive.\n\nA100 GPUs are powerful but overkill for this use case if cost is the main concern.\n\nT4 GPUs are affordable but may be too slow for large-scale training."
+  },
+  {
+    "number": 2,
+    "question": "You are working as a machine learning engineer for a streaming service. The product team wants to improve the recommendation engine so that users are shown new shows or movies based on their watch history and preferences of users with similar behavior. You are asked to design a model to support this initiative.\n\nWhat type of model should you build?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Rule-based system",
+      "B": "Knowledge-based filtering model",
+      "C": "Regression model",
+      "D": "Collaborative filtering model"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Collaborative filtering is well suited for recommending items based on past user behavior and similarities across users. It does not require detailed metadata about the content itself. Instead, it focuses on patterns in what users have interacted with and what similar users have liked or watched.\n\nA regression model could predict ratings, but it would rely heavily on labeled data and content features, and it would not fully capture user-to-user similarity. A knowledge-based filtering model helps when recommendations are based on explicit content relationships, not patterns in user behavior. Rule-based systems rely on heuristics or popularity but do not personalize results based on individual watch history."
+  },
+  {
+    "number": 3,
+    "question": "You work for a logistics company that tracks thousands of delivery vehicles in real time. Your team has trained a TensorFlow model that predicts the likelihood of a delivery being late based on current GPS data, driver history, and weather conditions. Incoming location data is sent to Pub/Sub, and a Dataflow streaming job processes these messages, writes predictions to BigQuery, and sends alerts for high-risk deliveries. You need to integrate your model into the pipeline while keeping end-to-end latency as low as possible for immediate alerting. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Deploy the model to a Vertex AI prediction endpoint and make requests from the Dataflow pipeline",
+      "B": "Containerize the model and run it on Cloud Run, invoked by Dataflow during processing",
+      "C": "Host the model using TensorFlow Serving on Google Kubernetes Engine and call it from the Dataflow job",
+      "D": "Package the TensorFlow model within the Dataflow job so it can perform inference in-process without external service calls"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The correct approach is to integrate the trained TensorFlow model directly into the Dataflow job so that predictions are executed locally in the same process as the pipeline steps. This avoids network round trips to external services and keeps latency to a minimum, which is crucial when working with real-time streams that drive immediate actions such as alerting dispatch teams. Since the model is preloaded as a dependency, the pipeline can handle large volumes of messages with consistent and predictable inference times.\n\nThe other options all introduce external calls that add latency and potential points of failure. Calling a Vertex AI endpoint or a TensorFlow Serving instance on GKE means each prediction involves network overhead, which can be unpredictable under load. Using Cloud Run for inference also requires an HTTP call and could be subject to cold starts, further delaying results. These approaches are more suitable when you need to decouple model hosting from the processing pipeline, but they do not align with the strict low-latency requirement described in this scenario."
+  },
+  {
+    "number": 4,
+    "question": "You are working for an analytics startup that uses scikit-learn to train regression models for forecasting customer demand. The training process on your current local workstation is too slow, and you want to migrate the training job to Vertex AI Training to speed it up without rewriting the code. What should you do first?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Run the training job in Vertex AI Training using GPUs",
+      "B": "Convert the model code to use TensorFlow and train in Vertex AI Training",
+      "C": "Run the training job on multiple Compute Engine VMs in parallel using a distributed approach",
+      "D": "Train the model in Vertex AI Training using CPUs with more cores and memory"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The correct answer is to train the scikit-learn model in Vertex AI Training using CPUs with more cores and memory. Scikit-learn does not provide native GPU acceleration, so moving the job to GPUs would not improve training time. Using CPUs in Vertex AI Training allows you to choose machine types with more cores and higher memory, which can significantly reduce training time without changing the existing code. This approach avoids the complexity of converting to a different framework or modifying the training logic for distributed execution.\n\nThe other options are not the best first step for this situation. Training on GPUs will not help because scikit-learn cannot leverage GPU hardware directly. Switching to TensorFlow could allow GPU use but would require substantial refactoring before you could even test performance improvements. Running the job on multiple Compute Engine VMs in parallel would require building a distributed training setup that scikit-learn does not natively support, adding unnecessary overhead for this problem."
+  },
+  {
+    "number": 5,
+    "question": "A healthcare analytics company deploys machine learning models on Vertex AI to predict patient readmission risk. Hospital clients have requested per-prediction transparency that shows which features most influenced each result. Some models were built with AutoML and others are custom-trained. You need one consistent approach that integrates with your existing deployment on Vertex AI and requires minimal ongoing maintenance. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Export prediction results to BigQuery and run a daily job to calculate feature importance scores for each model",
+      "B": "Enable Vertex Explainable AI for the deployed models to return feature-based explanations with each prediction",
+      "C": "Build a custom SHAP explainer running on Cloud Run Functions that processes each prediction request and returns the results to clients",
+      "D": "Use Vertex AI Model Monitoring to generate drift reports and provide them to clients as explanations"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The correct choice is to enable Vertex Explainable AI for the deployed models. This service supports both AutoML and custom models and integrates directly into the existing prediction flow. When enabled, it produces feature-based explanations with each prediction, allowing clients to see which inputs contributed most to a particular result. This approach avoids building and maintaining separate infrastructure for explainability and meets the requirement for consistent, low-maintenance integration across multiple model types.\n\nThe other options have limitations. Running a SHAP explainer on Cloud Run Functions would require significant custom engineering, version control, and operational upkeep. Calculating feature importance in BigQuery as a daily batch process would only provide aggregate-level insights, not per-prediction detail. Vertex AI Model Monitoring focuses on detecting data drift and skew, not generating explanations for individual predictions, so it does not meet the stated requirements."
+  },
+  {
+    "number": 6,
+    "question": "A media streaming company has built a TensorFlow ranking model to recommend shows to users. The training data comes from a BigQuery query that performs complex feature engineering, including aggregations and instance-level transformations. The company needs a weekly retraining pipeline to update the model, which will serve daily personalized recommendations. They want to keep preprocessing logic consistent between training and inference while reducing long-term maintenance overhead. How should they design the pipeline?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create the pipeline using the TensorFlow Extended SDK, use the ExampleGen component with the BigQuery executor to ingest data, implement transformations with the Transform component, and use the Trainer component to launch a Vertex AI training job",
+      "B": "Create the pipeline using the TensorFlow Extended SDK, run preprocessing inside the model’s input function, use the ExampleGen component to read data from BigQuery, and then train the model with the Trainer component",
+      "C": "Create the pipeline using the Kubeflow Pipelines SDK, rewrite the preprocessing logic in Python for a DataflowPythonJobOp component, and then use a Vertex AI CustomTrainingJobOp to train the model",
+      "D": "Create the pipeline using the Kubeflow Pipelines SDK, run the BigQuery query with a BigQueryJobOp component, and submit a Vertex AI CustomTrainingJobOp for training"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The correct choice is to build the pipeline with TensorFlow Extended, using the ExampleGen component to ingest from BigQuery and the Transform component to encode the preprocessing steps. This approach solves the training-serving skew problem by ensuring that the same transformations are applied at both training and serving. The Trainer component can then launch the Vertex AI training job with the transformed features, maintaining alignment between preprocessing and model execution over time.\n\nThe other options fail to address training-serving skew effectively. Running the preprocessing SQL separately with Kubeflow Pipelines keeps the logic outside the model graph, which can cause discrepancies at inference time. Rewriting the preprocessing in Python for Dataflow adds development overhead and still does not guarantee transformation consistency. Embedding preprocessing directly in the input function is inefficient and makes the pipeline harder to maintain, while also failing to resolve skew issues in a robust way."
+  },
+  {
+    "number": 7,
+    "question": "Your team is developing a fraud detection system for a global payment processing company. You are using TensorFlow to train a binary classifier on 80 billion transaction records stored in multiple CSV files. During training, your data pipeline is becoming a bottleneck and slowing down your experiments. You need to increase data throughput during training. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Load the data into Cloud Bigtable and connect your model pipeline to read from it",
+      "B": "Convert the CSV files into TFRecord shards and put them in a Cloud Storage bucket",
+      "C": "Load the CSV files into BigQuery, then access them from your training job using SQL queries",
+      "D": "Convert the CSV files to TFRecord format, store them in HDFS, and read from there"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "TFRecord format is designed to support efficient binary encoding and fast sequential reading, which makes it suitable for large-scale TensorFlow training jobs. Using TFRecords avoids the overhead of CSV parsing and integrates smoothly with tf.data pipelines. Storing the shards in Cloud Storage provides a scalable and highly available backend that supports parallel access across distributed training jobs.\n\nBigQuery is built for analytics and SQL-style querying rather than high-performance training input. Cloud Bigtable is optimized for low-latency point reads and does not offer the throughput or compatibility needed for model training pipelines. HDFS is not native to Google Cloud and adds unnecessary infrastructure and maintenance overhead."
+  },
+  {
+    "number": 8,
+    "question": "A financial trading firm built hundreds of ML models to detect fraudulent transactions in real time. Each trading server runs continuously and processes thousands of events per second. The models are retrained daily and must be updated without downtime. Predictions must be generated with extremely low latency, well under a millisecond, and the deployment should be cost-efficient while running 24/7. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Deploy a Dataflow batch pipeline and call a Vertex AI Prediction endpoint for inference",
+      "B": "Deploy a Dataflow batch pipeline with the RunInference API and configure daily manual redeployment of updated models",
+      "C": "Deploy a Dataflow streaming pipeline with the RunInference API and enable automatic model refresh for daily updates",
+      "D": "Use a Dataflow streaming pipeline connected to a Vertex AI Prediction endpoint with autoscaling enabled"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "A Dataflow streaming pipeline with the RunInference API is built for ultra-low-latency, high-throughput inference scenarios like fraud detection. It can process streaming data continuously and supports sub-millisecond predictions. With automatic model refresh, the firm can update all models daily without stopping or redeploying the pipeline, ensuring uninterrupted service. This approach meets both the latency and uptime requirements while keeping operational costs under control.\n\nThe other options either introduce higher latency or fail to meet the real-time requirement. Batch pipelines are not suited for continuous event processing and would add unacceptable delays. Vertex AI Prediction endpoints, even with autoscaling, have higher inference latency than RunInference and cannot guarantee sub-millisecond performance. Manually redeploying models each day is operationally inefficient and risks downtime."
+  },
+  {
+    "number": 9,
+    "question": "You manage a data analytics workflow for a subscription video platform. A BigQuery ML logistic regression model predicts the likelihood that a subscriber will cancel in the next month. You want the model to retrain automatically every Monday using the latest engagement and viewing history data. Your goal is to keep the setup simple and the operational cost low. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a Cloud Run Functions job that executes the retraining SQL and schedule it with Cloud Scheduler",
+      "B": "Use Workflows triggered by Cloud Scheduler to call the BigQuery API and run the retraining SQL on a weekly schedule",
+      "C": "Configure a scheduled query in BigQuery to run the model retraining SQL each week",
+      "D": "Build a Vertex AI Pipeline that runs the retraining SQL and schedule it weekly using Cloud Scheduler"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The best approach is to use BigQuery’s built-in scheduling feature to run the retraining SQL automatically. BigQuery can execute a CREATE OR REPLACE MODEL statement on a recurring basis without additional infrastructure. This eliminates the need to manage separate scheduling services or orchestration tools and reduces both complexity and ongoing costs. For a straightforward recurring retrain task, this method is the most direct and least error-prone.\n\nThe other options introduce unnecessary overhead. A Vertex AI Pipeline with Cloud Scheduler is better suited for complex multi-step ML workflows, not a single SQL retrain. A Cloud Run Functions job triggered by Cloud Scheduler adds extra components that must be deployed and maintained. Using Workflows with Cloud Scheduler to call the BigQuery API also adds complexity without benefit for this case. All three alternatives require more development and operational effort than necessary for a simple, recurring BigQuery ML retraining task."
+  },
+  {
+    "number": 10,
+    "question": "Your team built a TensorFlow model to score product reviews for sentiment. The model was trained in Vertex AI and saved in TensorFlow’s SavedModel format. Now you want to use the model to perform batch inference on a large volume of reviews already stored in a BigQuery table. You are looking for the simplest solution that avoids transferring the data out of BigQuery and minimizes compute resource setup. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Upload the model to Cloud Storage and run predictions using Cloud Functions",
+      "B": "Use Vertex AI batch prediction with the model location and BigQuery as the input source",
+      "C": "Import the model into BigQuery ML and run predictions using SQL",
+      "D": "Run a Dataflow pipeline that applies the SavedModel to data extracted from BigQuery"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The best option is to import the TensorFlow SavedModel into BigQuery ML and run predictions using SQL. This keeps the data in BigQuery and uses in-database compute to perform inference efficiently. Running predictions using Cloud Functions is not practical for large-scale batch jobs and would require orchestrating queries and handling input-output manually. Dataflow pipelines and Vertex AI batch prediction are both valid methods for batch inference, but they involve additional infrastructure and data transfer. If the model can be imported into BigQuery ML, it is the most straightforward and efficient approach in this case."
+  },
+  {
+    "number": 11,
+    "question": "Your data science team is building an ML pipeline on Vertex AI Pipelines to retrain a custom PyTorch model each week. After training, the model needs to be registered in Vertex AI Model Registry and deployed to an endpoint for real-time predictions. You want the most straightforward solution with minimal custom coding. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use the Vertex AI SDK for Python within a custom container to handle registration and deployment",
+      "B": "Chain the Vertex AI ModelUploadOp and ModelDeployOp components in the pipeline",
+      "C": "Call the Vertex AI API from a custom component built on a pytorch-inference image",
+      "D": "Use the Vertex AI ModelBatchPredictOp component"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The most direct and low-maintenance approach is to use the prebuilt ModelUploadOp and ModelDeployOp components in Vertex AI Pipelines. These components are designed to work together in Kubeflow-based pipelines and handle the integration with Vertex AI services without requiring manual API calls. By chaining them in the pipeline, you can automate the process of model registration and deployment while keeping the pipeline code minimal and easy to maintain.\n\nThe other options introduce unnecessary complexity or do not address both steps. Manually calling the Vertex AI API within a custom component requires more code and setup compared to using prebuilt components. ModelBatchPredictOp is intended for batch predictions, not for registering or deploying a model. Using the SDK for Python within a custom container can achieve the goal but is less efficient when dedicated pipeline components already exist for this purpose."
+  },
+  {
+    "number": 12,
+    "question": "You are training a convolutional neural network for satellite image classification using a Cloud TPU. You notice that the TPU utilization is low, and training time is significantly longer than expected. Profiling the training job reveals that after each training step, the TPU is idle while waiting for data to be read, decoded, and normalized from your Cloud Storage bucket. CPU usage is consistently high, and there is a delay between the end of one training step and the start of the next.\n\nWhat should you do to reduce training time in a cost-efficient way?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Switch to a newer version of Cloud TPU and increase the batch size",
+      "B": "Rewrite the input function to downsample the image resolution and reduce memory pressure",
+      "C": "Rewrite the data input function to use parallel reads, parallel preprocessing, and prefetching",
+      "D": "Switch to NVIDIA A100 GPUs and use mixed precision"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The trace indicates that the TPU is waiting for data, which suggests an input pipeline bottleneck. To reduce idle time and improve performance without increasing costs, you should optimize the data input pipeline by adding parallel reads, parallel transformations, and prefetching. This allows the next batch to be prepared while the current one is being processed by the TPU.\n\nUpgrading to a newer TPU version or switching to GPUs would raise costs and still leave the data pipeline as a bottleneck. Lowering image resolution might slightly reduce processing load but does not solve the delay in data arrival. Optimizing the pipeline is the most efficient approach in this case."
+  },
+  {
+    "number": 13,
+    "question": "You work for a large e-commerce company that runs periodic campaigns targeting customers who are likely to spend over $50 within the next 10 days. You trained a TensorFlow model to generate these spending predictions using historical data. Your data analysts want to run prediction queries as part of their existing workflows in BigQuery, and the results will be used to populate a downstream dashboard. You want to keep infrastructure overhead low and avoid unnecessary data transfers. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Embed the model in a web service that batches requests and writes to BigQuery",
+      "B": "Import the model into BigQuery ML and run predictions as SQL queries",
+      "C": "Use Cloud Functions triggered by Pub/Sub to call Vertex AI for real-time predictions",
+      "D": "Deploy the model to Vertex AI and schedule predictions through Cloud Composer pipelines"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "BigQuery ML supports importing TensorFlow models and running predictions directly in BigQuery using SQL. This avoids extra infrastructure and allows analysts to use familiar workflows. Batch inference is appropriate for a 10-day window.\n\nUsing Vertex AI adds complexity and cost without clear benefit in this case. Cloud Functions and Pub/Sub introduce real-time overhead where it's not needed. A web service adds unnecessary maintenance and detaches the process from analyst workflows."
+  },
+  {
+    "number": 14,
+    "question": "You are helping a logistics company build a model to forecast delivery delays using historical package data. You achieve a training AUC of 98% within your first few experiments, despite using a simple logistic regression model and minimal feature engineering. You haven't yet tuned the model or introduced any regularization. What should you do next to validate your results?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use k-fold cross-validation to verify the model’s consistency across different data segments",
+      "B": "Perform hyperparameter tuning to reduce overfitting and lower the model's training score",
+      "C": "Investigate the features and remove any that are strongly correlated with whether a delivery was late",
+      "D": "Replace the current model with a more constrained one like Naive Bayes and compare results"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "When a simple model reaches near-perfect performance right away, it's often a sign that the model has access to leaked information. Data leakage can occur when a feature contains data that wouldn’t realistically be available at prediction time or is too closely tied to the label. In this case, some feature might be capturing downstream or proxy information, such as a late scan timestamp or customer complaint that correlates directly with delay outcomes.\n\nRather than jumping into tuning or model simplification, your first step should be to review the data pipeline and feature set. Removing features that are highly correlated with the target reduces leakage risk and gives you a better sense of the model’s true generalization performance. Techniques like cross-validation can help assess stability but won't fix the root issue if leakage exists. Likewise, hyperparameter tuning won't solve the fundamental problem of invalid input data."
+  },
+  {
+    "number": 15,
+    "question": "A financial services company is building a voice-based assistant that helps customers with their account inquiries. Voice transcriptions will be stored for quality assurance and analytics. Before storing this data, the company must ensure that any sensitive customer details, such as account numbers or addresses, are removed or replaced so they cannot be used to identify individuals.\n\nWhat should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use the Cloud Natural Language API to extract entities from the transcriptions and store them in a separate table for secure access",
+      "B": "Use the Cloud Speech-to-Text API to transcribe calls and configure it to automatically remove sensitive phrases before output",
+      "C": "Use the DLP API to scan the transcribed text and replace sensitive elements with masked or tokenized values before storage",
+      "D": "Use the DLP API to encrypt all customer data from the transcription before storing it in Cloud Storage"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The DLP API is designed to detect and transform sensitive information in text, images, and other data sources. In this case, it can scan the transcribed conversations, identify sensitive elements like account numbers, and then mask or tokenize them so that no identifiable information is stored. This approach ensures compliance with privacy requirements and reduces the risk of exposing sensitive customer data while still allowing the processed text to be used for analysis.\n\nThe other options have limitations that make them less appropriate here. Using Speech-to-Text with simple phrase filtering would be less reliable because it does not match the breadth or accuracy of the DLP API’s pattern detection. Entity extraction from Cloud Natural Language is not intended for PII detection or anonymization, so storing those entities separately would still risk leaving sensitive data in the original transcripts. Encrypting all customer data via DLP before storage is not the right use of the API in this context, as the goal is to remove or transform sensitive fields rather than encrypt the entire dataset, which would make it unusable for further analysis without decryption."
+  },
+  {
+    "number": 16,
+    "question": "A publishing company trained a text classification model on confidential on-premises documents. Due to compliance rules, the raw training data cannot be uploaded to the cloud. You deployed the model to Vertex AI for prediction but expect that the type of incoming text will change over time. You need to detect when the input distribution starts to differ from the training data without moving the original dataset. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Enable drift detection in Vertex AI Model Monitoring by uploading anonymized production data",
+      "B": "Configure Vertex AI Model Monitoring to detect training–serving skew for the model",
+      "C": "Configure Vertex AI Model Monitoring to detect feature attribution skew for the model",
+      "D": "Use Vertex Explainable AI to run example-based explanations for the model"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The correct choice is training–serving skew detection in Vertex AI Model Monitoring. This compares production input statistics with those from the training set to detect shifts in the data distribution that could affect performance. It works without requiring the raw training data to be uploaded, which makes it suitable for environments with strict compliance requirements. This ensures that changes in incoming text data can be tracked over time without violating data residency policies.\n\nThe other options do not directly meet the requirement. Feature attribution skew measures changes in feature importance, not the underlying data distribution. Drift detection with anonymized samples may still introduce compliance concerns and is less precise than skew monitoring for detecting shifts. Example-based explanations in Vertex Explainable AI help interpret predictions but are not intended for detecting changes in data between training and serving."
+  },
+  {
+    "number": 17,
+    "question": "You work for a national bank that recently launched a TensorFlow-based model on Vertex AI to predict whether a credit card transaction is fraudulent. You want to understand which specific input contributed the most to a fraud prediction for each incoming request. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Enable model monitoring in Vertex AI Model Monitoring and use drift detection metrics to identify features that are shifting over time",
+      "B": "Export your model’s serving results to BigQuery and run a logistic regression for each input to estimate which features had the most influence",
+      "C": "Use Vertex AI Pipelines to build a custom workflow that iteratively removes one input feature at a time and logs the model’s score for comparison",
+      "D": "Use the Explainable AI functionality in Vertex AI and include the ‘explain’ parameter in prediction requests to return feature attributions using the sampled Shapley method"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The Explainable AI feature in Vertex AI supports local explanations using sampled Shapley values. This method produces attributions that describe how much each feature influenced the model's output on a per-prediction basis.\n\nUsing correlation or regression in BigQuery does not give insight into individual predictions and does not reflect the actual behavior of the model. Vertex AI Model Monitoring provides drift and skew detection but does not offer per-instance interpretability. Removing features one by one and measuring performance degradation is a global sensitivity analysis technique and does not scale well for large numbers of predictions.\n\nOnly Explainable AI with the sampled Shapley method directly answers the question of which input was most important for a specific prediction."
+  },
+  {
+    "number": 18,
+    "question": "Your team is building a fraud detection system using a custom TensorFlow model trained on transaction data. You want to experiment with different neural network architectures, tune hyperparameters, and evaluate model performance across training runs. The team also wants to review all experiment results in one place to compare metrics across models and approaches. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use BigQuery ML to train and store metrics from each run",
+      "B": "Run separate training jobs in Vertex AI and sort them by job creation time",
+      "C": "Use Vertex AI Pipelines to create an experiment and group the training runs",
+      "D": "Set up Cloud Composer to schedule each training job and record results manually"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The best approach is to use Vertex AI Pipelines to define and manage an experiment. Pipelines give you the ability to organize multiple training jobs under a single experiment so you can view and compare their metrics in one dashboard. This supports structured experimentation, including comparisons across architectures and hyperparameters. Simply naming jobs or scheduling them without grouping under an experiment makes comparison harder. BigQuery ML does not support custom TensorFlow training, and Composer does not provide built-in support for experiment tracking or metric visualization."
+  },
+  {
+    "number": 19,
+    "question": "A retail company uses Vertex AI Pipelines to train and deploy forecasting models that predict product demand. The pipeline reads historical sales data from BigQuery, exports it to Cloud Storage as TFRecord files, trains the model in Vertex AI Training, and deploys the resulting model to a Vertex AI Endpoint. One of the deployed models is producing unusually high forecast errors. You have identified the exact model version responsible and need to retrieve the precise dataset that was used for its training. How should you locate that dataset?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Retrieve the Vertex AI Training job ID associated with the model version and examine its logs to find references to the TFRecord files in Cloud Storage",
+      "B": "Store all training datasets in BigQuery tables with timestamps and join this table with the model’s deployment metadata to identify the relevant dataset",
+      "C": "Search for the pipeline execution logs in Cloud Logging using the model’s deployment timestamp, identify the step that exported the TFRecord files, and find the dataset location from the logs",
+      "D": "Use the lineage tracking in Vertex AI Metadata to locate the model version, trace back to the data export step, and retrieve the TFRecord files’ location from the metadata"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Vertex AI Metadata automatically records lineage between pipeline steps, which includes connections between a trained model and the data preprocessing step that produced its training dataset. By querying the metadata for the identified model version, you can trace directly to the step that exported the TFRecord files to Cloud Storage and retrieve the dataset location without guesswork. This approach ensures accurate recovery of the training data with built-in tooling designed for artifact tracking in ML workflows.\n\nThe other options are less reliable. Searching in Cloud Logging depends on log retention and may miss older pipeline runs. Manually storing datasets in BigQuery could work only if the process was set up in advance, which is not indicated here, and it bypasses the native tracking Vertex AI already provides. Pulling information from Vertex AI Training job logs can reveal file paths but lacks the structured artifact relationships that metadata lineage provides, making it harder to ensure you have the exact dataset used in training."
+  },
+  {
+    "number": 20,
+    "question": "You work for a company that uses machine learning to recommend books to users based on the cover images they upload. Your system is built on Google Cloud and uses Vertex AI pipelines for model training and deployment. The business regularly adds newly published books to its catalog. You have already configured retraining so your model can learn from newly labeled data over time. To ensure that your model continues to perform well on real-world inputs, you want to use Vertex AI Model Monitoring to track performance.\n\nWhat should you do to maintain the relevance of your test dataset?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Add new book cover images to your existing test dataset as they are used in retraining",
+      "B": "Keep the test dataset fixed so evaluation results remain consistent across versions",
+      "C": "Replace the current test dataset with only the new book covers used in retraining",
+      "D": "Only update the test dataset when model monitoring detects drift in the input features"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "To evaluate model performance effectively over time, your test dataset needs to reflect both the original content and the new data introduced during retraining. Adding new examples to the test set ensures that Vertex AI Model Monitoring can assess performance on both older and newer content. This helps track accuracy and detect potential degradation as your model adapts.\n\nKeeping the test dataset fixed limits your ability to evaluate on new categories and may hide accuracy drops. Replacing the test dataset removes valuable historical examples and gives an incomplete view of model quality. Waiting until drift is detected delays updates that should be proactive. Expanding the test dataset is the best way to keep evaluation meaningful as your model evolves."
+  },
+  {
+    "number": 21,
+    "question": "You manage an ML-powered product recommendation system for a large e-commerce retailer. Every week, you collect all user interaction data sent to your model’s prediction API. To measure accuracy, you send a subset of the most recent requests to a third-party human review service. After operating for a year, you see that model accuracy sometimes drops quickly, while other times it remains stable for several months. The human review service is expensive, but you also want to avoid prolonged periods of degraded recommendations. You need to determine an efficient process for deciding when to trigger the human review process and potentially retrain the model. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use historical accuracy trends to create a fixed review schedule for the coming year, regardless of detected changes in input data",
+      "B": "Build a data drift detection job that runs periodically to compare feature statistics from recent serving data with the training dataset, and only send recent serving data for review when drift is detected",
+      "C": "Train a separate binary classifier on the training dataset to identify outlier predictions, and send these outliers to the review service for labeling",
+      "D": "Calculate the yearly cost of the review service and compare it with estimated revenue loss from degraded recommendations, adjusting review frequency based on the cost comparison"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The correct answer is to build a periodic data drift detection job that compares recent serving data against the training dataset and sends data for review only when drift is detected. This method monitors for changes in feature distributions that could signal a future drop in model accuracy. By triggering reviews only when drift is found, you avoid the cost of constant reviews while still responding promptly to shifts that may lead to performance degradation. It is a proactive approach that adapts to real changes in the data rather than relying on rigid schedules or purely cost-driven rules.\n\nThe other options fall short for different reasons. Training a binary classifier on the original dataset to detect outliers will not necessarily capture the kinds of distribution shifts that lead to performance issues, so it may miss important changes. Using historical trends to set a fixed schedule ignores the unpredictable nature of real-world data changes, which can occur at any time. Basing review frequency solely on a cost-to-revenue comparison is too simplistic and reactive, as it does not provide an early warning mechanism to prevent accuracy drops before they impact the business."
+  },
+  {
+    "number": 22,
+    "question": "You are building a recommendation system for a video streaming service. Your training data includes user profile fields such as ZIP code, device ID, and content preferences. Some of these categorical features have tens of thousands of unique values. You plan to train a deep neural network. How should you encode these high-cardinality features to prepare them as model inputs?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Map the categorical values into hash buckets with a fixed bucket size",
+      "B": "Convert the string values into token IDs and apply word embeddings",
+      "C": "One-hot encode all categorical values and reduce dimensionality with PCA",
+      "D": "Assign each unique value a numerical ID and embed that value directly"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "When working with categorical features that have very large cardinality, hashing is a memory-efficient way to represent the data without full one-hot encoding. Hash buckets allow you to map any string value into a smaller, fixed-size space using a hash function. This avoids creating massive input vectors while still preserving enough uniqueness for learning useful patterns in neural networks.\n\nLabel encoding with direct IDs can introduce unintended ordinal relationships. PCA is inappropriate on one-hot encoded categorical data because it assumes numeric relationships. Word embeddings are typically designed for text sequences, not isolated categorical fields like ZIP codes or device IDs."
+  },
+  {
+    "number": 23,
+    "question": "A travel company operates a website where customers can search for vacation packages. The current search tool only matches keywords in package titles and descriptions. Recently, more users have started entering conversational queries that include specific attributes like destination, travel dates, and activities. You need to quickly build a proof-of-concept search tool that can interpret these types of queries and return relevant packages without requiring you to train and deploy your own model. How should you build this search tool?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create the search tool with Vertex AI Agent Builder",
+      "B": "Use Vertex AI Vector Search with a custom embedding model to store package information and handle retrieval",
+      "C": "Use a fine-tuned BERT-based model hosted on a Vertex AI endpoint for semantic search",
+      "D": "Use a foundation model from Model Garden with a custom backend for prompt processing and retrieval"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The correct choice is to use Vertex AI Agent Builder. This service enables rapid creation of applications that can understand and respond to complex, natural language queries over structured datasets. It does not require you to train your own model or implement backend retrieval logic, which makes it well-suited for quickly delivering a proof-of-concept under time constraints. It can integrate with your structured vacation package data and interpret conversational queries that include specific attributes like location or activities.\n\nThe other options all require more setup and ongoing management. Vertex AI Vector Search would need you to build or source an embedding model, create and maintain a vector index, and implement custom retrieval logic. Hosting a BERT-based model on a Vertex AI endpoint demands fine-tuning, deployment work, and ongoing model management. Using a foundation model from Model Garden would require building a prompt-handling and retrieval backend along with possible tuning for your dataset, adding unnecessary complexity compared to a purpose-built tool for structured data search."
+  },
+  {
+    "number": 24,
+    "question": "You work for a subscription-based streaming service and need to develop a BigQuery ML model that predicts the number of new subscribers for each region each month. Your dataset in BigQuery includes columns such as signup date, region, subscription plan, and promotional campaign ID. You want to choose the combination of model type and feature engineering approach that will best capture important patterns in the data while keeping the workflow straightforward.\n\nWhat should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use a deep neural network model. Create embedding vectors for categorical features and transform dates into sequential day counts",
+      "B": "Use a time series ARIMA model. Extract month and year from the date column and encode categorical features using label encoding",
+      "C": "Use a k-means clustering model. Convert dates into numeric values and encode categorical features with integer labels",
+      "D": "Use a linear regression model. One-hot encode categorical features and extract relevant components from the date, such as month number and day of week"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The correct choice is to use linear regression in BigQuery ML with one-hot encoding for categorical variables and derived features from the date column. One-hot encoding preserves the categorical nature of the variables without introducing false ordinal relationships. Extracting elements like month and day of week provides the model with cyclical and seasonal patterns that often influence subscriber counts. This combination is simple to implement in BigQuery ML and aligns with the goal of capturing meaningful patterns without overcomplicating the workflow.\n\nThe other options have clear drawbacks for this task. K-means clustering is for unsupervised learning and would not generate predictions for a numeric target like subscriber counts. A deep neural network with embeddings can handle categorical data but introduces unnecessary complexity and tuning requirements for this scale of problem. ARIMA is intended for time series forecasting on a single metric over time, not for incorporating multiple categorical predictors in a regression context. Label encoding in both the ARIMA and k-means options risks imposing artificial order on categories, which can mislead these models."
+  },
+  {
+    "number": 25,
+    "question": "A telecommunications company wants to predict customer plan cancellations using historical account and usage data stored in BigQuery. The team needs to quickly build an initial model that can provide explanations for predictions and allow for rapid iteration without exporting data or managing additional infrastructure. What should they do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a TensorFlow dataset from BigQuery using the BigQuery Connector and train a neural network model with TensorFlow",
+      "B": "Export the data from BigQuery to Cloud Storage, preprocess it with Dataflow, and train a custom model using Vertex AI Custom Training",
+      "C": "Export the data from BigQuery to Cloud Storage, load it into a Vertex AI Workbench notebook, and train a gradient boosting model using XGBoost",
+      "D": "Prepare the data in BigQuery, create a Vertex AI dataset, and use AutoML to train and evaluate a classification model"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The correct approach is to prepare the data directly in BigQuery and then use AutoML to create the initial model. AutoML integrates directly with BigQuery, allowing the team to avoid exporting data and setting up custom infrastructure. It also provides built-in model interpretability features like feature attributions, which help explain how predictions are made. This lets the team move quickly from data to insights while keeping costs and setup effort low.\n\nThe other options require more manual setup and lack integrated interpretability for structured data. Exporting to Cloud Storage and training with XGBoost or TensorFlow introduces additional infrastructure and preprocessing steps, which slow down iteration. Using Dataflow for preprocessing before Vertex AI Custom Training is unnecessary for initial experimentation and adds complexity without clear benefit at this stage. These approaches are better suited for later stages when custom modeling requirements outweigh the need for speed and simplicity."
+  },
+  {
+    "number": 26,
+    "question": "You are deploying a trained image classification model on GKE using TensorFlow Serving. The model is running in a production environment on CPU-only nodes and is receiving thousands of prediction requests every second. The current response times are too slow, but you cannot change the infrastructure configuration, add GPUs, or redesign the model architecture. What should you do to improve latency?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Switch to a version of TensorFlow Serving that includes universal binary support",
+      "B": "Increase the TensorFlow Serving queue size to reduce request rejection rates",
+      "C": "Recompile TensorFlow Serving with CPU-specific optimizations and choose a higher-performing CPU platform in GKE",
+      "D": "Adjust the batch timeout settings for TensorFlow Serving to decrease queuing delay"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "To improve latency without modifying infrastructure or switching to GPU-based nodes, your best option is to recompile TensorFlow Serving with CPU-specific optimizations, such as AVX2 or AVX-512, and pair that with an appropriate CPU platform selection in GKE. This lets the model inference code take full advantage of the available hardware. Simply changing batch or timeout parameters does not address the fundamental processing inefficiencies on CPU. Using a universal binary version of TensorFlow Serving avoids compatibility issues but does not optimize for performance on a specific CPU type."
+  },
+  {
+    "number": 27,
+    "question": "An insurance company runs multiple ML workflows in Vertex AI to predict claim fraud. The workflows process data from several Google Cloud projects. You need to coordinate the training and deployment steps across projects, keep a record of each model’s lineage, and compare performance between different model versions to decide which should be promoted. Which set of Google Cloud services should be part of your workflow?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Vertex AI Feature Store, Vertex AI Experiments, and Dataproc",
+      "B": "BigQuery ML, Vertex AI Feature Store, and Vertex AI TensorBoard",
+      "C": "Vertex AI Pipelines, Vertex AI Experiments, and Vertex AI Metadata",
+      "D": "Dataplex, Vertex AI TensorBoard, and Vertex AI Model Monitoring"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Vertex AI Pipelines can orchestrate ML workflows across multiple projects, ensuring training and deployment steps are coordinated in a repeatable way. Vertex AI Experiments can track performance metrics across model versions, making it easier to evaluate which version should move forward. Vertex AI Metadata provides lineage tracking so you can trace each model back to its data and preprocessing steps, supporting reproducibility and clear audit trails across your workflows.\n\nThe other options either omit key services or include tools that are not well-suited for this need. Dataplex focuses on governance rather than model version tracking. TensorBoard is useful for monitoring training progress but not for comparing multiple model versions after training. Model Monitoring helps in production drift detection but does not track lineage or manage workflow orchestration. Feature Store ensures consistency in serving features but does not handle orchestrating workflows or tracking model version performance. Dataproc is for distributed data processing, not for managing ML pipelines or experiment tracking."
+  },
+  {
+    "number": 28,
+    "question": "You work for an online gaming company that needs to monitor player activity such as movements, in-game purchases, and session durations. These events are generated in real time from thousands of client devices. Your team uses BigQuery to analyze this data continuously for gameplay insights and fraud detection. What should you do to stream this user event data into BigQuery with low latency?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Configure Pub/Sub with a Dataflow streaming pipeline to process and write events into BigQuery",
+      "B": "Set up a Pub/Sub topic and use a push subscription to send messages to a Cloud Run function that writes to BigQuery",
+      "C": "Export data from Firestore to Cloud Storage and import it into BigQuery using scheduled queries",
+      "D": "Use Dataflow to stream from Cloud Storage into BigQuery"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The best option is to use Pub/Sub to collect streaming events and Dataflow to transform and load them into BigQuery. This architecture is designed for scalable, real-time ingestion and supports preprocessing, schema enforcement, and error handling. Pub/Sub to Dataflow to BigQuery is a very common sequence that you should be familiar with.\n\nSending Pub/Sub messages to a Cloud Run function can work but is more complex to scale and maintain, and still requires custom code to handle BigQuery writes.\n\nStreaming from Cloud Storage is not real time, since Cloud Storage doesn't emit events by itself in a structured stream.\n\nExporting from Firestore is batch-based and better suited for historical analysis, not live event pipelines."
+  },
+  {
+    "number": 29,
+    "question": "A logistics company is building a model to predict package delivery delays. One of the most informative features is a categorical field that records the delivery partner, but this field is sometimes missing due to inconsistent data collection from certain regions. What should the team do to maintain model performance while handling the missing values?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Remove the delivery partner feature from the dataset if more than 10% of entries are missing",
+      "B": "Fill in the missing delivery partner values using the partner name from the most recent delivery for the same destination region",
+      "C": "Introduce a new category to represent missing delivery partners and add a binary feature to flag whether the original value was missing",
+      "D": "Impute missing delivery partners using the most frequently occurring partner in the dataset"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The correct approach retains the feature while allowing the model to capture potential patterns in missingness. Adding a new category for missing values prevents the model from misinterpreting those rows as belonging to an existing delivery partner. The binary indicator lets the model learn whether the absence of this data itself holds predictive value. This is especially useful if the missing values are not random but tend to occur in contexts that affect delivery times, such as specific regions or vendors.\n\nDropping the feature discards useful information and reduces model capacity. Mode imputation makes an assumption that the missing entries resemble the most common value, which could introduce noise or bias. Filling based on past deliveries may introduce leakage or non-generalizable behavior, especially if recent partner data correlates with the target in unintended ways. Including both a placeholder category and a missingness flag gives the model the flexibility to learn the correct patterns without making unverifiable assumptions."
+  },
+  {
+    "number": 30,
+    "question": "Your company’s research group currently submits training jobs through a homegrown web portal backed by a pool of Compute Engine VMs. Different teams use TensorFlow, PyTorch, scikit-learn, and custom CUDA code. Keeping images up to date and scaling clusters has become a burden. Leadership wants a managed approach that still lets teams package any framework they need. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Build an Airflow environment in Cloud Composer to spin up and tear down training VMs per job",
+      "B": "Stand up Kubeflow on Google Kubernetes Engine and route all jobs through TFJob and PyTorchJob",
+      "C": "Use Cloud Run Functions to receive job requests and invoke prebuilt GPU VM images on demand",
+      "D": "Use Vertex AI Custom Training with custom containers for everything"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Vertex AI Custom Training lets teams provide a container that includes their preferred framework and dependencies, which removes the need to maintain a shared VM or cluster image. The service provisions and scales the underlying compute, handles logging and artifacts, and integrates with Vertex AI Pipelines if you later automate workflows. This matches the requirement for a managed approach while preserving flexibility across frameworks. Kubeflow on GKE can support multiple frameworks, but you would be responsible for cluster upgrades, autoscaling, and operator maintenance. Cloud Composer can orchestrate jobs, yet you would still manage images, quotas, and lifecycle of the training machines. Cloud Run Functions can front job requests, but it does not provide a training service, so you would still build and manage the execution layer yourself. Choosing Custom Training reduces operational overhead and creates a consistent submission path for every team while keeping framework choice open. It also simplifies cost control and job tracking through a single managed surface in Vertex AI."
+  },
+  {
+    "number": 31,
+    "question": "You work for an international social media company that offers comment moderation for posts written in dozens of languages. To simplify operations, all comments are first translated into English using the Cloud Translation API before being processed by a classification model. You notice that the classifier performs inconsistently depending on the original language of the comment. You need to improve this performance inconsistency without making changes to the translation workflow or model serving infrastructure. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Replace the current model with a pre-trained transformer-based model",
+      "B": "Train a multilingual model directly on comments in their original languages",
+      "C": "Add a regularization term to the loss function during training",
+      "D": "Disable moderation for languages with the highest error rates"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "Adding a regularization term to the loss function allows you to encourage more consistent model behavior across translated text without changing the serving setup. This is a training-side adjustment that helps balance performance across different inputs.\n\nUsing a multilingual model would require infrastructure changes that violate the constraints. Pretrained models may not resolve the inconsistency tied to translation and could introduce latency. Disabling moderation for certain languages reduces safety and doesn’t solve the root problem."
+  },
+  {
+    "number": 32,
+    "question": "A telehealth company developed a machine learning model that predicts whether a patient’s reported symptoms indicate an urgent medical condition. After a virtual consultation ends, the prediction result must be sent instantly to a triage team so they can respond without delay. The model has been tested and is ready for deployment. The company needs a serving setup that can process each prediction in real time to meet strict medical response requirements. What should they do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Run batch predictions by importing the model into Vertex AI and using the Vertex Batch Prediction service to process daily files of consultation results",
+      "B": "Store the model in a Compute Engine instance, reload it for each request, and return predictions from the VM",
+      "C": "Save the model in Cloud Storage and set up a Cloud Run Functions service to load the model and process requests whenever new consultation data arrives",
+      "D": "Import the model into Vertex AI Model Registry, deploy it to a Vertex AI endpoint, and send real-time prediction requests to the endpoint"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Deploying the model to a Vertex AI endpoint allows it to serve low-latency predictions on demand without the overhead of loading the model for each request. This is important when immediate action is needed after each consultation, as the endpoint can handle requests in milliseconds and integrates well with downstream systems for triggering alerts or workflows. It is a managed service, so scaling, reliability, and performance are handled without requiring the team to build a serving infrastructure from scratch.\n\nThe other approaches do not meet the real-time requirement. Batch prediction in Vertex AI processes large sets of inputs at scheduled intervals, which is not suitable when predictions are needed instantly after each consultation. Cloud Run Functions is not designed for long-running inference workloads and may cause delays from cold starts or model loading each time it runs. Using a Compute Engine VM and loading the model for each request adds unnecessary latency and maintenance overhead, and it still would not guarantee immediate responses."
+  },
+  {
+    "number": 33,
+    "question": "A biotech startup packaged a custom ML model into a Docker container for serving and deployed it to Vertex AI Model Registry. When you run an online prediction request, it fails with the error: \"Model server did not start. Please confirm your model file and container settings are valid.\" No additional messages appear in the Vertex AI logs. You need to quickly identify the cause of the failure. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Modify the container to expose the HTTP server on port 8080 and redeploy it to Vertex AI",
+      "B": "Update the container’s health check path to a known working endpoint and redeploy it to Vertex AI",
+      "C": "Download the Docker image locally, run it using the docker run command, and check the container logs with docker logs",
+      "D": "Add more verbose logging to the container application and redeploy it to Vertex AI for further investigation"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The correct choice is to pull the Docker image locally and run it to inspect its logs. This allows you to reproduce the environment outside Vertex AI and access detailed container startup errors that may not appear in managed service logs. Local testing can reveal issues such as missing dependencies, incorrect file paths, or other misconfigurations before redeploying to Vertex AI. It is the fastest way to pinpoint problems that prevent the model server from starting.\n\nThe other options focus on making changes without first identifying the root cause. Adding verbose logging requires another deployment cycle and still assumes the container starts successfully. Changing the HTTP port or health check path may resolve some configuration mismatches, but without the actual error details, these are speculative fixes that could miss the real issue. Debugging locally before making changes is more reliable and avoids unnecessary redeployment cycles."
+  },
+  {
+    "number": 34,
+    "question": "You’re building a product search ranking model for a large retailer. The model uses an embedding for query terms and is trained in TensorFlow. You plan to run Vertex AI hyperparameter tuning with the default Bayesian algorithm to choose both the embedding dimension and the learning rate. You define the embedding dimension as an INTEGER between 32 and 128, and the learning rate as a DOUBLE between 1e-05 and 1e-02. Accuracy is the only goal, and total tuning time is not a concern. How should you configure scaling for these hyperparameters and the amount of parallelism?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use UNIT_LINEAR_SCALE for both hyperparameters and allow many parallel trials",
+      "B": "Use UNIT_LOG_SCALE for the embedding dimension, UNIT_LINEAR_SCALE for the learning rate, and keep the number of parallel trials small",
+      "C": "Use UNIT_LINEAR_SCALE for the embedding dimension, UNIT_LOG_SCALE for the learning rate, and keep the number of parallel trials small",
+      "D": "Use UNIT_LOG_SCALE for both hyperparameters and allow many parallel trials"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The correct approach is linear scaling for the embedding dimension, log scaling for the learning rate, and a small number of parallel trials. Embedding size is a discrete capacity choice whose impact typically changes roughly linearly across the defined range, so linear scaling gives sensible steps for exploration. Learning rate effects are multiplicative and highly sensitive, so searching it on a logarithmic scale helps the tuner probe across orders of magnitude efficiently. Bayesian optimization benefits from sequential learning between trials, so limiting parallel trials lets each new trial leverage information from previous results to pick better candidates, which tends to improve final accuracy when time is not a constraint.\n\nThe other configurations miss one or more of these points. Using log scale for the embedding dimension creates awkward jumps among integers and does not reflect how model capacity usually scales. Linear scaling for the learning rate wastes trials in unhelpful regions and can skip critical orders of magnitude where good solutions live. Allowing many parallel trials weakens the Bayesian strategy because suggestions cannot incorporate feedback from earlier runs, which turns the search into something closer to random sampling and can reduce tuning quality. Mixing the scales in the opposite way produces inefficient exploration of both parameters and is unlikely to reach the best setting within a reasonable trial budget."
+  },
+  {
+    "number": 35,
+    "question": "You work for a telecom provider that uses a regression model to forecast customer call volume at each service center. The model was trained and validated with accurate historical data, but several months after deployment, it begins to produce inaccurate predictions. You discover that the patterns in the incoming data no longer match the patterns in the training set.\n\nWhat should you do to address this issue?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Add batch normalization layers and retrain the model weekly",
+      "B": "Apply feature pruning and retrain the model on a smaller set of predictors",
+      "C": "Select new hyperparameters using a tuning service and retrain the model",
+      "D": "Set up skew monitoring and retrain the model using recent data"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "Changes in input patterns over time can lead to data skew, which causes a model trained on past data to perform poorly in production. The most effective approach is to monitor for skew between the training and serving data. Once skew is detected, retraining the model on updated data ensures it stays aligned with current trends.\n\nHyperparameter tuning and feature pruning are useful in some cases, but they do not address the root issue when the data distribution has shifted. Batch normalization affects training dynamics but does not solve problems caused by distribution drift between training and prediction."
+  },
+  {
+    "number": 36,
+    "question": "You are building a model in AutoML to detect fake product reviews for an online marketplace. The model is trained on historical user reviews labeled as either genuine or fake. After initial training, you find that the model is missing a significant number of fake reviews. Reducing these misses is more important than avoiding false positives. You decide to adjust the training parameters in AutoML to improve detection. What should you do? (Choose two.)\n\nChoose ALL answers that apply.",
+    "options": {
+      "A": "Increase the decision threshold",
+      "B": "Add more negative examples",
+      "C": "Decrease the decision threshold",
+      "D": "Add more positive examples",
+      "E": "Shorten the training time limit"
+    },
+    "question_type": "multiple_answers",
+    "correct_answer": "C, D",
+    "explanation": "Lowering the decision threshold makes the model classify more cases as fake, which increases sensitivity and reduces the chance of missing fake reviews. Adding more positive examples, meaning more known fake reviews, gives the model additional patterns to learn from. This is especially valuable when the dataset is imbalanced and the event of interest (fake reviews) is rare, because the model can learn the signals that are harder to detect. Together, these changes increase the likelihood of catching more fake reviews in production.\n\nIncreasing the decision threshold would have the opposite effect and cause the model to miss even more fake reviews. Adding more negative examples does not help with detecting rare positive cases. Shortening the training time limit restricts the model’s ability to learn complex relationships in the data and would not help with the issue of missed detections."
+  },
+  {
+    "number": 37,
+    "question": "A retail chain wants to improve its supply chain planning by predicting daily product demand for each store. The team has historical sales data with one row per day for the last 18 months. The dataset includes total units sold, the date, and the number of promotional campaigns running that day. They want to use this information to forecast daily demand several weeks ahead and ensure the model accounts for both time-based patterns and the impact of promotions. They also want to develop and test the model as quickly as possible. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Create a Vertex AI tabular dataset and train a forecasting model in AutoML, with units sold as the target, promotions as a covariate, and date as the time variable",
+      "B": "Create a BigQuery table and use BigQuery ML to train a linear regression model, with units sold as the target and date and promotions as features",
+      "C": "Create a Vertex AI tabular dataset and train an AutoML regression model, with units sold as the target and promotions and date features as predictors",
+      "D": "Create a BigQuery table and use BigQuery ML to train an ARIMA model, with units sold as the target and date as the time variable"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The correct choice is to train a forecasting model in AutoML because it can handle time series data with both a time column and known covariates. In this case, the date column serves as the time variable, and the number of promotions is included as a covariate. This setup allows the model to learn seasonal patterns, long-term trends, and the effect of promotions on demand. It is also a fast way to move from dataset to forecast without building the model manually.\n\nThe other options do not fit the problem requirements as well. BigQuery ML’s ARIMA model only handles univariate forecasting, which means it would ignore the promotions data entirely. BigQuery ML’s linear regression treats this as a standard tabular problem without modeling temporal dependencies, which weakens forecast accuracy. Vertex AI AutoML Regression also ignores the sequential nature of the data, so it would not capture time-dependent patterns properly."
+  },
+  {
+    "number": 38,
+    "question": "Your analytics team processes weekly reports that rely on historical e-commerce data stored in BigQuery. Previously, you used Dataflow to normalize price and quantity values before sending them to a dashboarding tool. The team has grown and wants to streamline operations by reducing pipeline steps and avoiding unnecessary data movement. What should you do to simplify the pipeline while maintaining accuracy?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Convert the normalization logic into SQL statements executed directly within BigQuery",
+      "B": "Migrate the data to Cloud Storage and use PySpark with Dataproc for preprocessing",
+      "C": "Deploy a Cloud Run service to perform normalization on streamed data before writing it to BigQuery",
+      "D": "Use TensorFlow Transform to apply normalization before sending the data to the dashboard"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Since your data is already stored in BigQuery, the most efficient approach is to handle preprocessing inside BigQuery using SQL. Writing the normalization logic as SQL expressions avoids the overhead of external tools and keeps the process simple and repeatable. This also helps avoid latency introduced by moving data between services. Using TensorFlow Transform or Cloud Run may be helpful for model input pipelines or inference scenarios, but they are not the most efficient way to preprocess bulk data stored in BigQuery. Similarly, Dataproc adds unnecessary infrastructure overhead when SQL can handle the same computation in place."
+  },
+  {
+    "number": 39,
+    "question": "You are a machine learning engineer at a health tech company building a TensorFlow model to predict patient no-shows based on several terabytes of structured scheduling and demographic data. You need to create a training pipeline that performs automated checks on the input data before training and verifies model performance before deployment. Your goal is to minimize infrastructure burden while accelerating development. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use TensorFlow Extended components and orchestrate the workflow using managed Vertex AI Pipelines",
+      "B": "Use the Kubeflow Pipelines SDK with built-in Google Cloud components and deploy the pipeline to a self-managed GKE cluster",
+      "C": "Use TensorFlow Extended components and run the pipeline using Kubeflow Pipelines on Google Kubernetes Engine",
+      "D": "Use the Kubeflow Pipelines SDK with built-in Google Cloud components and deploy the workflow using Vertex AI Pipelines"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The best approach is to use TensorFlow Extended with managed orchestration through Vertex AI Pipelines. This setup supports large-scale TensorFlow workflows and includes built-in components for validating input data and analyzing model quality. It reduces manual infrastructure setup and enables consistent training and evaluation practices.\n\nUsing Vertex AI Pipelines with Kubeflow DSL is viable, but it lacks the first-class TensorFlow integration that TFX provides.\n\nDeploying on a self-managed GKE cluster increases operational overhead, which contradicts the goal of minimizing maintenance.\n\nTFX with Kubeflow Pipelines on GKE introduces similar concerns, requiring more manual setup and monitoring."
+  },
+  {
+    "number": 40,
+    "question": "You are working with a logistics company to forecast daily fuel usage across its network of delivery trucks. The company collects detailed telematics data, generating tens of millions of new records every day. This data is stored in BigQuery. You need to build and retrain a regression model daily using all data available so far. The model should scale efficiently and require minimal engineering effort to maintain. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Export the data and use Apache Spark to build and run the regression model at scale",
+      "B": "Use scikit-learn in a managed notebook and schedule daily training jobs using Vertex AI",
+      "C": "Use AutoML to train and retrain a regression model on the exported data",
+      "D": "Use SQL to train a regression model directly within BigQuery ML"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "BigQuery ML allows you to build and retrain models directly on data stored in BigQuery using SQL. This avoids the need to move data, supports scheduled retraining, and scales to very large datasets with minimal manual work.\n\nAutoML has row count limitations (~100 million), which you might hit in this scenario, and is not optimized for streaming or continuously growing data. Apache Spark can be used for ML and can scale, but it requires more overhead than is necessary here. scikit-learn and managed notebooks are not built for such large-scale distributed training and they need additional tooling to handle orchestration and scaling."
+  },
+  {
+    "number": 41,
+    "question": "You are working for a construction safety company that wants to automatically detect whether workers are wearing safety helmets in images captured from job site cameras. The helmets may appear in different shapes, colors, and sizes depending on the angle and lighting conditions. You have a dataset of 1,200 labeled images stored in Cloud Storage, along with a CSV annotation file. You need to choose a training method that can detect helmets at varying relative sizes in the images while keeping model development time as short as possible. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Upload your dataset into Vertex AI. Use Vertex AI AutoML Vision Image Object Detection with accuracy as the optimization metric, early stopping enabled, and no training budget specified",
+      "B": "Create a custom TensorFlow training script for object detection and package it for a custom training job in Vertex AI",
+      "C": "Write a Python program that performs transfer learning on a pre-trained image classification model and adapt it for object detection using a custom training job in Vertex AI",
+      "D": "Use the Cloud Vision API with OBJECT_LOCALIZATION type and filter results for the safety helmet category only"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The best approach is to upload the dataset into Vertex AI and use AutoML Vision Image Object Detection with accuracy as the optimization metric, early stopping enabled, and no training budget specified. This method supports object detection for items that can vary in size, shape, and position within images, and the codeless training setup minimizes development time. AutoML Vision Image Object Detection automatically handles model architecture search, transfer learning, and hyperparameter optimization tailored to the provided dataset, which is particularly important when detection targets can appear in different scales.\n\nOther approaches are less suited to the requirements here. Using the Cloud Vision API with OBJECT_LOCALIZATION type would limit flexibility and may struggle with reliably detecting helmets at a wide range of sizes. Building a custom TensorFlow object detection model or adapting a pre-trained image classification model for detection would require significant manual development, experimentation, and tuning, increasing the time needed to deliver a working solution. These approaches also demand more ML engineering expertise without guaranteeing better results compared to AutoML Vision Image Object Detection for this dataset size and task."
+  },
+  {
+    "number": 42,
+    "question": "You trained a scikit-learn recommendation model for a streaming service and plan to deploy it on Vertex AI for both real-time and scheduled batch predictions. The model requires preprocessing of user interaction data before generating recommendations. You want to package the preprocessing together with the model to limit the amount of additional deployment code you need to maintain. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Build a fully custom container for the scikit-learn model, upload it to the Vertex AI Model Registry, deploy to Vertex AI Endpoints, and run batch predictions with an instanceConfig setting to transform input data",
+      "B": "Use a prebuilt scikit-learn prediction container, upload the model to the Vertex AI Model Registry, deploy it to Vertex AI Endpoints, and run batch predictions with an instanceConfig setting to transform input data",
+      "C": "Wrap the model in a custom prediction routine, build a container image from the local model, upload it to the Vertex AI Model Registry, deploy it to Vertex AI Endpoints, and create a Vertex AI batch prediction job",
+      "D": "Build a fully custom container for the scikit-learn model, define a serving function with preprocessing logic, upload it to the Vertex AI Model Registry, deploy to Vertex AI Endpoints, and create a batch prediction job"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "C",
+    "explanation": "The correct approach is to use a custom prediction routine (CPR) to package both the model and its preprocessing logic, then build and upload the container image to Vertex AI. CPR allows preprocessing steps to be included within the predict() method while still leveraging the standard scikit-learn serving image. This keeps deployment simpler than building a fully custom container, while still ensuring that both online and batch predictions process the data consistently. By creating the container from the local CPR model and pushing it to the Vertex AI Model Registry, you can deploy to Endpoints for online use and also schedule batch prediction jobs from the same artifact.\n\nThe other options either rely on unsupported settings or require unnecessary complexity. The instanceConfig setting mentioned does not exist for Vertex AI batch predictions, so any approach using it would fail. A fully custom container is only necessary if CPR cannot handle the preprocessing needs, so using it here adds extra code and maintenance work without providing an advantage. Choosing a prebuilt container without CPR would not allow preprocessing logic to be built into the model artifact, making it unsuitable for this requirement."
+  },
+  {
+    "number": 43,
+    "question": "You are building a text classification model that categorizes customer complaints based on their email content. Your current implementation uses custom TensorFlow models built with the tf.keras API and trained on a local workstation. You now need to train these models on large datasets and plan to migrate to Google Cloud. You want to minimize infrastructure management and avoid major code changes. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Vertex AI for distributed training with your existing Keras code.",
+      "B": "Launch a Compute Engine Managed Instance Group and configure a custom training environment manually.",
+      "C": "Set up a Kubernetes Engine cluster and use Kubeflow Pipelines to orchestrate training.",
+      "D": "Create a Dataproc cluster and adapt your code to use PySpark for distributed training."
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The best option is to use Vertex AI for distributed training with your existing Keras code. Vertex AI supports native integration with tf.keras, allowing you to move from local training to scalable managed training with minimal changes. It abstracts away the need to manage infrastructure while giving access to features like GPUs, TPUs, and hyperparameter tuning. Using Dataproc or Kubernetes adds more setup complexity and deviates from the goal of avoiding manual infrastructure management. Compute Engine gives flexibility but requires you to handle scaling, orchestration, and resource provisioning on your own."
+  },
+  {
+    "number": 44,
+    "question": "You trained a regression model in Vertex AI that estimates annual customer spending for a retail company. During post-training evaluation on multiple data slices, you notice that the model consistently underestimates spending for customers older than 65. You want to address this age-related bias while maintaining similar performance on the rest of the dataset.\n\nWhat should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Update the model’s reference baselines to include the minimum and maximum observed age values in the data",
+      "B": "Analyze the feature distributions for each bucketed age group in both the training and evaluation datasets, then apply preprocessing to correct uneven distributions",
+      "C": "Introduce a post-processing calibration step to align the predicted output distribution for customers above and below 65 years of age",
+      "D": "Run a correlation check between each feature and the age field, and drop features that show strong correlation in both datasets"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The correct approach is to examine how feature values are distributed across bucketed age groups and then fix the imbalance in the training data. If customers older than 65 are underrepresented or have systematically different feature ranges, the model can learn patterns that generalize poorly to them. By quantifying these differences per age bucket and applying targeted preprocessing such as stratified resampling, reweighting, imputation for missing values, capping outliers, or age-aware bucketing, you move the training distribution closer to what you expect at inference. This addresses the cause of the age bias and usually preserves overall offline performance because you are not discarding useful signal or forcing the model to ignore informative features\n\nThe other options do not solve the underlying problem. Dropping features that correlate with age can remove important predictors and reduce accuracy, and correlation with age does not imply those features are inappropriate to use. Changing explainability baselines only affects how attribution tools present importance and has no effect on the model’s predictions. Forcing a calibration step that matches prediction distributions above and below a threshold treats the symptom and can introduce new bias or distort well calibrated scores for other groups. These alternatives either hide the bias or damage model signal rather than correcting the feature distribution imbalance that led to the issue"
+  },
+  {
+    "number": 45,
+    "question": "You are working on a machine learning project for a global e-commerce company to predict product return likelihood. Your training data consists of hundreds of millions of transaction records stored in BigQuery, each with structured fields like product category, order history, and return status. You plan to build and compare multiple TensorFlow models on Vertex AI and want to avoid slowdowns when ingesting data for training. The team’s priority is to design a pipeline that can handle the scale of the dataset without unnecessary export or format conversion steps. How should you read the training data into TensorFlow for this project?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Load the data into a Pandas dataframe using the BigQuery client library, then convert it into a tf.data.Dataset",
+      "B": "Use TensorFlow I/O’s BigQuery Reader to stream the data directly from BigQuery into TensorFlow",
+      "C": "Export the BigQuery table to CSV files in Cloud Storage, then read them into TensorFlow using tf.data.TextLineDataset",
+      "D": "Transform the BigQuery data into TFRecords in Cloud Storage, then load it into TensorFlow with tf.data.TFRecordDataset"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "B",
+    "explanation": "The correct answer is to use TensorFlow I/O’s BigQuery Reader to stream the data directly into TensorFlow. This method connects BigQuery to your training job without extra export steps, meaning you avoid storing intermediate files and eliminate format conversion delays. For datasets of this size, the direct reader can handle high throughput efficiently while scaling to the demands of your Vertex AI training jobs. This minimizes potential ingestion bottlenecks and allows the training process to work with live data from BigQuery without first moving it into another system.\n\nThe other options all introduce extra steps that can slow down training and complicate the workflow. Loading the full dataset into a Pandas dataframe is memory-bound and will not scale for hundreds of millions of records. Exporting to CSV in Cloud Storage and reading with TextLineDataset adds unnecessary file management and parsing overhead. Converting the table to TFRecords first can improve performance in some workflows, but in this case it adds an extra processing phase and storage cost without eliminating the export bottleneck. None of these approaches match the scalability and simplicity of directly reading from BigQuery into TensorFlow."
+  },
+  {
+    "number": 46,
+    "question": "A retail company has built a product recommendation model using data that was cleaned and enriched in a scheduled Dataflow batch pipeline. They now plan to serve real-time recommendations to customers through a Vertex AI endpoint. To ensure that the same preprocessing steps are consistently applied in both training and serving, what should they do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Extract the preprocessing code from the batch pipeline so it can run independently, and integrate it directly into the serving endpoint",
+      "B": "Provide the preprocessing code to application developers so they can replicate the transformations in the client application before sending requests",
+      "C": "Build a separate Dataflow streaming pipeline to handle incoming requests and send the transformed data to the endpoint",
+      "D": "Perform schema checks on the input data before it is sent to the endpoint to confirm it matches the training format"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "The correct approach is to extract the transformation logic from the batch pipeline so that it can be reused in the endpoint. This ensures that the exact same preprocessing steps are applied to incoming requests as were used during model training, preventing training-serving skew. Integrating this shared code into the serving layer maintains consistency without introducing unnecessary dependencies or manual duplication of preprocessing logic.\n\nThe other options fail to fully address the consistency problem. A streaming Dataflow pipeline adds latency and operational complexity while still not guaranteeing the same transformation environment. Giving preprocessing code to developers for client-side execution creates risk of divergence over time and places extra responsibility on application teams. Schema checks may detect mismatches but do not apply the required transformations, leaving preprocessing gaps unaddressed."
+  },
+  {
+    "number": 47,
+    "question": "You are building an ML pipeline for predicting equipment maintenance needs. The pipeline accepts multiple parameters:\n\nFeature extraction method\nNumber of layers in the neural network\nDropout rate\n\nYou want to evaluate how different parameter combinations affect three metrics: precision, recall, and training time. You also want all runs to be tracked in one place, be reproducible, and be easy to compare. How should you proceed?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "In a Vertex AI pipeline with a custom training job, run a single hyperparameter tuning job with Bayesian optimization targeting precision, and compare results afterward",
+      "B": "Use BigQueryML to create a neural network model, specifying the different combinations of parameters using the hyperparameter tuning syntax, and run a grid search",
+      "C": "Run different configurations in separate Vertex AI Workbench notebooks, record the metrics in a spreadsheet, and compare them manually",
+      "D": "Create a Vertex AI Experiment and run a Vertex AI pipeline with a custom training job, passing different parameter values for each run"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "This setup ensures that all parameter combinations are tested in a controlled, reproducible way, with results tracked in one place for easy comparison. Vertex AI Experiments lets you organize and analyze multiple runs, while Vertex AI Pipelines automates the training process for each combination. Together, they provide clear visibility into F1 score, training time, and model complexity across runs.\n\nBayesian optimization can log multiple metrics, but the answer choice here focuses on optimizing one primary metric, which means it may not evaluate all combinations needed for a full tradeoff analysis. BigQuery ML supports hyperparameter tuning but lacks the same pipeline integration and run tracking. Running separate Vertex AI Workbench notebooks adds manual effort and makes comparisons less consistent."
+  },
+  {
+    "number": 48,
+    "question": "Your company is building a mobile platform for a large gym chain that supports millions of users. You’ve developed a model that predicts whether users will miss their next scheduled workout based on patterns in app activity and location data. You want to send users a push notification if the model predicts that they are likely to skip.\n\nHow should you serve your predictions and send notifications to users?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use Firebase Cloud Messaging to deliver notifications. Register each user by ID in Firebase, and send an alert when the system-wide average likelihood of skipped workouts crosses a threshold",
+      "B": "Create an individual Pub/Sub topic for every user. Deploy a Cloud Run service that sends a notification when the model forecasts the user will likely skip a workout that day",
+      "C": "Create a separate Pub/Sub topic per user. Use an App Engine service that scans model outputs and sends reminders if a user is predicted to miss their scheduled workout",
+      "D": "Use Firebase Cloud Messaging to deliver personalized notifications. Register each user by ID in Firebase, and trigger an alert when the model predicts they are likely to skip a workout"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The best solution is to use Firebase Cloud Messaging with individual user IDs in a Firebase instance. This setup lets you send direct, real-time alerts to each user when the model predicts they are likely to miss their workout. FCM is built for scalable, targeted messaging to both mobile and web apps.\n\nCreating a Pub/Sub topic per user is not scalable and adds operational overhead. Using App Engine increases complexity without adding targeting advantages. Sending alerts based on system-wide averages doesn't meet the requirement of user-level prediction and notification."
+  },
+  {
+    "number": 49,
+    "question": "You’ve recently joined a machine learning operations team at a large company that has multiple business units building and deploying models on Vertex AI. Each unit owns dozens of jobs, models, endpoints, and experiments. Some resources are shared across teams, and others are owned by a single group. You’ve been asked to help set up a consistent way to organize these resources for easier filtering and tracking across the organization.\n\nWhat should you recommend?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Use resource labels to group resources based on team ownership, lifecycle stage, and project name",
+      "B": "Create a BigQuery table that logs model usage events, and add a user-managed field that maps each model ID to a team or project",
+      "C": "Set up separate service accounts and assign a unique one to each team for model deployment and job submission",
+      "D": "Create a Vertex AI Workbench notebook instance for each team and limit access using IAM role bindings"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "A",
+    "explanation": "Using labels is the most effective way to organize Vertex AI resources across teams without splitting projects or duplicating infrastructure. Labels can capture relevant attributes like ownership, stage, or use case. This allows teams to filter by label in the console or via APIs, monitor usage, and generate reports.\n\nRelying on BigQuery logs requires post-processing and doesn't make filtering or organizing easier during day-to-day operations. Managing everything through service accounts focuses on access control, not resource visibility. Creating separate notebook instances tied to IAM groups is focused on restricting use rather than organizing the broader Vertex AI landscape. Labels are the cleanest and most scalable way to categorize resources."
+  },
+  {
+    "number": 50,
+    "question": "You manage a Vertex AI Model Monitoring job for a recommendation model that runs in production for a streaming service. Recently, you received repeated alerts for training-serving skew. You retrained the model using an updated dataset with more recent viewing behavior and deployed it to the Vertex AI endpoint. Despite this, the skew alerts continue to appear. You want the monitoring job to reflect the changes in the retraining data so that it reports only genuine skew going forward. What should you do?\n\nChoose only ONE best answer.",
+    "options": {
+      "A": "Adjust the monitoring job to check predictions less frequently to reduce the number of alerts",
+      "B": "Retrain the model again using the same updated dataset but with adjusted hyperparameters",
+      "C": "Disable the monitoring job until the system has processed a significant amount of new production data",
+      "D": "Update the model monitoring job to reference the newer training dataset used for retraining the model"
+    },
+    "question_type": "one_answer_only",
+    "correct_answer": "D",
+    "explanation": "The correct answer is to update the model monitoring job so that it uses the newer training dataset as its baseline. Vertex AI Model Monitoring compares live prediction inputs to a baseline dataset to detect drift or skew. If the baseline remains as the older dataset, the monitoring system will keep flagging skew even if the deployed model was trained on fresher data. By updating the baseline, you align the monitoring system with the current state of the model and avoid false skew alerts related to outdated reference data.\n\nThe other options do not address the root cause. Reducing the monitoring frequency might lower the alert volume but does not resolve the mismatch between the baseline and the model’s current data. Disabling the job allows the mismatch to persist and risks missing valid drift events during that period. Retraining again without updating the baseline repeats the same problem because the monitoring job would still be comparing against outdated data."
+  }
+]
