@@ -10,9 +10,34 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <script src="app.js" defer></script>
+    <!-- Theme applied before render to avoid flash -->
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
   </head>
   <body>
+    <!-- ===================== SITE HEADER (always visible) ===================== -->
+    <header class="site-header">
+      <div class="site-header-logo">GCP <span>Practice</span></div>
+      <label class="theme-switch" title="Toggle light/dark mode">
+        <input
+          type="checkbox"
+          id="theme-checkbox"
+          onchange="toggleTheme(this.checked)"
+        />
+        <span class="theme-switch-track">
+          <span class="theme-switch-thumb">
+            <span class="theme-icon-moon">🌙</span>
+            <span class="theme-icon-sun">☀️</span>
+          </span>
+        </span>
+        <span class="theme-switch-label" id="theme-label">Dark</span>
+      </label>
+    </header>
+
     <!-- ===================== HOME PAGE ===================== -->
     <div id="home-page">
       <div class="home-badge">Google Cloud Certifications</div>
@@ -100,7 +125,6 @@
         <div class="results-label">Exam Complete</div>
         <h2 class="results-title" id="results-grade">Well done!</h2>
       </div>
-
       <div class="score-ring-wrap">
         <div class="score-ring">
           <svg viewBox="0 0 160 160">
@@ -121,7 +145,6 @@
           </div>
         </div>
       </div>
-
       <div class="results-stats">
         <div class="rstat">
           <div class="rstat-num green" id="rstat-correct">—</div>
@@ -136,27 +159,17 @@
           <div class="rstat-label">Total</div>
         </div>
       </div>
-
       <div class="results-actions">
         <button class="btn btn-submit" onclick="goHome()">
           ← Back to Home
         </button>
       </div>
-
       <div class="wrong-section">
         <div class="wrong-section-title">Questions You Got Wrong</div>
         <div id="wrong-answers-list"></div>
       </div>
     </div>
 
-    <!-- Theme toggle -->
-    <button
-      class="theme-toggle"
-      onclick="toggleTheme()"
-      id="theme-toggle"
-      title="Toggle light/dark mode"
-    >
-      🌙
-    </button>
+    <script src="app.js" defer></script>
   </body>
 </html>

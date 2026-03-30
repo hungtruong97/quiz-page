@@ -406,26 +406,23 @@ window.toggleWrongItem = toggleWrongItem;
 // =====================
 // THEME TOGGLE
 // =====================
-function toggleTheme() {
-  const isLight =
-    document.documentElement.getAttribute("data-theme") === "light";
-  const newTheme = isLight ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", newTheme);
-  document.getElementById("theme-toggle").textContent =
-    newTheme === "light" ? "🌙" : "☀️";
-  localStorage.setItem("theme", newTheme);
+function toggleTheme(isLight) {
+  const theme = isLight ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  document.getElementById("theme-label").textContent = isLight
+    ? "Light"
+    : "Dark";
+  localStorage.setItem("theme", theme);
 }
 
-// Apply saved theme on load
-(function () {
+// Sync checkbox to saved theme on load
+document.addEventListener("DOMContentLoaded", function () {
   const saved = localStorage.getItem("theme") || "dark";
-  if (saved === "light") {
-    document.documentElement.setAttribute("data-theme", "light");
-    document.addEventListener("DOMContentLoaded", () => {
-      const btn = document.getElementById("theme-toggle");
-      if (btn) btn.textContent = "🌙";
-    });
-  }
-})();
+  const isLight = saved === "light";
+  const cb = document.getElementById("theme-checkbox");
+  if (cb) cb.checked = isLight;
+  const label = document.getElementById("theme-label");
+  if (label) label.textContent = isLight ? "Light" : "Dark";
+});
 
 window.toggleTheme = toggleTheme;
